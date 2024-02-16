@@ -1,0 +1,32 @@
+# Group project Instructions
+
+1. The program must compile with the following ﬂags: -Wall -Wextra -Werror; and
+uses cc.  
+2. If your program doesn’t compile, you’ll get 0.
+3. Your program must be written in accordance with the Norm. If you have bonus
+ﬁles/functions, they are included in the norm check and you will receive a 0 if there
+is a norm error inside.
+4. You will have to handle errors coherently. Feel free to either print an error message,
+or simply return control to the user.
+5. You must therefore do the project with the imposed team and show up at Your
+defense slot, with all of your teammates.
+6. You project must be done by the time you get to defense. The purpose of defense
+is for you to present and explain your work.
+7. Each member of your group must be fully aware of the works of the project. Should
+you choose to split the workload, make sure you all understand what everybody’s
+done. During the defense, you’ll be asked questions and the ﬁnal grade will be
+based on the worst explanations.
+8. If you want bonus points, you may submit other subjects or be able to use program
+arguments to test your function.
+
+## Submission and peer-evaluation
+
+Turn in your assignment in your Git repository as usual. Only the work inside your repos-
+itory will be evaluated during the defense. Don’t hesitate to double check the names of
+your ﬁles to ensure they are correct.
+As these assignments are not veriﬁed by a program, feel free to organize your ﬁles as
+you wish, as long as you turn in the mandatory ﬁles and comply with the requirements.
+
+> You need to return only the files requested by the subject of this
+project.
+

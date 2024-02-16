@@ -1,0 +1,54 @@
+# C Piscine Rush 02
+
+cc  -Wall -Wextra -Werror 
+- Executable name: rush-02
+norminette
+- You must turn in a Makefile, which will compile your project using the rules $NAME, clean and fclean
+
+## subject
+1. Create a program that takes a number as argument and converts it to its written
+letters value.
+
+2. Executable name: rush-02
+
+3. Your source code will be compiled as follows :
+make fclean
+make
+
+3. Your program can take up to 2 arguments:
+◦ If there is only one argument, it is the value you need to convert
+◦ If there are two arguments, the first argument is the new reference dictionary
+and the second argument is the value you need to convert.
+
+4. If the argument isn’t a valid unsigned integer, your program must return "Error",
+followed by a newline.
+
+5. Your program must parse the dictionary given as resource to the project. The
+values inside it must be used to print the result. These values can be modified.
+
+6. Any memory allocated on the heap (with malloc(3)) must be freed correctly. This
+will be verified during evaluation.
+
+7. The dictionary will have the following rules:
+[a number][0 to n spaces]:[0 to n spaces][any printable characters]\n
+
+8. Numbers are to be handled the same way atoi handles them.
+
+9. You will trim the spaces before and after the value in the dictionary.
+
+10. The dictionary will always have at least the keys as in the reference dictionary.
+Their value can be modified, more entries can be added, but the initial keys
+can’t be removed.
+
+11. You only need to use the initial entries (For instance, if we add 54: fifty-four,
+you still have to use 50: fifty and 4: four)
+
+12. The entries of the dictionary can be stored in any order.
+
+13. There can be empty lines in the dictionary.
+
+14. If you have any errors from the dictionary parsing, your program must output
+"Dict Error\n"
+
+15. If the dictionary doesn’t allow you to resolve the asked value, your program
+must output "Dict Error\n".

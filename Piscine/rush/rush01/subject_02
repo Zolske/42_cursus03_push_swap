@@ -1,0 +1,5 @@
+- cc -Wall -Wextra -Werror
+- norminette
+- Your source code will be compiled as follows:
+cc -Wall -Wextra -Werror -o rush-01 *.c
+

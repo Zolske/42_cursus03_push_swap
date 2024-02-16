@@ -1,0 +1,6 @@
+## Functions
+- max 4 named parameter
+- Parameters in functions’ prototypes must be named
+- You can’t declare more than 5 variables per function.
+- You cannot have more than 5 function-definitions in a .c file.
+- no more then 25 lines in on function without "function {" but with anything else 

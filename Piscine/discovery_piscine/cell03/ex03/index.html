@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To do or not to do</title>
+    <style>
+        #confirm {
+            display: none;
+        }
+
+        .messageDelete {
+            width: fit-content;
+            background-color: antiquewhite;
+            padding: 10px;
+            border-radius: 2%;
+            box-shadow: 2px 2px 2px gray;
+        }
+
+        .container-btn {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .no {
+            background-color: yellowgreen;
+            cursor: pointer;
+        }
+
+        .yes {
+            background-color: crimson;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body onload="cookieLoader()">
+    <h1>ToDo App</h1>
+    <button title="create a new 'TO DO'" onclick="newToDo()">New</button>
+    <div id="ft_list">
+    </div>
+    <div id = "confirm">
+        <div class="messageDelete">
+            <h2>Are you sure that you want to delete this "ToDo" task?</h2>
+            <hr>
+            Click "Yes" to confirm that you want to delete the task
+            and to get back.<br>
+            <strong>Note:</strong> This can not be undone.<br><br>
+            Click "No" to keep the task and to get back.
+            <hr>
+            <div class="container-btn">
+                <!-- delete button, call "deleteTask" -->
+                <button class="yes" onclick = "deleteTask()" title="delete task"> Yes </button>
+                <!-- no delete button, call "closeConfirm" -->
+                <button class="no" onclick = "closeConfirm()" title="keep task"> No </button>
+            </div>
+     </div>
+     <script>
+        function cookieLoader(){
+            let decodedCookie = decodeURIComponent(document.cookie)
+            alert(decodedCookie);
+            console.log(decodedCookie);
+        }
+        // get id of delete message
+        let confirmDiv = document.getElementById("confirm");
+        // stores the id of the element which is opened through the click event
+        let deleteId;
+        
+        // show the delete message and save id
+        function showDeleteMessage(event){
+            confirmDiv.style.display = "block";
+            // save id of the element from which the function was called
+            deleteId = event.currentTarget.id;
+            console.log(decodeURIComponent(document.cookie));
+            console.log(document.cookie);
+        }
+
+         // hidde delete message
+        function closeConfirm() {
+            confirmDiv.style.display = "none";
+        }
+
+        // delete element (task) and hidde delete message
+        function deleteTask() {
+            confirmDiv.style.display = "none";
+            document.getElementById(deleteId).remove();
+        }
+
+        // called when "New" Button is clicked, to create new task
+        function newToDo(){
+            // get patent element
+            let parent =  document.getElementById("ft_list");
+            // create a todo div
+            let todoDiv = document.createElement("div");
+            // create a random id
+            let randomId = Math.random().toString(36).substr(2, 9);
+            todoDiv.id = randomId;
+            // ask user for a todo title and save it
+            let todoText = prompt("Please enter a new 'ToDo' task.");
+            // write the todo title into the todo div
+            todoDiv.innerText = todoText;
+            setCookie(randomId, todoText, 1);
+            if(parent.hasChildNodes()){
+                parent.insertBefore(todoDiv,  parent.firstElementChild);
+            } else {
+                // if no child, insert anywhere
+                parent.appendChild(todoDiv);
+            }
+            // add eventlistener to the first child of the parent
+            parent.firstElementChild.addEventListener("click", function(){ showDeleteMessage(event); });
+
+            // cookie functions
+            function setCookie(cname,cvalue,exdays) {
+                const d = new Date();
+                d.setTime(d.getTime() + (exdays*24*60*60*1000));
+                let expires = "expires=" + d.toUTCString();
+                document.cookie = cname + "=" + cvalue + ";" + expires;
+            }
+
+            function getCookie(cname) {
+                let name = cname + "=";
+                let decodedCookie = decodeURIComponent(document.cookie);
+                let ca = decodedCookie.split(';');
+                for(let i = 0; i < ca.length; i++) {
+                  let c = ca[i];
+                  while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                  }
+                  if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                  }
+                }
+                return "";
+            }
+            
+            // function checkCookie() {
+            //     let user = getCookie("username");
+            //     if (user != "") {
+            //       alert("Welcome again " + user);
+            //     } else {
+            //        user = prompt("Please enter your name:","");
+            //        if (user != "" && user != null) {
+            //          setCookie("username", user, 30);
+            //        }
+            //     }
+            // }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>It's over 9000</title>
+</head>
+<body>
+    <h1>Calculator</h1>
+    <form id="form">
+    <!-- left number -->
+    <input type="text" name="left_input"> 
+      <!-- operator -->
+    <select name="operand">
+        <option value="+">+</option>
+        <option value="-">-</option>
+        <option value="*">*</option>
+        <option value="/">/</option>
+        <option value="%">%</option>
+    </select>
+    <!-- right number -->
+    <input type="text" name="right_input">
+    <!-- button to calculate -->
+    <input type="submit" value="Try me!" onclick="calculate()">
+</form>
+    <script>
+        // displays an alert message every 30s
+        setInterval(()=>alert("Please, use me..."), 30000);
+
+        // is called when the user clicks on the "try me" button
+        function calculate(){
+            // get all input elements from the form
+            const input = document.getElementById("form").elements;
+            // convert the input, which is a string into a number
+            let left_num = Number(input["left_input"].value);
+            let right_num = Number(input["right_input"].value);
+            // get the operand
+            let operand = input["operand"].value;
+            
+            // if any of the numbers is below 0 or if it is not a number, then display
+            // an error message and end the calculation function
+            if(left_num < 0 || right_num < 0 || isNaN(left_num) || isNaN(right_num)){
+                alert("Error :(");
+                return;
+            }
+
+            // if the right number is 0 and the operation is divison
+            // display alert message and end function
+            if(right_num === 0 && operand === "/"){
+                console.log("It's over 9000!");
+                alert("It's over 9000!");
+                return;
+            }
+
+            // if the right number is 0 and the operant is mdulos
+            // display alert message and end function
+            if(right_num === 0 && operand === "%"){
+                console.log("It's over 9000!");
+                alert("It's over 9000!");
+                return;
+            }
+
+            // calculate and display the result according to the operator
+            switch(operand){
+                case "+":
+                    console.log(left_num + right_num);
+                    alert(left_num + right_num);
+                    break;
+                case "-":
+                    console.log(left_num - right_num);
+                    alert(left_num - right_num);
+                    break;
+                case "*":
+                    console.log(left_num * right_num);
+                    alert(left_num * right_num);
+                    break;
+                case "/":
+                    console.log(left_num / right_num);
+                    alert(left_num / right_num);
+                    break;            
+                case "%":
+                    console.log(left_num % right_num);
+                    alert(left_num % right_num);
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>

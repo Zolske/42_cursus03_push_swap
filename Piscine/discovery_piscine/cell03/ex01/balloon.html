@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explode this balloon</title>
+</head>
+<style>
+    article {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    li, p {
+        font-size: 20px;
+    }
+
+    /* container is the parent of ballon and explotion so they can overlap */
+    .container {
+        position: relative;
+        width: 800px;
+        height: 800px;
+        margin: auto;
+    }
+
+    #ballon {
+        border-radius: 50%;
+        position: absolute;
+    }
+
+    #explotion {
+        height: 800px;
+        width: 800px;
+        position: absolute;
+        top: 0;
+        left: auto;
+    }
+</style>
+<script>
+    /*change ballon color
+    * bigger: is a true or false boolean, if ballon gets bigger
+    * (true) then red to green , ... if bigger is false then
+    *  red to black because the ballon is shrinking
+    */
+    function change_color(ballon, bigger){
+        let new_color;
+        // set the new_color variable to the right color
+        switch(ballon.style.backgroundColor){
+            case "red":
+                new_color = bigger ? "green" : "black";
+                break; 
+            case "green":
+                new_color = bigger ? "blue" : "red";
+                break;
+            case "blue":
+                new_color = bigger ? "black" : "green";
+                break;
+            case "black":
+                new_color = bigger ? "red" : "blue";
+                break;     
+        }
+        // change the color of the ballon
+        ballon.style.backgroundColor = new_color;
+    }
+
+    // reload page
+    function reload_page(){
+        location.reload();
+    }
+
+    // grow the ballon when user clicks on it
+    function grow(){
+        let ballon = document.getElementById("ballon");
+        // get the current value of the ballons heigth
+        let ballon_size = Number(ballon.style.height.slice(0,3));
+        // ballon explodes if the size goes over 420, but because of shrinking
+        // the size could be 415 before going over the top
+        if(ballon_size >= 415){
+            let explotion = document.getElementById("explotion");
+            // hidde ballon and show explotion
+            ballon.style.display = "none";
+            explotion.style.display = "inline-block";
+            // wait 2 seconds before reloading the page
+            setTimeout(reloadPage, 2000);
+        } else {
+            // change the size of by 10px
+            ballon.style.height = `${ballon_size + 10}px`;
+            ballon.style.width = `${ballon_size + 10}px`;
+            // addjust position of the ballon when it has grown
+            let ballon_position = Number(ballon.style.top.slice(0,3));
+            ballon.style.top = `${ballon_position -5}px`;
+            ballon.style.left = `${ballon_position -5}px`;
+            change_color(ballon, true);
+            // write the current size of the ballon to the page
+            document.getElementById("size").innerHTML = ballon.style.height;
+        }
+    }
+
+    // shrink the ballon if the user leaves the ballon with the mouse as long
+    // it is not smaller then 200px
+    function shrink(){
+        let ballon = document.getElementById("ballon");
+        // get the current value of the ballons heigth
+        let ballon_size = Number(ballon.style.height.slice(0,3));
+        // as long the ballon is bigger then 200 but smaller then 420
+        if(ballon_size > 200 && ballon_size <= 420){
+            // change size by 5px
+            ballon.style.height = `${ballon_size -5}px`;
+            ballon.style.width = `${ballon_size - 5}px`;
+            // addjust position of the ballon when it is shrinking
+            let ballon_position = Number(ballon.style.top.slice(0,3));
+            ballon.style.top = `${ballon_position +2.5}px`;
+            ballon.style.left = `${ballon_position +2.5}px`;
+            change_color(ballon, false);
+            // write the current size of the ballon to the page
+            document.getElementById("size").innerHTML = ballon.style.height;
+        }
+    }
+</script>
+<body>
+    <article>
+        <h1>The red Ballon</h1>
+        <p>Our ballon can has a minimum size of 200px and can grow up to 420px.</p>
+        <ul>
+            <li>every timie you leave the ballon with your mouse, the ballon shrinks by 5px</li>
+            <li>click on the ballon to make it grow by 10px</li>
+            <li>everytime the ballon grows it changes the color (red/green/blue/black/red)</li>
+            <li>everytime the ballon shrinks it changes the color back (red/black/blue/green/red)</li>
+            <li>if the ballon gets bigger then 420px, it will explode</li>
+        </ul>
+        <p>The ballon has now a size of <span id="size">200px</span>.</p>
+    </article>
+    <div class="container">
+        <!-- ballon -->
+        <div id="ballon" style="height: 200px; background-color: red; width: 200px; top: 300px; left: 300px;" onclick="grow()" onmouseout="shrink()"></div>
+        <!-- explotion, only showes when the ballon goes over 420px -->
+        <img id="explotion" src="https://i.gifer.com/origin/a0/a07ad08920f303f655251b1a0b353b86_w200.gif" style="display: none;" alt="animated explotion">
+    </div>
+</body>
+</html>

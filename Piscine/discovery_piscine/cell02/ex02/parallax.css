@@ -1,0 +1,56 @@
+body, html {
+    height: 100%;
+  }
+  
+  .parallax_1 {
+    /* The image used */
+    background-image: url(https://media.istockphoto.com/id/944812540/photo/mountain-landscape-ponta-delgada-island-azores.jpg?s=612x612&w=0&k=20&c=mbS8X4gtJki3gGDjfC0sG3rsz7D0nls53a0b4OPXLnE=);
+    height: 100%; 
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .parallax_2 {
+    /* The image used */
+    background-image: url(https://media.istockphoto.com/id/143177432/photo/terraced-fields.jpg?s=612x612&w=0&k=20&c=PZ4op21KscRmdhTH26P11XMhGwu40bztKLoNzEBfi_Q=);
+    height: 100%; 
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .bg_text {
+    background-color: black;
+    color: white;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .center_message {
+    text-align: center;
+    font-weight: 700;
+    font-size: 40px;
+    padding-top: 40vh;
+    color: red;
+    animation-name: example;
+    animation: example 4s infinite;
+    margin-top: 0;
+  }
+
+  @keyframes example {
+    from {color: red;}
+    to {color: yellow;}
+  }
+
+  .text {
+    margin: auto;
+    width: 60%;
+    text-align: center;
+    font-style: italic;
+    font-size: 30px;
+  }
