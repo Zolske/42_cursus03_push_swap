@@ -1,5 +1,5 @@
 NAME	= push_swap
-SRC		= push_swap.c node.c error_check.c print.c free.c goal.c helper.c
+SRC		= push_swap.c node.c error_check.c print.c free.c goal.c helper.c co_rotate.c co_swap_push.c check.c write_node.c
 CC		= gcc	
 FLAGS	= -Werror -Wextra -Wall -g
 
