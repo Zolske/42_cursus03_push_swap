@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 15:07:27 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/17 20:34:32 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/19 13:55:37 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,25 @@ void print_ats(t_result **head_res)
 		while (current->ats_str[i])
 		{
 			write(1, &(current->ats_str[i]), 1);
+			i++;
+		}
+		current = current->next;
+	}
+}
+
+/*print the command string of ahb (algo half bubble sort)*/
+void print_ahb(t_result **head_res)
+{
+	t_result *current;
+	int i;
+
+	current = *head_res;
+	while (current != NULL)
+	{
+		i = 0;
+		while (current->ahb_str[i])
+		{
+			write(1, &(current->ahb_str[i]), 1);
 			i++;
 		}
 		current = current->next;

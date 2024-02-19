@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:45:23 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/17 20:47:54 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/19 20:49:55 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,16 @@ typedef struct s_result
 {
     char *bs_str;
     char *ats_str;
+    char *ahb_str;
     struct s_result *next;
 } t_result;
 
 typedef enum
 {
-    STACK_A,
-    STACK_B,
-    STACK_AB,
-    NO_WRITE,
+    NOTHING = 0,
+    STACK_A = 1,
+    STACK_B = 2,
+    STACK_AB = 3
 } t_stack;
 
 // list and nodes
@@ -44,7 +45,11 @@ void list_from_parameter(char argc, char **argv, t_node **head_ori);
 void split_str_to_list(char *str, t_node **head);
 void add_node(t_node **head, int value);
 void add_node_res(t_result **head_re);
+t_node *cop_node(t_node *head_ori);
+
+// write
 void write_ats(t_result **head_res, char *res);
+void write_ahb(t_result **head_res, char *res);
 
 // check
 void error(t_node **head);
@@ -71,6 +76,7 @@ void push_head_to(t_node **head_to, t_node **new_head, t_node **old_head);
 void print_node(t_node **head);
 void rev_print_node(t_node **head);
 void print_ats(t_result **head_res);
+void print_ahb(t_result **head_res);
 
 // free
 void free_node(t_node *head);
@@ -84,3 +90,14 @@ int *bubble_sort(int *ptr_arr, t_node **head);
 // helper
 int get_len(t_node *head);
 void strcpy_nl(char *dst, char *src);
+
+// algorithm
+void algo_half_bubble(t_node **head_ori, t_result **head_res);
+void sor_bubble_both(t_node **head_a, t_node **head_b, t_result **head_res, int len);
+bool ch_rotate_b(t_node **head_b);
+void if_low_push_b(t_node **head_a, t_node **head_b, t_result **head_res, int len);
+int ch_need_swap(t_node **head_a, t_node **head_b, int message);
+void swap_stack(t_node **head_a, t_node **head_b, t_result **head_res, int message);
+int ch_need_rotate(t_node **head_a, t_node **head_b, int message);
+void rotate_stack(t_node **head_a, t_node **head_b, t_result **head_res, int message);
+bool not_sorted(t_node **head);

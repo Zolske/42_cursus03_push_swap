@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 11:24:33 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/17 19:23:38 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/19 13:36:52 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,33 @@ void write_ats(t_result **head_res, char *res)
     add_node_res(&current);
     current->next->ats_str = (char *)malloc(sizeof(char) * len + 2);
     strcpy_nl(current->next->ats_str, res);
+}
+
+void write_ahb(t_result **head_res, char *res)
+{
+    t_result *current;
+    int len;
+
+    len = 0;
+    while (res[len])
+        len++;
+    if (*head_res == NULL)
+        add_node_res(head_res);
+    current = *head_res;
+    while (current != NULL)
+    {
+        if (current->ahb_str == NULL)
+        {
+            current->ahb_str = (char *)malloc(sizeof(char) * len + 2);
+            strcpy_nl(current->ahb_str, res);
+            return;
+        }
+        current = current->next;
+    }
+    current = *head_res;
+    while (current->next != NULL)
+        current = current->next;
+    add_node_res(&current);
+    current->next->ahb_str = (char *)malloc(sizeof(char) * len + 2);
+    strcpy_nl(current->next->ahb_str, res);
 }

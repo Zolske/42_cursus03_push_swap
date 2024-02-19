@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:02:51 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/17 21:05:48 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/19 13:55:32 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void add_node_res(t_result **head_re)
 	// new_node->bs_str = NULL;
 	new_node->next = NULL;
 	new_node->ats_str = NULL;
+	new_node->ahb_str = NULL;
 
 	// if head points to NULL then there is no list
 	if (*head_re == NULL)
@@ -108,4 +109,33 @@ void add_node_res(t_result **head_re)
 			last_node = last_node->next;
 		last_node->next = new_node;
 	}
+}
+
+/*create a new list and copy the values from the original head to it*/
+t_node *cop_node(t_node *head_ori)
+{
+	t_node *ori_current;
+	t_node *cop_current;
+	bool start;
+
+	ori_current = head_ori;
+	cop_current = NULL;
+	start = true;
+	while (ori_current != head_ori || start)
+	{
+		start = false;
+		add_node(&cop_current, -1);
+		ori_current = ori_current->next;
+		cop_current = cop_current->next;
+	}
+	start = true;
+	while (ori_current != head_ori || start)
+	{
+		start = false;
+		cop_current->val = ori_current->val;
+		cop_current->i_goal = ori_current->i_goal;
+		ori_current = ori_current->next;
+		cop_current = cop_current->next;
+	}
+	return (cop_current);
 }
