@@ -6,14 +6,14 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:29:13 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/19 14:53:10 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/20 20:36:31 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
 /*swap the first node with the second node*/
-void co_swap_a(t_node **head_a, t_result **head_res, bool write_res, void(*(f)(t_result **head_res, char *str)))
+void co_swap_a(t_node **head_a, t_result **head_res, bool write_res, void (*f)(t_result **head_res, char *str))
 {
 	t_node *old_sec;
 	t_node *old_head;
@@ -38,7 +38,7 @@ void co_swap_a(t_node **head_a, t_result **head_res, bool write_res, void(*(f)(t
 	}
 }
 
-void co_swap_b(t_node **head_b, t_result **head_res, bool write_res, void(*(f)(t_result **head_res, char *str)))
+void co_swap_b(t_node **head_b, t_result **head_res, bool write_res, void (*f)(t_result **head_res, char *str))
 {
 	t_node *old_sec;
 	t_node *old_head;
@@ -63,17 +63,17 @@ void co_swap_b(t_node **head_b, t_result **head_res, bool write_res, void(*(f)(t
 	}
 }
 
-void co_swap_both(t_node **head_a, t_node **head_b, t_result **head_res, void(*(f)(t_result **head_res, char *str)))
+void co_swap_both(t_node **head_a, t_node **head_b, t_result **head_res, void (*f)(t_result **head_res, char *str))
 {
 	if (ch_2_nodes(&(*head_a)) && ch_2_nodes(&(*head_b)))
 	{
-		co_swap_a(head_a, head_res, false, (*f)(head_res, "no call, because NO_WRITE"));
-		co_swap_b(head_b, head_res, false, (*f)(head_res, "no call, because NO_WRITE"));
+		co_swap_a(head_a, head_res, false, write_ahb);
+		co_swap_b(head_b, head_res, false, write_ahb);
 		(*f)(head_res, "ss");
 	}
 }
 
-void co_push_a_to_b(t_node **head_a, t_node **head_b, t_node **head_res, void(*(f)(t_result **head_res, char *str)))
+void co_push_a_to_b(t_node **head_a, t_node **head_b, t_result **head_res, void((*f)(t_result **head_res, char *str)))
 {
 	t_node *new_head;
 	t_node *old_head;
@@ -86,15 +86,15 @@ void co_push_a_to_b(t_node **head_a, t_node **head_b, t_node **head_res, void(*(
 	}
 }
 
-void co_push_b_to_a(t_node **head_b, t_node **head_a, t_node **head_res, void(*(f)(t_result **head_res, char *str)))
+void co_push_b_to_a(t_node **head_b, t_node **head_a, t_result **head_res, void (*f)(t_result **head_res, char *str))
 {
 	t_node *new_head;
 	t_node *old_head;
 
 	if (head_a != NULL)
 	{
-		push_head_from(head_b, new_head, old_head);
-		push_head_to(head_a, new_head, old_head);
+		push_head_from(head_b, &new_head, &old_head);
+		push_head_to(head_a, &new_head, &old_head);
 		(*f)(head_res, "pa");
 	}
 }
