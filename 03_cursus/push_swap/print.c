@@ -77,6 +77,33 @@ void print_node(t_node **head)
 		}
 }
 
+/*pint every node in the linked list*/
+void print_node_both(t_node **head_a, t_node **head_b)
+{
+	t_node *current_a;
+	t_node *current_b;
+	bool start;
+
+	current_a = *head_a;
+	current_b = *head_b;
+	start = true;
+	if (current_a != NULL)
+		while (current_a != *head_a || start)
+		{
+			if (current_b != *head_b || start)
+			{
+				printf("A => goal: %d, val: %d\t\tB => goal: %d, val: %d\n", current_a->i_goal, current_a->val, current_b->i_goal, current_b->val);
+				start = false;
+			}
+			else
+			{
+				printf("A => goal: %d, val: %d\n", current_a->i_goal, current_a->val);
+			}
+			current_a = current_a->next;
+			current_b = current_b->next;
+		}
+}
+
 /*the same as 'print_node' but reverse, check if 'prev' links are correct*/
 void rev_print_node(t_node **head)
 {

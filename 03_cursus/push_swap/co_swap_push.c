@@ -78,11 +78,21 @@ void co_push_a_to_b(t_node **head_a, t_node **head_b, t_result **head_res, void(
 	t_node *new_head;
 	t_node *old_head;
 
-	if (head_a != NULL)
+	if (*head_a != NULL)
 	{
-		push_head_from(head_a, &new_head, &old_head);
-		push_head_to(head_b, &new_head, &old_head);
-		(*f)(head_res, "pb");
+		if (*head_a != (*head_a)->next)
+		{
+			push_head_from(head_a, &new_head, &old_head);
+			push_head_to(head_b, &new_head, &old_head);
+			(*f)(head_res, "pb");
+		}
+		else
+		{
+			push_head_from(head_a, &new_head, &old_head);
+			push_head_to(head_b, &new_head, &old_head);
+			(*f)(head_res, "pb");
+			*head_a = NULL;
+		}
 	}
 }
 
@@ -91,12 +101,23 @@ void co_push_b_to_a(t_node **head_b, t_node **head_a, t_result **head_res, void 
 	t_node *new_head;
 	t_node *old_head;
 
-	if (head_a != NULL)
+	if (*head_b != NULL)
 	{
-		push_head_from(head_b, &new_head, &old_head);
-		push_head_to(head_a, &new_head, &old_head);
-		(*f)(head_res, "pa");
+		if (*head_b != (*head_b)->next)
+		{
+			push_head_from(head_b, &new_head, &old_head);
+			push_head_to(head_a, &new_head, &old_head);
+			(*f)(head_res, "pa");
+		}
+		else
+		{
+			push_head_from(head_b, &new_head, &old_head);
+			push_head_to(head_a, &new_head, &old_head);
+			(*f)(head_res, "pa");
+			*head_b = NULL;
+		}
 	}
+	// if ((*head_b)->i_goal == 0)
 }
 // if (*head_from)
 // {
@@ -158,3 +179,16 @@ void push_head_to(t_node **head_to, t_node **new_head, t_node **old_head)
 		*head_to = *old_head;
 	}
 }
+
+// void stack_b_to_a(t_node **head_a, t_node **head_b, t_result head_res, void (*f)(t_result **head_res, char *str))
+// {
+// 	t_node *new_head;
+// 	t_node *old_head;
+
+// 	if (head_a != NULL)
+// 	{
+// 		push_head_from(head_b, &new_head, &old_head);
+// 		push_head_to(head_a, &new_head, &old_head);
+// 		(*f)(head_res, "pa");
+// 	}
+// }

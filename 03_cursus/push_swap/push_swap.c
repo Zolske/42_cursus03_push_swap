@@ -24,7 +24,8 @@ int main(char argc, char **argv)
 	else
 		list_from_parameter(argc, argv, &head_ori);
 	add_goal_list(&head_ori);
-	printf("///////////////////////////////////////////////////////////////////\n");
+
+	// printf("///////////////////////////////////////////////////////////////////\n");
 	// co_push_a_to_b(&head_ori, &head_b, &head_res, write_ats);
 	// co_rotate_a(&head_ori, &head_res, write_ats);
 	// co_rev_rotate_a(&head_ori, &head_res, write_ats);
@@ -32,9 +33,12 @@ int main(char argc, char **argv)
 	// co_rotate(&head_ori, &head_res, "zk", write_ats);
 	// co_rev_rotate(&head_ori, &head_res, ":)", write_ats);
 	// print_node(&head_ori);
-	// print_ats(&head_res);
 	// print_node(&head_b);
 	algo_half_bubble(&head_ori, &head_res);
+	// print_ahb(&head_res);
+	// print_ats(&head_res);
+	// print_ahb(&head_res);
+	//print_node(&head_ori);
 
 	free_node(head_ori);
 	return (0);
@@ -49,22 +53,26 @@ void algo_half_bubble(t_node **head_ori, t_result **head_res)
 	len = get_len(*head_ori);
 	head_a = cop_node(*head_ori);
 	head_b = NULL;
-	// printf("len: %d\n", len);
-	// if lower then half push to stack b
-	// otherwise rotate stack a and b if it makes sense for b
-	// only rotate a
 	if_low_push_b(&head_a, &head_b, head_res, len);
-	printf("a ///////////////////////////////////////////////////////////////////\n");
-	print_node(&head_a);
-	printf("b ///////////////////////////////////////////////////////////////////\n");
-	print_node(&head_b);
-	printf("sor bubble ///////////////////////////////////////////////////////////////////\n");
+
+	// printf("a after creation ///////////////////////////////////////////////////////////////////\n");
+	// print_node(&head_a);
+	// printf("b after creation ///////////////////////////////////////////////////////////////////\n");
+	// print_node(&head_b);
+
+	// printf("sor bubble ////////////////////////////////////////////////////////\n");
+	// printf("a after creation //////////////////////////////////////////////////\n");
+	// print_node(&head_a);
+	// printf("b after creation //////////////////////////////////////////////////\n");
+	// print_node(&head_b);
 	sor_bubble_both(&head_a, &head_b, head_res, len);
-	printf("a ///////////////////////////////////////////////////////////////////\n");
-	print_node(&head_a);
-	printf("b ///////////////////////////////////////////////////////////////////\n");
-	print_node(&head_b);
-	printf("res ///////////////////////////////////////////////////////////////////\n");
+
+	
+	// printf("a result ///////////////////////////////////////////////////////////////////\n");
+	// print_node(&head_a);
+	// printf("b result ///////////////////////////////////////////////////////////////////\n");
+	// print_node(&head_b);
+	// printf("res ///////////////////////////////////////////////////////////////////\n");
 	print_ahb(head_res);
 }
 
@@ -110,39 +118,59 @@ void sor_bubble_both(t_node **head_a, t_node **head_b, t_result **head_res, int 
 {
 	bool sorted;
 	int message;
-	int idx = 5;
+	int idx = 10;
 
 	sorted = false;
-
-	// printf("a ///////////////////////////////////////////////////////////////////\n");
-	// print_node(head_a);
-	// printf("b ///////////////////////////////////////////////////////////////////\n");
-	// print_node(head_b);
-	// last_i_goal = count_nodes(cop_head_a) - 1;
-	// last_i_goal = (*head)->prev->i_is;
-	// while (sorted == false)
-	while (idx--)
+	// while (idx--)
+	while (sorted == false)
 	{
-		if (message = ch_need_swap(head_a, head_b, message))
+		if (message = ch_need_swap(head_a, head_b, message, len))
+		{
+			// printf(">>> swap <<<\n");
+			// print_node_both(head_a, head_b);
+			// printf("swap message is: %d\n", message);
 			swap_stack(head_a, head_b, head_res, message);
-		// printf("message: %d\n", message);
-		if (message = ch_need_rotate(head_a, head_b, message))
+		}
+		if (message = ch_need_rotate(head_a, head_b, message, len))
+		{
+			// printf(">>> rotate <<<\n");
+			// print_node_both(head_a, head_b);
+			// printf("rotate message is: %d\n", message);
 			rotate_stack(head_a, head_b, head_res, message);
-		if (!not_sorted(head_a) && !not_sorted(head_b))
+		}
+
+		if (!not_sorted(head_a, true) && !not_sorted(head_b, false))
 			sorted = true;
 	}
+	while (*head_b != NULL)
+		co_push_b_to_a(head_b, head_a, head_res, write_ahb);
 }
 
-// && !(cop_head_a->i_goal == last_i_goal && cop_head_a->next->i_goal != 0))
-
-int ch_need_swap(t_node **head_a, t_node **head_b, int message)
+int ch_need_swap(t_node **head_a, t_node **head_b, int message, int len)
 {
+	int first;
+	int last;
+
+	first = len / 2;
+	last = len -1;
 	message = NOTHING;
-	if (not_sorted(head_a) && (*head_a)->i_goal > (*head_a)->next->i_goal)
+	if (((*head_a)->i_goal == first && (*head_a)->next->i_goal == last ) ||
+		((*head_a)->i_goal == last && (*head_a)->next->i_goal == first))
+		message = NOTHING;
+	else if (not_sorted(head_a, true) && (*head_a)->i_goal > (*head_a)->next->i_goal)
 		message = STACK_A;
-	if (not_sorted(head_b) && (*head_b)->i_goal < (*head_b)->next->i_goal)
+	first = 0;
+	last = len / 2 -1;
+	if (((*head_b)->i_goal == first && (*head_b)->next->i_goal == last ) ||
+		((*head_b)->i_goal == last && (*head_b)->next->i_goal == first))
+		{
+			len -1;//printf("do nothing :)\n");//message = STACK_A;
+		}
+	else if (not_sorted(head_b, false) && (*head_b)->i_goal < (*head_b)->next->i_goal)
 		if (message == STACK_A)
+		{
 			message = STACK_AB;
+		}
 		else
 			message = STACK_B;
 	return (message);
@@ -156,57 +184,149 @@ void swap_stack(t_node **head_a, t_node **head_b, t_result **head_res, int messa
 		co_swap_b(head_b, head_res, true, write_ahb);
 	else if (message == STACK_AB)
 		co_swap_both(head_a, head_b, head_res, write_ahb);
-	printf("swap stack ///////////////////////////////////////////////////////////////////\n");
-	print_node(head_a);
-	printf("swap stack ///////////////////////////////////////////////////////////////////\n");
-	print_node(head_b);
 }
 
-int ch_need_rotate(t_node **head_a, t_node **head_b, int message)
+int ch_need_rotate(t_node **head_a, t_node **head_b, int message, int len)
 {
 	message = NOTHING;
-	if (not_sorted(head_a) && (*head_a)->i_goal > (*head_a)->next->i_goal)
-		message = STACK_A;
-	if (not_sorted(head_b) && (*head_b)->i_goal < (*head_b)->next->i_goal)
-		if (message == STACK_A)
-			message = STACK_AB;
+	if ((*head_a)->i_goal > (*head_a)->prev->i_goal && (*head_a)->i_goal < (*head_a)->next->i_goal)
+		message = STACK_R_A;
+	if ((*head_b)->i_goal < (*head_b)->prev->i_goal && (*head_b)->i_goal < (*head_b)->next->i_goal)
+		if (message == STACK_R_A)
+			message = STACK_R_AB;
 		else
 			message = STACK_B;
+	if (message == NOTHING)
+	{
+		if (not_sorted(head_a, true))
+			message = STACK_A;
+		if (not_sorted(head_b, false))
+			if (message == STACK_A)
+				message = STACK_AB;
+			else
+				message = STACK_B;
+		// printf("need to rotate message: %d\n", message);
+		// print_node_both(head_a, head_b);
+	}
 	return (message);
 }
 
 void rotate_stack(t_node **head_a, t_node **head_b, t_result **head_res, int message)
 {
-	printf("I am rotating :)\n");
 	if (message == STACK_A)
 		co_rotate_a(head_a, head_res, write_ahb);
 	else if (message == STACK_B)
 		co_rotate_b(head_b, head_res, write_ahb);
 	else if (message == STACK_AB)
 		co_rotate_both(head_a, head_b, head_res, write_ahb);
+	else if (message == STACK_R_A)
+		co_rev_rotate_a(head_a, head_res, write_ahb);
+	else if (message == STACK_R_B)
+		co_rev_rotate_b(head_b, head_res, write_ahb);
+	else if (message == STACK_R_AB)
+		co_rev_rotate_both(head_a, head_b, head_res, write_ahb);
 }
 
 /*returns true if the list is sorted but only need rotating*/
-bool not_sorted(t_node **head)
+// bool not_sorted(t_node **head, bool acending)
+// {
+// 	int len;
+// 	int i;
+// 	t_node *current;
+// 	int count;
+// 	int temp;
+
+// 	len = get_len(*head);
+// 	i = len;
+// 	count = 0;
+// 	current = *head;	if (acending)
+	// {
+	// 	printf("len: %d==%d count\n", len -1, count);
+	// 	// print_node(head);
+	// }
+// 	while (i--)
+// 	{
+// 		if (acending)
+// 			if (current->i_goal + 1 == current->next->i_goal)
+// 				count++;
+// 		else
+// 		{
+// 			printf("i_goal: %d next: %d\n", current->i_goal, current->next->i_goal);
+// 			print_node(head);
+// 			if (current->i_goal - 1 == current->next->i_goal)
+// 				count++;
+// 		}
+// 		current = current->next;
+// 	}message >= 1 && message <= 3
+// 	current = NULL;
+// 	if (count == len)
+// 		return (false);
+// 	return (true);
+// }
+
+/*returns true if the lwhile (sorted == false)ist is sorted but only need rotating*/
+bool not_sorted(t_node **head, bool acending)
 {
 	int len;
 	int i;
 	t_node *current;
 	int count;
-	int temp;
 
 	len = get_len(*head);
-	i = 1;
+	i = len;
 	count = 0;
 	current = *head;
-	while (i < len)
+	while (--i)	// {
+	// 	printf("len: %d==%d count\n", len -1, count);
+	// 	// print_node(head);
+	// }
 	{
-		if (current->i_goal + 1 != current->next->i_goal)
-			count++;
+		if (acending)
+		{
+			if (current->i_goal + 1 == current->next->i_goal)
+				count++;
+		}
+		else
+			if (current->i_goal - 1 == current->next->i_goal)
+				count++;
 		current = current->next;
-		i++;
 	}
-	if (count <= 1)
+	// if (acending)
+	// {
+	// 	printf("len: %d==%d count\n", len -1, count);
+	// 	// print_node(head);
+	// }
+	// if (!acending)
+	// {
+	// 	printf("des len: %d==%d count\n", len -1, count);
+	// 	// print_node(head);
+	// }
+	if (count == len -1)
 		return (false);
 	return (true);
 }
+
+/*returns true if the list is sorted but only need rotating*/
+// bool not_sorted(t_node **head)
+// {
+// 	int len;
+// 	int i;
+// 	t_node *current;
+// 	int count;
+// 	int temp;
+
+// 	len = get_len(*head);
+// 	i = 1;
+// 	count = 0;
+// 	current = *head;
+// 	while (i < len)
+// 	{
+// 		if (current->i_goal + 1 != current->next->i_goal)
+// 			count++;
+// 		current = current->next;
+// 		i++;
+// 	}
+// 	if (count <= 1)
+// 		return (false);
+// 	return (true);
+// }

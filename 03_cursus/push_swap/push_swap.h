@@ -37,7 +37,10 @@ typedef enum
     NOTHING = 0,
     STACK_A = 1,
     STACK_B = 2,
-    STACK_AB = 3
+    STACK_AB = 3,
+    STACK_R_A = 4,
+    STACK_R_B = 5,
+    STACK_R_AB = 6
 } t_stack;
 
 // list and nodes
@@ -74,6 +77,7 @@ void push_head_to(t_node **head_to, t_node **new_head, t_node **old_head);
 
 // print
 void print_node(t_node **head);
+void print_node_both(t_node **head_a, t_node **head_b);
 void rev_print_node(t_node **head);
 void print_ats(t_result **head_res);
 void print_ahb(t_result **head_res);
@@ -96,8 +100,11 @@ void algo_half_bubble(t_node **head_ori, t_result **head_res);
 void sor_bubble_both(t_node **head_a, t_node **head_b, t_result **head_res, int len);
 bool ch_rotate_b(t_node **head_b);
 void if_low_push_b(t_node **head_a, t_node **head_b, t_result **head_res, int len);
-int ch_need_swap(t_node **head_a, t_node **head_b, int message);
+int ch_need_swap(t_node **head_a, t_node **head_b, int message, int len);
 void swap_stack(t_node **head_a, t_node **head_b, t_result **head_res, int message);
-int ch_need_rotate(t_node **head_a, t_node **head_b, int message);
+int ch_need_rotate(t_node **head_a, t_node **head_b, int message, int len);
 void rotate_stack(t_node **head_a, t_node **head_b, t_result **head_res, int message);
-bool not_sorted(t_node **head);
+bool not_sorted(t_node **head, bool acending);
+
+
+bool not_sorted_b(t_node **head, bool acending);
