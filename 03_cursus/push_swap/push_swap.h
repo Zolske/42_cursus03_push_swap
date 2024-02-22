@@ -84,6 +84,8 @@ void print_ahb(t_result **head_res);
 
 // free
 void free_node(t_node *head);
+void free_ats(t_result **head_res);
+void free_write(t_result *head);
 
 // goal
 // void	add_goal_list(t_node **head, int *ptr_arr);

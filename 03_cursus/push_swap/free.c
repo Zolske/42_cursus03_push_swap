@@ -32,3 +32,37 @@ void free_node(t_node *head)
 		head = NULL;
 	}
 }
+
+/*free the write list)*/
+void free_write(t_result *head)
+{
+	t_result *current;
+	t_result *temp;
+
+	if (head != NULL)
+	{
+		current = head->next;
+		while (current != head)
+		{
+			temp = current;
+			current = current->next;
+			free(temp);
+			temp = NULL;
+		}
+		free(head);
+		head = NULL;
+	}
+}
+
+/*print the command string of ats (algo two stack)*/
+void free_ats(t_result **head_res)
+{
+	t_result *current;
+
+	current = *head_res;
+	while (current != NULL)
+	{
+		free(current->ahb_str);
+		current = current->next;
+	}
+}

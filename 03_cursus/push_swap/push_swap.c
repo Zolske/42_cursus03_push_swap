@@ -40,6 +40,8 @@ int main(char argc, char **argv)
 	// print_ahb(&head_res);
 	//print_node(&head_ori);
 
+	// free_ats(head_res);
+	// free_write(head_res);
 	free_node(head_ori);
 	return (0);
 }
@@ -53,6 +55,10 @@ void algo_half_bubble(t_node **head_ori, t_result **head_res)
 	len = get_len(*head_ori);
 	head_a = cop_node(*head_ori);
 	head_b = NULL;
+
+	printf("a after creation //////////////////////////////////////////////////\n");
+	print_node(&head_a);
+	
 	if_low_push_b(&head_a, &head_b, head_res, len);
 
 	// printf("a after creation ///////////////////////////////////////////////////////////////////\n");
@@ -61,18 +67,18 @@ void algo_half_bubble(t_node **head_ori, t_result **head_res)
 	// print_node(&head_b);
 
 	// printf("sor bubble ////////////////////////////////////////////////////////\n");
-	// printf("a after creation //////////////////////////////////////////////////\n");
-	// print_node(&head_a);
 	// printf("b after creation //////////////////////////////////////////////////\n");
 	// print_node(&head_b);
 	sor_bubble_both(&head_a, &head_b, head_res, len);
 
 	
-	// printf("a result ///////////////////////////////////////////////////////////////////\n");
-	// print_node(&head_a);
+	printf("a result ///////////////////////////////////////////////////////////////////\n");
+	print_node(&head_a);
 	// printf("b result ///////////////////////////////////////////////////////////////////\n");
 	// print_node(&head_b);
 	// printf("res ///////////////////////////////////////////////////////////////////\n");
+	// free_node(head_a);
+	// free_node(head_b);
 	print_ahb(head_res);
 }
 
