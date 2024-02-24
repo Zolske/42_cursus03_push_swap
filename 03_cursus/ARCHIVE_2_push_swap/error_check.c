@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:26:55 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/24 18:47:07 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/24 09:53:27 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 with the status '0'*/
 void error(t_node **head)
 {
-    free_node(head);
+    free_node(*head);
     write(2, "Error\n", 6);
     exit(0);
 }

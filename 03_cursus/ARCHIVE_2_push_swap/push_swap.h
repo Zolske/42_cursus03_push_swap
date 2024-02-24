@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:45:23 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/24 20:54:39 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/20 20:26:10 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ typedef enum
 } t_stack;
 
 // list and nodes
-void list_from_parameter(int argc, char **argv, t_node **head_ori);
+void list_from_parameter(char argc, char **argv, t_node **head_ori);
 void split_str_to_list(char *str, t_node **head);
 void add_node(t_node **head, int value);
 void add_node_res(t_result **head_re);
-t_node *cop_node(t_node **head_ori);
+t_node *cop_node(t_node *head_ori);
 
 // write
 void write_ats(t_result **head_res, char *res);
@@ -83,9 +83,9 @@ void print_ats(t_result **head_res);
 void print_ahb(t_result **head_res);
 
 // free
-void free_node(t_node **head);
-void free_ahb(t_result **head_res);
-void free_write(t_result **head);
+void free_node(t_node *head);
+void free_ats(t_result **head_res);
+void free_write(t_result *head);
 
 // goal
 // void	add_goal_list(t_node **head, int *ptr_arr);
@@ -107,5 +107,6 @@ void swap_stack(t_node **head_a, t_node **head_b, t_result **head_res, int messa
 int ch_need_rotate(t_node **head_a, t_node **head_b, int message, int len);
 void rotate_stack(t_node **head_a, t_node **head_b, t_result **head_res, int message);
 bool not_sorted(t_node **head, bool acending);
+
 
 bool not_sorted_b(t_node **head, bool acending);

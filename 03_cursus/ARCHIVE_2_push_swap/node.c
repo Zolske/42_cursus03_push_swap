@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:02:51 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/24 20:56:38 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/24 11:22:06 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,19 @@
 /*if there is only one parameter, then a list of the string is created,
 if more parameter, then a list from every parameter is created,
 parameter need to be int which can be separated only with spaces*/
-void list_from_parameter(int argc, char **argv, t_node **head_ori)
+void list_from_parameter(char argc, char **argv, t_node **head_ori)
 {
-	int idx;
+	short idx;
 
 	idx = 1;
 	if (argc == 2)
 		split_str_to_list(argv[1], head_ori);
 	else
 		while (idx < argc)
+		{
+			// printf("argc: %d\n", argc);
 			split_str_to_list(argv[idx++], head_ori);
+		}
 }
 
 /*convert string to int, creates a node from every single int (long long is for
@@ -120,26 +123,27 @@ void add_node_res(t_result **head_re)
 }
 
 /*create a new list and copy the values from the original head to it*/
-t_node *cop_node(t_node **head_ori)
+t_node *cop_node(t_node *head_ori)
 {
 	t_node *ori_current;
 	t_node *cop_current;
 	bool start;
 
-	ori_current = *head_ori;
+	ori_current = head_ori;
 	cop_current = NULL;
 	start = true;
-	while (ori_current != *head_ori || start)
+	while (ori_current != head_ori || start)
 	{
 		start = false;
-		add_node(&cop_current, ori_current->val);
+		add_node(&cop_current, -1);
 		ori_current = ori_current->next;
+		cop_current = cop_current->next;
 	}
 	start = true;
-	while (ori_current != *head_ori || start)
+	while (ori_current != head_ori || start)
 	{
 		start = false;
-		// cop_current->val = ori_current->val;
+		cop_current->val = ori_current->val;
 		cop_current->i_goal = ori_current->i_goal;
 		ori_current = ori_current->next;
 		cop_current = cop_current->next;
