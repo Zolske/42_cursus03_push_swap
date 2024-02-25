@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:02:51 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/24 20:56:38 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/25 12:53:49 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ void add_node(t_node **head, int value)
 	new_node = (t_node *)malloc(sizeof(t_node));
 	new_node->val = value;
 	new_node->i_goal = -1;
+	new_node->cost = -1;
+	new_node->idx = -1;
 	new_node->next = *head;
 
 	if (*head == NULL)
@@ -104,7 +106,7 @@ void add_node_res(t_result **head_re)
 	new_node = (t_result *)malloc(sizeof(t_result));
 	// new_node->bs_str = NULL;
 	new_node->next = NULL;
-	new_node->ats_str = NULL;
+	new_node->acs_str = NULL;
 	new_node->ahb_str = NULL;
 
 	// if head points to NULL then there is no list

@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:45:23 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/24 20:54:39 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/25 14:45:03 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ typedef struct s_node
 {
     int val;
     int i_goal;
+    int cost;
+    int idx;
     struct s_node *prev;
     struct s_node *next;
 } t_node;
@@ -27,7 +29,7 @@ typedef struct s_node
 typedef struct s_result
 {
     char *bs_str;
-    char *ats_str;
+    char *acs_str;
     char *ahb_str;
     struct s_result *next;
 } t_result;
@@ -51,8 +53,9 @@ void add_node_res(t_result **head_re);
 t_node *cop_node(t_node **head_ori);
 
 // write
-void write_ats(t_result **head_res, char *res);
+// void write_ats(t_result **head_res, char *res);
 void write_ahb(t_result **head_res, char *res);
+void write_acs(t_result **head_res, char *res);
 
 // check
 void error(t_node **head);
@@ -79,8 +82,9 @@ void push_head_to(t_node **head_to, t_node **new_head, t_node **old_head);
 void print_node(t_node **head);
 void print_node_both(t_node **head_a, t_node **head_b);
 void rev_print_node(t_node **head);
-void print_ats(t_result **head_res);
+// void print_ats(t_result **head_res);
 void print_ahb(t_result **head_res);
+void print_acs(t_result **head_res);
 
 // free
 void free_node(t_node **head);
@@ -108,4 +112,11 @@ int ch_need_rotate(t_node **head_a, t_node **head_b, int message, int len);
 void rotate_stack(t_node **head_a, t_node **head_b, t_result **head_res, int message);
 bool not_sorted(t_node **head, bool acending);
 
+void cheap_sort(t_node **head_ori, t_result **head_res);
+
 bool not_sorted_b(t_node **head, bool acending);
+
+// sorting
+void sort_3_node_a(t_node **head_a, t_result **head_res);
+void update_idx(t_node **head);
+void update_cost_base(t_node **head);

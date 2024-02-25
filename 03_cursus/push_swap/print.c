@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 15:07:27 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/24 08:31:04 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/25 13:26:20 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,25 +82,33 @@ void print_node_both(t_node **head_a, t_node **head_b)
 {
 	t_node *current_a;
 	t_node *current_b;
-	bool start;
+	bool start_a;
+	bool start_b;
 
 	current_a = *head_a;
 	current_b = *head_b;
-	start = true;
-	if (current_a != NULL && current_b != NULL)
-		while (current_a != *head_a || start)
+	start_a = true;
+	start_b = true;
+	if (current_a != NULL || current_b != NULL)
+		while (current_a != *head_a || start_a || start_b || current_b != *head_b)
 		{
-			if (current_b != *head_b || start)
+			if (current_a != *head_a || start_a)
 			{
-				printf("A => goal: %d, val: %d\t\tB => goal: %d, val: %d\n", current_a->i_goal, current_a->val, current_b->i_goal, current_b->val);
-				start = false;
+				if (current_a != NULL)
+					printf("A => idx: %2d, goal: %2d, cost: %2d, val: %4d\t", current_a->idx, current_a->i_goal, current_a->cost, current_a->val);
+				start_a = false;
+				current_a = current_a->next;
 			}
 			else
+				printf("\t\t\t\t\t\t");
+			if (current_b != *head_b || start_b)
 			{
-				printf("A => goal: %d, val: %d\n", current_a->i_goal, current_a->val);
+				if (current_b != NULL)
+					printf("B =>  idx: %2d, goal: %2d, cost: %2d, val: %4d", current_b->idx, current_b->i_goal, current_b->cost, current_b->val);
+				start_b = false;
+				current_b = current_b->next;
 			}
-			current_a = current_a->next;
-			current_b = current_b->next;
+			printf("\n");
 		}
 }
 
@@ -121,23 +129,23 @@ void rev_print_node(t_node **head)
 }
 
 /*print the command string of ats (algo two stack)*/
-void print_ats(t_result **head_res)
-{
-	t_result *current;
-	int i;
+// void print_ats(t_result **head_res)
+// {
+// 	t_result *current;
+// 	int i;
 
-	current = *head_res;
-	while (current != NULL)
-	{
-		i = 0;
-		while (current->ats_str[i])
-		{
-			write(1, &(current->ats_str[i]), 1);
-			i++;
-		}
-		current = current->next;
-	}
-}
+// 	current = *head_res;
+// 	while (current != NULL)
+// 	{
+// 		i = 0;
+// 		while (current->ats_str[i])
+// 		{
+// 			write(1, &(current->ats_str[i]), 1);
+// 			i++;
+// 		}
+// 		current = current->next;
+// 	}
+// }
 
 /*print the command string of ahb (algo half bubble sort)*/
 void print_ahb(t_result **head_res)
@@ -152,6 +160,25 @@ void print_ahb(t_result **head_res)
 		while (current->ahb_str[i])
 		{
 			write(1, &(current->ahb_str[i]), 1);
+			i++;
+		}
+		current = current->next;
+	}
+}
+
+/*print the command string of ahb (algo half bubble sort)*/
+void print_acs(t_result **head_res)
+{
+	t_result *current;
+	int i;
+
+	current = *head_res;
+	while (current != NULL)
+	{
+		i = 0;
+		while (current->acs_str[i])
+		{
+			write(1, &(current->acs_str[i]), 1);
 			i++;
 		}
 		current = current->next;
