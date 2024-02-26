@@ -89,22 +89,24 @@ void print_node_both(t_node **head_a, t_node **head_b)
 	current_b = *head_b;
 	start_a = true;
 	start_b = true;
-	if (current_a != NULL || current_b != NULL)
+	if (current_a != NULL && current_b != NULL)
 		while (current_a != *head_a || start_a || start_b || current_b != *head_b)
 		{
 			if (current_a != *head_a || start_a)
 			{
 				if (current_a != NULL)
-					printf("A => idx: %2d, goal: %2d, cost: %2d, val: %4d\t", current_a->idx, current_a->i_goal, current_a->cost, current_a->val);
+					printf("A=>idx:%2d| goal:\033[0;34m%2d\033[0m| pos:%2d| upper: \033[0;36m%d\033[0m| cost:\033[0;32m%2d\033[0m| mov:\033[0;31m%d\033[0m| val:%4d|\t\t", \
+					current_a->idx, current_a->i_goal, current_a->pos, current_a->upper, current_a->cost, current_a->move, current_a->val);
 				start_a = false;
 				current_a = current_a->next;
 			}
 			else
-				printf("\t\t\t\t\t\t");
+				printf("\t\t\t\t\t\t\t\t\t");
 			if (current_b != *head_b || start_b)
 			{
 				if (current_b != NULL)
-					printf("B =>  idx: %2d, goal: %2d, cost: %2d, val: %4d", current_b->idx, current_b->i_goal, current_b->cost, current_b->val);
+					printf("B=>idx:%2d| goal:\033[0;34m%2d\033[0m| pos:%2d| upper: \033[0;36m%d\033[0m| cost:\033[0;32m%2d\033[0m| mov:\033[0;31m%d\033[0m| tar:\033[0;33m%2d\033[0m| val:%4d|\t", \
+					current_b->idx, current_b->i_goal, current_b->pos, current_b->upper, current_b->cost, current_b->move, current_b->tar->i_goal, current_b->val);
 				start_b = false;
 				current_b = current_b->next;
 			}

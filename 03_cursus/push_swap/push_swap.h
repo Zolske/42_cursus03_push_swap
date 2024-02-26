@@ -20,8 +20,13 @@ typedef struct s_node
 {
     int val;
     int i_goal;
-    int cost;
+    int pos;
     int idx;
+    int cost;
+    // int target;
+    struct s_node *tar;
+    bool move;
+    bool upper;
     struct s_node *prev;
     struct s_node *next;
 } t_node;
@@ -119,4 +124,12 @@ bool not_sorted_b(t_node **head, bool acending);
 // sorting
 void sort_3_node_a(t_node **head_a, t_result **head_res);
 void update_idx(t_node **head);
-void update_cost_base(t_node **head);
+void update_pos_base(t_node **head);
+void update_cost_total(t_node **head_b, t_node **head_a);
+void mark_move(t_node **head_b);
+void sort_b(t_node **head_a, t_node **head_b, t_result **head_res, void((*f)(t_result **head_res, char *str)));
+t_node	*move_b_and_a_top(t_node **head_a, t_node **head_b, t_result **head_res, void((*f)(t_result **head_res, char *str)));
+void	move_b_top(t_node **head_b, t_node **move_node, t_result **head_res, void((*f)(t_result **head_res, char *str)));
+void	move_a_top(t_node **head_a, t_node **move_node, t_result **head_res, void((*f)(t_result **head_res, char *str)));
+t_node *find_node_move(t_node **head_b);
+void	update_all(t_node **head_a, t_node **head_b);

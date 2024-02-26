@@ -75,8 +75,13 @@ void add_node(t_node **head, int value)
 	new_node = (t_node *)malloc(sizeof(t_node));
 	new_node->val = value;
 	new_node->i_goal = -1;
-	new_node->cost = -1;
+	new_node->pos = -1;
 	new_node->idx = -1;
+	new_node->cost = -1;
+	// new_node->target = -1;
+	new_node->tar = NULL;
+	new_node->move = false;
+	new_node->upper = true;
 	new_node->next = *head;
 
 	if (*head == NULL)
