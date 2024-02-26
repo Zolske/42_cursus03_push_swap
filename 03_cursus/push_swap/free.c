@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:56:41 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/24 19:06:16 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/26 20:20:35 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,19 @@ void free_ahb(t_result **head_res)
 	while (current != NULL)
 	{
 		free(current->ahb_str);
+		current = current->next;
+	}
+}
+
+/*print the command string of ats (algo two stack)*/
+void free_acs(t_result **head_res)
+{
+	t_result *current;
+
+	current = *head_res;
+	while (current != NULL)
+	{
+		free(current->acs_str);
 		current = current->next;
 	}
 }

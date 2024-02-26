@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 13:42:43 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/25 17:32:45 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/26 21:14:59 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int main(int argc, char **argv)
 
 	// algo_half_bubble(&head_ori, &head_res);
 	// free_ahb(&head_res);
-	// free_write(&head_res);
+	free_acs(&head_res);
+	free_write(&head_res);
 
 	free_node(&head_ori);
 	return (0);
@@ -42,12 +43,18 @@ void cheap_sort(t_node **head_ori, t_result **head_res)
 	head_a = cop_node(head_ori);
 	head_b = NULL;
 	len = get_len(head_a);
+	// printf("start /////////////////////////////////////////////////////////////////////\n");
+	// print_node(&head_a);
 	while (len-- > 3)
 	{
 		// printf("len: %d\n", len);
 		co_push_a_to_b(&head_a, &head_b, head_res, write_acs);
 	}
 	sort_3_node_a(&head_a, head_res);
+	// printf("after tiny sort /////////////////////////////////////////////////////////////////////\n");
+	// print_node(&head_a);
+	// printf("B /////////////////////////////////////////////////////////////////////\n");
+	// print_node(&head_b);
 	// update_idx(&head_a);
 	// update_idx(&head_b);
 	// update_pos_base(&head_b);
@@ -60,20 +67,21 @@ void cheap_sort(t_node **head_ori, t_result **head_res)
 
 	// printf("start sort /////////////////////////////////////////////////////////////////////\n");
 	// print_node_both(&head_a, &head_b);
-	len = get_len(*head_ori);
+	// len = get_len(*head_ori);
 	// while (get_len(head_a) <= len)
 	while (head_b != NULL)
 	{
 		update_all(&head_a, &head_b);
 		sort_b(&head_a, &head_b, head_res, write_acs);
 		update_all(&head_a, &head_b);
-		printf("after sort /////////////////////////////////////////////////////////////////////\n");
-		print_node_both(&head_a, &head_b);
+		// printf("after sort /////////////////////////////////////////////////////////////////////\n");
+		// print_node_both(&head_a, &head_b);
 	}
-	printf("need rotating? /////////////////////////////////////////////////////////////////////\n");
-	print_node(&head_a);
-
-
+	// printf("need rotating? /////////////////////////////////////////////////////////////////////\n");
+	// print_node_both(&head_a, &head_b);
+	sort_start(&head_a, head_res, write_acs);
+	// printf("sorted /////////////////////////////////////////////////////////////////////\n");
+	// print_node_both(&head_a, &head_b);
 	// update_idx(&head_a);
 	// update_idx(&head_b);
 	// update_pos_base(&head_b);
@@ -82,11 +90,12 @@ void cheap_sort(t_node **head_ori, t_result **head_res)
 	// mark_move(&head_b);
 	// printf("update cost /////////////////////////////////////////////////////////////////////\n");
 	// print_node_both(&head_a, &head_b);
-
-	// print_acs(head_res);
+	free_node(&head_a);
+	free_node(&head_b);
+	print_acs(head_res);
 }
 
-void	update_all(t_node **head_a, t_node **head_b)
+void update_all(t_node **head_a, t_node **head_b)
 {
 	if (*head_b != NULL)
 	{
@@ -165,7 +174,7 @@ void update_cost_total(t_node **head_b, t_node **head_a)
 {
 	bool start_a;
 	bool start_b;
-	int	temp;
+	int temp;
 	t_node *current_a;
 	t_node *current_b;
 
@@ -206,7 +215,7 @@ void update_cost_total(t_node **head_b, t_node **head_a)
 			while (current_a != *head_a || start_a)
 			{
 				start_a = false;
-				if(current_a->i_goal < temp)
+				if (current_a->i_goal < temp)
 				{
 					temp = current_a->i_goal;
 					// current_b->target = current_a->i_goal; // remove me
@@ -258,15 +267,12 @@ void sort_b(t_node **head_a, t_node **head_b, t_result **head_res, void((*f)(t_r
 {
 	t_node *move_node;
 
-
 	move_node = move_b_and_a_top(head_a, head_b, head_res, write_acs);
 	move_b_top(head_b, &move_node, head_res, write_acs);
 	// printf("after move b top /////////////////////////////////////////////////////////////////////\n");
 	// print_node_both(head_a, head_b);
 	move_a_top(head_a, &move_node, head_res, write_acs);
 	co_push_b_to_a(head_b, head_a, head_res, write_acs);
-	if (*head_b == NULL)
-		printf("head B is NULL\n");
 	// bool start;
 	// t_node *current;
 
@@ -278,7 +284,7 @@ void sort_b(t_node **head_a, t_node **head_b, t_result **head_res, void((*f)(t_r
 	// 	if (current->move)
 	// 	{
 	// 		move_b_top(&current, head_res, write_acs);
-	// 		break;	
+	// 		break;
 	// 	}
 	// 	current = current->next;
 	// }
@@ -297,12 +303,12 @@ void sort_b(t_node **head_a, t_node **head_b, t_result **head_res, void((*f)(t_r
 // 					co_rev_rotate_b(head_b, head_res, write_acs);
 // }
 
-t_node	*move_b_and_a_top(t_node **head_a, t_node **head_b, t_result **head_res, void((*f)(t_result **head_res, char *str)))
+t_node *move_b_and_a_top(t_node **head_a, t_node **head_b, t_result **head_res, void((*f)(t_result **head_res, char *str)))
 {
 	t_node *move_node;
 
 	move_node = find_node_move(head_b);
-	printf("move_b_and_a_top\n");
+	// printf("move_b_and_a_top\n");
 	// printf("pos tar: %d\tpos b: %d\n", move_node->tar->pos, move_node->pos);
 	while (move_node->tar->pos > 0 && move_node->pos > 0)
 	{
@@ -314,19 +320,19 @@ t_node	*move_b_and_a_top(t_node **head_a, t_node **head_b, t_result **head_res, 
 		}
 		else if ((!(move_node->tar->upper) && !(move_node->upper)) && move_node->tar->pos >= 0)
 			co_rev_rotate_both(head_a, head_b, head_res, write_acs);
-			move_node->tar->pos--;
-			move_node->pos--;
+		move_node->tar->pos--;
+		move_node->pos--;
 	}
 	// printf("move BA_top /////////////////////////////////////////////////////////////////////\n");
 	// print_node_both(head_a, head_b);
 	return (move_node);
 }
 
-void	move_b_top(t_node **head_b, t_node **move_node, t_result **head_res, void((*f)(t_result **head_res, char *str)))
+void move_b_top(t_node **head_b, t_node **move_node, t_result **head_res, void((*f)(t_result **head_res, char *str)))
 {
 	while ((*move_node)->pos > 0)
 	{
-		printf("move b to top\n");
+		// printf("move b to top\n");
 		if ((*move_node)->upper)
 		{
 			co_rotate_b(head_b, head_res, write_acs);
@@ -340,11 +346,11 @@ void	move_b_top(t_node **head_b, t_node **move_node, t_result **head_res, void((
 	}
 }
 
-void	move_a_top(t_node **head_a, t_node **move_node, t_result **head_res, void((*f)(t_result **head_res, char *str)))
+void move_a_top(t_node **head_a, t_node **move_node, t_result **head_res, void((*f)(t_result **head_res, char *str)))
 {
 	while ((*move_node)->tar->pos > 0)
 	{
-		printf("move a to top\n");
+		// printf("move a to top\n");
 		if ((*move_node)->tar->upper)
 		{
 			co_rotate_a(head_a, head_res, write_acs);
@@ -369,50 +375,54 @@ t_node *find_node_move(t_node **head_b)
 	{
 		start = false;
 		if (current->move)
-			return(current);
+			return (current);
 		current = current->next;
 	}
 	return (NULL);
 }
 
-// bool keep_sorting(t_node **head_a, int len)
-// {
-// 	int count;
-// 	int i;
-// 	t_node *current;
+void sort_start(t_node **head_a, t_result **head_res, void((*f)(t_result **head_res, char *str)))
+{
+	t_node *current;
+	bool start;
 
-// 	count = 0;
-// 	i = len;
-// 	current = *head_a;
-// 	if (get_len(*head_a) == len)
-// 		while (--i)
-// 		{
-// 			if (current->i_goal + 1 == current->next->i_goal)
-//                 count++;
-// 		}
-// }
+	update_idx(head_a);
+	update_pos_base(head_a);
+	start = true;
+	current = *head_a;
+	while (current != *head_a || start)
+	{
+		start = false;
+		if (current->i_goal == 0)
+		{
+			if (current->upper)
+				while (current->pos--)
+					co_rotate_a(head_a, head_res, write_acs);
+			else
+				while (current->pos--)
+					co_rev_rotate_a(head_a, head_res, write_acs);
+			break;
+		}
+		current = current->next;
+	}
+}
 
-// bool sor_need_rotate(t_node **head)
+// bool ch_is_sorted(t_node **head)
 // {
 // 	int	len;
-// 	int i;
-// 	t_node *current;
 // 	int count;
-// 	int temp;
+// 	t_node *current;
 
 // 	len = get_len(*head);
-// 	i = 1;
-// 	count = 0;
+// 	count = 1;
 // 	current = *head;
-// 	update_idx(*head);
-// 	while (i < len)
+// 	while (current->next != *head)
 // 	{
-// 		if (current->i_goal + 1 != current->next->i_goal)
+// 		if (current->i_goal + 1 == current->next->i_goal)
 // 			count++;
 // 		current = current->next;
-// 		i++;
 // 	}
-// 	if (count <= 1)
+// 	if (count == len)
 // 		return (true);
 // 	return (false);
 // }

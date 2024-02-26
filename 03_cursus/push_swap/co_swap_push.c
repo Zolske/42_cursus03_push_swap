@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:29:13 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/24 20:18:28 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/26 21:17:16 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ void co_push_b_to_a(t_node **head_b, t_node **head_a, t_result **head_res, void 
 			(*head_a)->prev = *head_b;
 			(*head_b)->next = *head_a;
 			(*f)(head_res, "pa");
+			// *head_a = *head_b; // not sure a is correctly updated
 			*head_b = NULL;
 		}
 	}

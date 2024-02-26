@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:45:23 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/25 14:45:03 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/26 20:21:01 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void print_acs(t_result **head_res);
 // free
 void free_node(t_node **head);
 void free_ahb(t_result **head_res);
+void free_acs(t_result **head_res);
 void free_write(t_result **head);
 
 // goal
@@ -128,8 +129,9 @@ void update_pos_base(t_node **head);
 void update_cost_total(t_node **head_b, t_node **head_a);
 void mark_move(t_node **head_b);
 void sort_b(t_node **head_a, t_node **head_b, t_result **head_res, void((*f)(t_result **head_res, char *str)));
-t_node	*move_b_and_a_top(t_node **head_a, t_node **head_b, t_result **head_res, void((*f)(t_result **head_res, char *str)));
-void	move_b_top(t_node **head_b, t_node **move_node, t_result **head_res, void((*f)(t_result **head_res, char *str)));
-void	move_a_top(t_node **head_a, t_node **move_node, t_result **head_res, void((*f)(t_result **head_res, char *str)));
+t_node *move_b_and_a_top(t_node **head_a, t_node **head_b, t_result **head_res, void((*f)(t_result **head_res, char *str)));
+void move_b_top(t_node **head_b, t_node **move_node, t_result **head_res, void((*f)(t_result **head_res, char *str)));
+void move_a_top(t_node **head_a, t_node **move_node, t_result **head_res, void((*f)(t_result **head_res, char *str)));
 t_node *find_node_move(t_node **head_b);
-void	update_all(t_node **head_a, t_node **head_b);
+void update_all(t_node **head_a, t_node **head_b);
+void sort_start(t_node **head_a, t_result **head_res, void((*f)(t_result **head_res, char *str)));
