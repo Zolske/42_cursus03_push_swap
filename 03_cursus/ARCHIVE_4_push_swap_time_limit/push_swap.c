@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 13:42:43 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/26 21:14:59 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/27 21:08:53 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void cheap_sort(t_node **head_ori, t_result **head_res)
 	// print_node_both(&head_a, &head_b);
 	// mark_move(&head_b);
 	// update_all(&head_a, &head_b);
-update_all(&head_a, &head_b);
+	update_all(&head_a, &head_b);
 	// printf("start sort /////////////////////////////////////////////////////////////////////\n");
 	// print_node_both(&head_a, &head_b);
 	// len = get_len(*head_ori);
@@ -318,6 +318,8 @@ t_node *move_b_and_a_top(t_node **head_a, t_node **head_b, t_result **head_res, 
 	move_node = find_node_move(head_b);
 	// printf("move_b_and_a_top\n");
 	// printf("pos tar: %d\tpos b: %d\n", move_node->tar->pos, move_node->pos);
+	if (move_node->tar->upper != move_node->upper)
+		return (move_node);
 	while (move_node->tar->pos > 0 && move_node->pos > 0)
 	{
 		if ((move_node->tar->upper && move_node->upper) && move_node->tar->pos >= 0)
@@ -340,9 +342,9 @@ t_node *move_b_and_a_top(t_node **head_a, t_node **head_b, t_result **head_res, 
 
 void move_b_top(t_node **head_b, t_node **move_node, t_result **head_res, void((*f)(t_result **head_res, char *str)))
 {
+	// printf("move b to top\n");
 	while ((*move_node)->pos > 0)
 	{
-		// printf("move b to top\n");
 		if ((*move_node)->upper)
 		{
 			co_rotate_b(head_b, head_res, write_acs);
@@ -385,7 +387,10 @@ t_node *find_node_move(t_node **head_b)
 	{
 		start = false;
 		if (current->move)
+		{
+			// printf("found cheapest: %d\n", current->i_goal);
 			return (current);
+		}
 		current = current->next;
 	}
 	return (NULL);
