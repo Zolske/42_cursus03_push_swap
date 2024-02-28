@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:45:23 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/28 19:44:27 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/28 11:07:51 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ typedef struct s_node
     int pos;
     int idx;
     int cost;
-    int instr_a;
-    int instr_b;
     struct s_node *tar;
     bool move;
     bool upper;
@@ -136,20 +134,3 @@ void move_a_top(t_node **head_a, t_node **move_node);
 t_node *find_node_move(t_node **head_b);
 void update_all(t_node **head_a, t_node **head_b);
 void sort_start(t_node **head_a);
-
-// short cut
-void short_cut(t_node **head_b);
-int	ch_both_up(t_node **head_cur, int len_a, int len_b);
-int	ch_both_down(t_node **head_cur, int len_a, int len_b);
-int	ch_up_a_down_b(t_node **head_cur, int len_a, int len_b);
-int	ch_down_a_up_b(t_node **head_cur, int len_a, int len_b);
-
-int	both_up(t_node **head_cur, int len_a, int len_b, bool write);
-int	both_down(t_node **head_cur, int len_a, int len_b, bool write);
-int	down_a_up_b(t_node **head_cur, int len_a, int len_b, bool write);
-int	up_a_down_b(t_node **head_cur, int len_a, int len_b, bool write);
-
-int mv_instr_upper_a(t_node **head_cur, int len, bool move_up, bool write);
-int mv_instr_below_a(t_node **head_cur, int len, bool move_up, bool write);
-int mv_instr_upper_b(t_node **head_cur, int len, bool move_up, bool write);
-int mv_instr_below_b(t_node **head_cur, int len, bool move_up, bool write);

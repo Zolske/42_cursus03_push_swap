@@ -1,38 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errror.c                                           :+:      :+:    :+:   */
+/*   helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/27 15:53:51 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/27 17:54:37 by zkepes           ###   ########.fr       */
+/*   Created: 2024/02/16 17:14:41 by zkepes            #+#    #+#             */
+/*   Updated: 2024/02/17 12:39:27 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-/*end programm with the "error()" if invalid input*/
-void    valid_input(int argc, char **argv)
+/*returns the length of the linked list*/
+int get_len(t_node *head)
 {
-    if (argc == 1)
-        error();
-    else if (argc == 2)
-        if (error_arg_1(argv[1]))
-            error();
-    else
-        if (error_args())
-            error();
+	t_node *current;
+	int i;
+
+	current = head;
+	i = 1;
+	if (head == NULL)
+		return (0);
+	while (current->next != head)
+	{
+		i++;
+		current = current->next;
+	}
+	return (i);
 }
 
-/*write "Error\n" to the "stderr" output and exit programm*/
-void error()
+/*copy src to dst, add new line, add null terminator*/
+void strcpy_nl(char *dst, char *src)
 {
-    write(2, "Error\n", 6);
-    exit(1);
-}
-
-void    ascii_array(char *str)
-{
-    
+	while (*src)
+	{
+		*dst = *src;
+		dst++;
+		src++;
+	}
+	*dst = '\n';
+	dst++;
+	*dst = '\0';
 }
