@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shor_cut_help.c                                    :+:      :+:    :+:   */
+/*   short_cut_help.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 18:08:37 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/28 19:03:37 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/29 10:51:40 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int mv_instr_upper_a(t_node **head_cur, int len, bool move_up, bool write)
         else
         {
             if (write)
-                (*head_cur)->instr_a = len - (*head_cur)->tar->pos * -1;
+                (*head_cur)->instr_a = (len - (*head_cur)->tar->pos) * -1;
             return (len - (*head_cur)->tar->pos);
         }
     }
@@ -80,7 +80,7 @@ int mv_instr_upper_b(t_node **head_cur, int len, bool move_up, bool write)
         else
         {
             if (write)
-                (*head_cur)->instr_b = len - (*head_cur)->pos * -1;
+                (*head_cur)->instr_b = (len - (*head_cur)->pos) * -1;
             return (len - (*head_cur)->pos);
         }
     }

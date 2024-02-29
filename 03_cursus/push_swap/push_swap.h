@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:45:23 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/28 19:44:27 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/29 13:05:21 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,3 +153,4 @@ int mv_instr_upper_a(t_node **head_cur, int len, bool move_up, bool write);
 int mv_instr_below_a(t_node **head_cur, int len, bool move_up, bool write);
 int mv_instr_upper_b(t_node **head_cur, int len, bool move_up, bool write);
 int mv_instr_below_b(t_node **head_cur, int len, bool move_up, bool write);
+void reset_mark(t_node **head_b);

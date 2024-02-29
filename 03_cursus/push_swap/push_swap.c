@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 13:42:43 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/28 20:36:20 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/29 13:08:58 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,9 @@ void cheap_sort(t_node **head_a)
 	// print_node_both(head_a, &head_b);
 	// mark_move(&head_b);
 	// update_all(head_a, &head_b);
-	update_all(head_a, &head_b);
+
+	// update_all(head_a, &head_b); // importent ?
+
 	// printf("start sort /////////////////////////////////////////////////////////////////////\n");
 	// print_node_both(head_a, &head_b);
 	// len = get_len(*head_a);
@@ -100,15 +102,15 @@ void update_all(t_node **head_a, t_node **head_b)
 		update_pos_base(head_a);
 		// printf("update pos /////////////////////////////////////////////////////////////////////\n");
 		// print_node_both(head_a, head_b);
-
-		short_cut(head_b);
-		printf("update shortcut /////////////////////////////////////////////////////////////////////\n");
-		print_node_both(head_a, head_b);
-
 		update_cost_total(head_b, head_a);
+		short_cut(head_b);
+		// printf("update shortcut /////////////////////////////////////////////////////////////////////\n");
+		// print_node_both(head_a, head_b);
 
+		// update_cost_total(head_b, head_a);
+		reset_mark(head_b);
 		mark_move(head_b);
-		// printf("update cost and move /////////////////////////////////////////////////////////////////////\n");
+		// printf("mark cheapest /////////////////////////////////////////////////////////////////////\n");
 		// print_node_both(head_a, head_b);
 	}
 }
@@ -201,13 +203,13 @@ void update_cost_total(t_node **head_b, t_node **head_a)
 				temp = current_a->i_goal;
 				// current_b->target = current_a->i_goal; // remove me
 				current_b->tar = current_a;
-				if (current_b->upper == current_a->upper)
-					if (current_b->pos >= current_a->pos)
-						current_b->cost = 0;
-					else
-						current_b->cost = current_a->pos - current_b->pos;
-				else
-					current_b->cost = current_a->pos;
+				// if (current_b->upper == current_a->upper)
+				// 	if (current_b->pos >= current_a->pos)
+				// 		current_b->cost = 0;
+				// 	else
+				// 		current_b->cost = current_a->pos - current_b->pos;
+				// else
+				// 	current_b->cost = current_a->pos;
 			}
 			current_a = current_a->next;
 		}
@@ -225,18 +227,18 @@ void update_cost_total(t_node **head_b, t_node **head_a)
 					temp = current_a->i_goal;
 					// current_b->target = current_a->i_goal; // remove me
 					current_b->tar = current_a;
-					if (current_b->upper == current_a->upper)
-						if (current_b->pos >= current_a->pos)
-							current_b->cost = 0;
-						else
-							current_b->cost = current_a->pos - current_b->pos;
-					else
-						current_b->cost = current_a->pos;
+					// if (current_b->upper == current_a->upper)
+					// 	if (current_b->pos >= current_a->pos)
+					// 		current_b->cost = 0;
+					// 	else
+					// 		current_b->cost = current_a->pos - current_b->pos;
+					// else
+					// 	current_b->cost = current_a->pos;
 				}
 				current_a = current_a->next;
 			}
 		}
-		current_b->cost += current_b->pos + 1;
+		// current_b->cost += current_b->pos + 1;
 		current_b = current_b->next;
 	}
 }
@@ -250,7 +252,7 @@ void short_cut(t_node **head_b)
 	int len_a;
 	int len_b;
 
-	int test = 1; // delete after
+	int test; // delete after
 
 	start = true;
 	current = *head_b;
@@ -258,6 +260,7 @@ void short_cut(t_node **head_b)
 	len_b = get_len(*head_b);
 	while (current != *head_b || start)
 	{
+		test = 1; // delete after
 		start = false;
 		shortest = both_up(&current, len_a, len_b, true);
 		if (shortest > both_down(&current, len_a, len_b, false))
@@ -277,57 +280,27 @@ void short_cut(t_node **head_b)
 		}
 
 		//////////////////////////////////// delete ////////////////////////////////////////
-		switch (test) {
-  			case 1:
-				printf("both_up\n");
-  			  	break;
-  			case 2:
-				printf("both_down\n");
-  			  	break;
-			case 3:
-				printf("up_a_down_b(\n");
-  			  	break;
-			case 4:
-				printf("down_a_up_b\n");
-  			  	break;
-  			default:
-    			// code block
-		}
+		// switch (test) {
+  		// 	case 1:
+		// 		printf("both_up\n");
+  		// 	  	break;
+  		// 	case 2:
+		// 		printf("both_down\n");
+  		// 	  	break;
+		// 	case 3:
+		// 		printf("up_a_down_b(\n");
+  		// 	  	break;
+		// 	case 4:
+		// 		printf("down_a_up_b\n");
+  		// 	  	break;
+  		// 	default:
+    	// 		// code block
+		// }
 		//////////////////////////////////// delete ////////////////////////////////////////
 
 		current->cost = shortest;
 		current = current->next;
 	}
-}
-
-/*We need only return the highes move between a and b because we move both
-with one command, cost calc is diff if node is in bottom*/
-int	ch_both_up(t_node **head_cur, int len_a, int len_b)
-{
-	int moves;
-
-	moves = -1;
-	if ((*head_cur)->tar)
-	{
-		/*head a: -> upper part*/
-		if ((*head_cur)->tar->upper)
-			moves = (*head_cur)->tar->pos;
-		/*head a: -> lower part*/
-		else
-			moves = len_a - (*head_cur)->tar->pos;
-		/*head b: -> upper part*/
-		if ((*head_cur)->upper)
-			/*only need the highest moves*/
-			if (moves < (*head_cur)->pos)
-				moves = (*head_cur)->pos;
-		/*head b: -> lower part*/
-		else
-			/*only need the highest moves*/
-			if (moves < len_b - (*head_cur)->pos)
-				moves = len_b - (*head_cur)->pos;
-	}
-	/*add one for the cost of moving b to a stack*/
-	return (moves);
 }
 
 /*We need only return the highes move between a and b because we move both
@@ -364,37 +337,6 @@ int	both_up(t_node **head_cur, int len_a, int len_b, bool write)
 				moves = mv_instr_below_b(head_cur, len_b, true, write);	
 			mv_instr_below_b(head_cur, len_b, true, write);
 		}
-	}
-	/*add one for the cost of moving b to a stack*/
-	return (moves);
-}
-
-/*We need only return the highes move between a and b because we move both
-with one command, cost calc is diff if node is in top, instruction value
-need to be neg to signal that we need to move down not up*/
-int	ch_both_down(t_node **head_cur, int len_a, int len_b)
-{
-	int moves;
-
-	moves = -1;
-	if ((*head_cur)->tar)
-	{
-		/*head a: -> upper part*/
-		if ((*head_cur)->tar->upper)
-			moves = len_a - (*head_cur)->tar->pos;
-		/*head a: -> lower part*/
-		else
-			moves = (*head_cur)->tar->pos;
-		/*head b: -> upper part*/
-		if ((*head_cur)->upper)
-			/*only need the highest moves if both move in the same direction*/
-			if (moves < (len_b - (*head_cur)->pos))
-				moves = len_b - (*head_cur)->pos;
-		/*head b: -> lower part*/
-		else
-			/*only need the highest moves if both move in the same direction*/
-			if (moves < (*head_cur)->pos)
-				moves = (*head_cur)->pos;
 	}
 	/*add one for the cost of moving b to a stack*/
 	return (moves);
@@ -441,35 +383,6 @@ int	both_down(t_node **head_cur, int len_a, int len_b, bool write)
 }
 
 /*a moves up and b moves down*/
-int	ch_up_a_down_b(t_node **head_cur, int len_a, int len_b)
-{
-	int moves;
-
-	moves = -1;
-	if ((*head_cur)->tar)
-	{
-		/*head a: -> upper part*/
-		if ((*head_cur)->tar->upper)
-			moves = (*head_cur)->tar->pos;
-		/*head a: -> lower part*/
-		else
-			moves = len_a - (*head_cur)->tar->pos;
-		/*head b: -> upper part*/
-		if ((*head_cur)->upper)
-			/*only need the highest moves*/
-			if (moves < (len_b - (*head_cur)->pos))
-				moves = len_b - (*head_cur)->pos;
-		/*head b: -> lower part*/
-		else
-			/*only need the highest moves*/
-			if (moves < (*head_cur)->pos)
-				moves = (*head_cur)->pos;
-	}
-	/*add one for the cost of moving b to a stack*/
-	return (moves);
-}
-
-/*a moves up and b moves down*/
 int	up_a_down_b(t_node **head_cur, int len_a, int len_b, bool write)
 {
 	int moves;
@@ -490,48 +403,19 @@ int	up_a_down_b(t_node **head_cur, int len_a, int len_b, bool write)
 		/*head b: -> upper part*/
 		if ((*head_cur)->upper)
 		{
-			if (moves < (len_b - (*head_cur)->pos))
-				moves = mv_instr_upper_b(head_cur, len_b, false, write);
+			// if (moves < (len_b - (*head_cur)->pos))
+			moves += mv_instr_upper_b(head_cur, len_b, false, write);
 			mv_instr_upper_b(head_cur, len_b, false, write);
 			// moves += mv_instr_upper_b(head_cur, len_b, false, write);
 		}
 		/*head b: -> lower part*/
 		else
 		{
-			if (moves < (*head_cur)->pos)
-				moves = mv_instr_below_b(head_cur, len_a, false, write);
+			// if (moves < (*head_cur)->pos)
+			moves += mv_instr_below_b(head_cur, len_a, false, write);
 			mv_instr_below_b(head_cur, len_a, false, write);
 			// moves += mv_instr_below_b(head_cur, len_a, false, write);
 		}
-	}
-	/*add one for the cost of moving b to a stack*/
-	return (moves);
-}
-
-/*a moves down and b moves up*/
-int	ch_down_a_up_b(t_node **head_cur, int len_a, int len_b)
-{
-	int moves;
-
-	moves = -1;
-	if ((*head_cur)->tar)
-	{
-		/*head a: -> upper part*/
-		if ((*head_cur)->tar->upper)
-			moves = len_a - (*head_cur)->tar->pos;
-		/*head a: -> lower part*/
-		else
-			moves = (*head_cur)->tar->pos;
-		/*head b: -> upper part*/
-		if ((*head_cur)->upper)
-			/*only need the highest moves*/
-			if (moves < (*head_cur)->pos)
-				moves = (*head_cur)->pos;
-		/*head b: -> lower part*/
-		else
-			/*only need the highest moves*/
-			if (moves < len_b - (*head_cur)->pos)
-				moves = len_b - (*head_cur)->pos;
 	}
 	/*add one for the cost of moving b to a stack*/
 	return (moves);
@@ -558,8 +442,8 @@ int	down_a_up_b(t_node **head_cur, int len_a, int len_b, bool write)
 		/*head b: -> upper part*/
 		if ((*head_cur)->upper)
 		{
-			if (moves < (*head_cur)->pos)
-				moves = mv_instr_upper_b(head_cur, len_b, true, write);
+			// if (moves < (*head_cur)->pos)
+			moves += mv_instr_upper_b(head_cur, len_b, true, write);
 			mv_instr_upper_b(head_cur, len_b, true, write);
 			// moves += mv_instr_upper_b(head_cur, len_b, true, write);
 		}
@@ -567,8 +451,8 @@ int	down_a_up_b(t_node **head_cur, int len_a, int len_b, bool write)
 		else
 		{
 			/*only need the highest moves*/
-			if (moves < len_b - (*head_cur)->pos)
-				moves = mv_instr_below_b(head_cur, len_b, true, write);
+			// if (moves < len_b - (*head_cur)->pos)
+			moves += mv_instr_below_b(head_cur, len_b, true, write);
 			mv_instr_below_b(head_cur, len_b, true, write);
 			// moves += mv_instr_below_b(head_cur, len_b, true, write);
 		}
@@ -604,6 +488,21 @@ void mark_move(t_node **head_b)
 	}
 }
 
+void reset_mark(t_node **head_b)
+{
+	bool start;
+	t_node *current;
+
+	start = true;
+	current = *head_b;
+	while (current != *head_b || start)
+	{
+		start = false;
+		current->move = false;
+		current = current->next;
+	}
+}
+
 void sort_b(t_node **head_a, t_node **head_b)
 {
 	t_node *move_node;
@@ -618,68 +517,118 @@ void sort_b(t_node **head_a, t_node **head_b)
 	co_push_b_to_a(head_b, head_a);
 }
 
+// t_node *move_b_and_a_top(t_node **head_a, t_node **head_b)
+// {
+// 	t_node *move_node;
+
+// 	move_node = find_node_move(head_b);
+// 	// printf("move_b_and_a_top\n");
+// 	// printf("pos tar: %d\tpos b: %d\n", move_node->tar->pos, move_node->pos);
+// 	if (move_node->tar->upper != move_node->upper)
+// 		return (move_node);
+// 	while (move_node->tar->pos > 0 && move_node->pos > 0)
+// 	{
+// 		if ((move_node->tar->upper && move_node->upper) && move_node->tar->pos >= 0)
+// 		{
+// 			co_rotate_both(head_a, head_b);
+// 			move_node->tar->pos--;
+// 			move_node->pos--;
+// 		}
+// 		else if ((!(move_node->tar->upper) && !(move_node->upper)) && move_node->tar->pos >= 0)
+// 		{
+// 			co_rev_rotate_both(head_a, head_b);
+// 			move_node->tar->pos--;
+// 			move_node->pos--;
+// 		}
+// 	}
+// 	// printf("move BA_top /////////////////////////////////////////////////////////////////////\n");
+// 	// print_node_both(head_a, head_b);
+// 	return (move_node);
+//}
+
+// void move_b_top(t_node **head_b, t_node **move_node)
+// {
+// 	// printf("move b to top\n");
+// 	while ((*move_node)->pos > 0)
+// 	{
+// 		if ((*move_node)->upper)
+// 		{
+// 			co_rotate_b(head_b);
+// 			(*move_node)->pos--;
+// 		}
+// 		else if (false == (*move_node)->upper)
+// 		{
+// 			co_rev_rotate_b(head_b);
+// 			(*move_node)->pos--;
+// 		}
+// 	}
+// }
+
+// void move_a_top(t_node **head_a, t_node **move_node)
+// {
+// 	while ((*move_node)->tar->pos > 0)
+// 	{
+// 		// printf("move a to top\n");
+// 		if ((*move_node)->tar->upper)
+// 		{
+// 			co_rotate_a(head_a);
+// 			(*move_node)->tar->pos--;
+// 		}
+// 		else if (false == (*move_node)->tar->upper)
+// 		{
+// 			co_rev_rotate_a(head_a);
+// 			(*move_node)->tar->pos--;
+// 		}
+// 	}
+// }
+
 t_node *move_b_and_a_top(t_node **head_a, t_node **head_b)
 {
 	t_node *move_node;
 
 	move_node = find_node_move(head_b);
-	// printf("move_b_and_a_top\n");
-	// printf("pos tar: %d\tpos b: %d\n", move_node->tar->pos, move_node->pos);
-	if (move_node->tar->upper != move_node->upper)
-		return (move_node);
-	while (move_node->tar->pos > 0 && move_node->pos > 0)
+	while (move_node->instr_a > 0 && move_node->instr_b > 0)
 	{
-		if ((move_node->tar->upper && move_node->upper) && move_node->tar->pos >= 0)
-		{
-			co_rotate_both(head_a, head_b);
-			move_node->tar->pos--;
-			move_node->pos--;
-		}
-		else if ((!(move_node->tar->upper) && !(move_node->upper)) && move_node->tar->pos >= 0)
-		{
-			co_rev_rotate_both(head_a, head_b);
-			move_node->tar->pos--;
-			move_node->pos--;
-		}
+		co_rotate_both(head_a, head_b);
+		move_node->instr_a--;
+		move_node->instr_b--;
+	}	
+	while (move_node->instr_a < 0 && move_node->instr_b < 0)
+	{
+		co_rev_rotate_both(head_a, head_b);
+		move_node->instr_a++;
+		move_node->instr_b++;
 	}
-	// printf("move BA_top /////////////////////////////////////////////////////////////////////\n");
-	// print_node_both(head_a, head_b);
 	return (move_node);
 }
 
 void move_b_top(t_node **head_b, t_node **move_node)
 {
 	// printf("move b to top\n");
-	while ((*move_node)->pos > 0)
+	while ((*move_node)->instr_b > 0)
 	{
-		if ((*move_node)->upper)
-		{
 			co_rotate_b(head_b);
-			(*move_node)->pos--;
-		}
-		else if (false == (*move_node)->upper)
-		{
+			(*move_node)->instr_b--;
+	}
+	while ((*move_node)->instr_b < 0)
+	{
 			co_rev_rotate_b(head_b);
-			(*move_node)->pos--;
-		}
+			(*move_node)->instr_b++;
 	}
 }
 
 void move_a_top(t_node **head_a, t_node **move_node)
 {
-	while ((*move_node)->tar->pos > 0)
+	// printf("move b to top\n");
+	while ((*move_node)->instr_a > 0)
 	{
-		// printf("move a to top\n");
-		if ((*move_node)->tar->upper)
-		{
 			co_rotate_a(head_a);
-			(*move_node)->tar->pos--;
-		}
-		else if (false == (*move_node)->tar->upper)
-		{
+			(*move_node)->instr_a--;
+	}
+	while ((*move_node)->instr_a < 0)
+	{
 			co_rev_rotate_a(head_a);
-			(*move_node)->tar->pos--;
-		}
+			(*move_node)->instr_a++;
 	}
 }
 

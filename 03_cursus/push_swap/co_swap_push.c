@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:29:13 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/28 17:01:55 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/29 11:32:03 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void co_push_a_to_b(t_node **head_a, t_node **head_b)
 			push_head_to(head_b, &new_head, &old_head);
 			write(1, "pb\n", 3);
 
-			print_node_both(head_a, head_b);
+			// print_node_both(head_a, head_b);
 		}
 		else  // TODO: check if needed, is the same code as above
 		{
