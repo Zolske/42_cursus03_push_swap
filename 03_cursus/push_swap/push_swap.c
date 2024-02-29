@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 13:42:43 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/29 18:22:06 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/29 21:03:18 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,6 @@ int main(int argc, char **argv)
 	add_goal_list(&head_a);
 	cheap_sort(&head_a);
 	free_node(&head_a);
-
-	// t_var *var = NULL;
-	// var->count = 42;
-	// // init_var(var);
-	// printf("value of count: %d\n", 24);
 	return (0);
 }
 
@@ -68,11 +63,9 @@ void update_all(t_node **head_a, t_node **head_b)
 
 void sort_3_node_a(t_node **head_a)
 {
-	if ((*head_a)->val > (*head_a)->next->val
-	&& (*head_a)->val > (*head_a)->prev->val)
+	if ((*head_a)->val > (*head_a)->next->val && (*head_a)->val > (*head_a)->prev->val)
 		co_rotate_a(head_a);
-	else if ((*head_a)->next->val > (*head_a)->val
-	&& (*head_a)->next->val > (*head_a)->prev->val)
+	else if ((*head_a)->next->val > (*head_a)->val && (*head_a)->next->val > (*head_a)->prev->val)
 		co_rev_rotate_a(head_a);
 	if ((*head_a)->val > (*head_a)->next->val)
 		co_swap_a(head_a);
@@ -98,74 +91,32 @@ void update_idx(t_node **head)
 
 void update_pos_base(t_node **head)
 {
-	int len;
-	int count;
-	bool start;
-	t_node *current;
+	t_var var;
 
-	len = get_len(*head);
-	count = 0;
-	start = true;
-	current = *head;
-	while (current != *head || start)
+	init_var(&var, head);
+	while (var.current != *head || var.start)
 	{
-		start = false;
-		current->upper = true;
-		if (len % 2 != 0)
-			if (current->idx <= len / 2)
-				current->pos = current->idx;
+		var.start = false;
+		var.current->upper = true;
+		if (var.len % 2 != 0)
+			if (var.current->idx <= var.len / 2)
+				var.current->pos = var.current->idx;
 			else
 			{
-				current->pos = len / 2 - count++;
-				current->upper = false;
+				var.current->pos = var.len / 2 - var.count++;
+				var.current->upper = false;
 			}
-		else if (current->idx < len / 2)
-			current->pos = current->idx;
+		else if (var.current->idx < var.len / 2)
+			var.current->pos = var.current->idx;
 		else
 		{
-			current->pos = len / 2 - count++;
-			current->upper = false;
+			var.current->pos = var.len / 2 - var.count++;
+			var.current->upper = false;
 		}
-		current = current->next;
+		var.current = var.current->next;
 	}
-	// int len;
-	// // int count;
-	// // bool start;
-	// // t_node *current;
-
-	// len = get_len(*head);
-	// // count = 0;
-	// // start = true;
-	// // current = *head;
-
-	// t_node *current;
-	// t_var *var = NULL;
-	// init_var(&var, head);
-
-	// current = *head;
-
-	// while (current != *head || var->start)
-	// {
-	// 	var->start = false;
-	// 	current->upper = true;
-	// 	if (len % 2 != 0)
-	// 		if (current->idx <= len / 2)
-	// 			current->pos = current->idx;
-	// 		else
-	// 		{
-	// 			current->pos = len / 2 - var->count++;
-	// 			current->upper = false;
-	// 		}
-	// 	else if (current->idx < len / 2)
-	// 		current->pos = current->idx;
-	// 	else
-	// 	{
-	// 		current->pos = len / 2 - var->count++;
-	// 		current->upper = false;
-	// 	}
-	// 	current = current->next;
-	// }
 }
+
 /*need to reset values after use, for target -1*/
 void update_cost_total(t_node **head_b, t_node **head_a)
 {
@@ -245,7 +196,7 @@ void short_cut(t_node **head_b)
 
 /*We need only return the highes move between a and b because we move both
 with one command, cost calc is diff if node is in bottom*/
-int	both_up(t_node **head_cur, int len_a, int len_b, bool write)
+int both_up(t_node **head_cur, int len_a, int len_b, bool write)
 {
 	int moves;
 
@@ -274,7 +225,7 @@ int	both_up(t_node **head_cur, int len_a, int len_b, bool write)
 		{
 			/*only need the highest moves if both move in the same direction*/
 			if (moves < len_b - (*head_cur)->pos)
-				moves = mv_instr_below_b(head_cur, len_b, true, write);	
+				moves = mv_instr_below_b(head_cur, len_b, true, write);
 			mv_instr_below_b(head_cur, len_b, true, write);
 		}
 	}
@@ -285,7 +236,7 @@ int	both_up(t_node **head_cur, int len_a, int len_b, bool write)
 /*We need only return the highes move between a and b because we move both
 with one command, cost calc is diff if node is in top, instruction value
 need to be neg to signal that we need to move down not up*/
-int	both_down(t_node **head_cur, int len_a, int len_b, bool write)
+int both_down(t_node **head_cur, int len_a, int len_b, bool write)
 {
 	int moves;
 
@@ -305,7 +256,7 @@ int	both_down(t_node **head_cur, int len_a, int len_b, bool write)
 		/*head b: -> upper part*/
 		if ((*head_cur)->upper)
 		{
-			// special case if already 0 don't overwritte move 
+			// special case if already 0 don't overwritte move
 			if (moves < (len_b - (*head_cur)->pos) && (*head_cur)->pos != 0)
 				moves = mv_instr_upper_b(head_cur, len_b, false, write);
 			mv_instr_upper_b(head_cur, len_b, false, write);
@@ -323,7 +274,7 @@ int	both_down(t_node **head_cur, int len_a, int len_b, bool write)
 }
 
 /*a moves up and b moves down*/
-int	up_a_down_b(t_node **head_cur, int len_a, int len_b, bool write)
+int up_a_down_b(t_node **head_cur, int len_a, int len_b, bool write)
 {
 	int moves;
 
@@ -362,7 +313,7 @@ int	up_a_down_b(t_node **head_cur, int len_a, int len_b, bool write)
 }
 
 /*a moves down and b moves up*/
-int	down_a_up_b(t_node **head_cur, int len_a, int len_b, bool write)
+int down_a_up_b(t_node **head_cur, int len_a, int len_b, bool write)
 {
 	int moves;
 
@@ -532,7 +483,7 @@ t_node *move_b_and_a_top(t_node **head_a, t_node **head_b)
 		co_rotate_both(head_a, head_b);
 		move_node->instr_a--;
 		move_node->instr_b--;
-	}	
+	}
 	while (move_node->instr_a < 0 && move_node->instr_b < 0)
 	{
 		co_rev_rotate_both(head_a, head_b);
@@ -547,13 +498,13 @@ void move_b_top(t_node **head_b, t_node **move_node)
 	// printf("move b to top\n");
 	while ((*move_node)->instr_b > 0)
 	{
-			co_rotate_b(head_b);
-			(*move_node)->instr_b--;
+		co_rotate_b(head_b);
+		(*move_node)->instr_b--;
 	}
 	while ((*move_node)->instr_b < 0)
 	{
-			co_rev_rotate_b(head_b);
-			(*move_node)->instr_b++;
+		co_rev_rotate_b(head_b);
+		(*move_node)->instr_b++;
 	}
 }
 
@@ -562,13 +513,13 @@ void move_a_top(t_node **head_a, t_node **move_node)
 	// printf("move b to top\n");
 	while ((*move_node)->instr_a > 0)
 	{
-			co_rotate_a(head_a);
-			(*move_node)->instr_a--;
+		co_rotate_a(head_a);
+		(*move_node)->instr_a--;
 	}
 	while ((*move_node)->instr_a < 0)
 	{
-			co_rev_rotate_a(head_a);
-			(*move_node)->instr_a++;
+		co_rev_rotate_a(head_a);
+		(*move_node)->instr_a++;
 	}
 }
 

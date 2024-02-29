@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:45:23 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/29 18:17:36 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/29 20:23:38 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef struct s_var
     int len;
     int count;
     bool start;
-    // struct s_node *current;
+    struct s_node *current;
 } t_var;
 // typedef struct s_result
 // {
@@ -151,15 +151,15 @@ void short_cut(t_node **head_b);
 // int	ch_up_a_down_b(t_node **head_cur, int len_a, int len_b);
 // int	ch_down_a_up_b(t_node **head_cur, int len_a, int len_b);
 
-int	both_up(t_node **head_cur, int len_a, int len_b, bool write);
-int	both_down(t_node **head_cur, int len_a, int len_b, bool write);
-int	down_a_up_b(t_node **head_cur, int len_a, int len_b, bool write);
-int	up_a_down_b(t_node **head_cur, int len_a, int len_b, bool write);
+int both_up(t_node **head_cur, int len_a, int len_b, bool write);
+int both_down(t_node **head_cur, int len_a, int len_b, bool write);
+int down_a_up_b(t_node **head_cur, int len_a, int len_b, bool write);
+int up_a_down_b(t_node **head_cur, int len_a, int len_b, bool write);
 
 int mv_instr_upper_a(t_node **head_cur, int len, bool move_up, bool write);
 int mv_instr_below_a(t_node **head_cur, int len, bool move_up, bool write);
 int mv_instr_upper_b(t_node **head_cur, int len, bool move_up, bool write);
 int mv_instr_below_b(t_node **head_cur, int len, bool move_up, bool write);
 void reset_mark(t_node **head_b);
-void	init_node(t_node **new_node, t_node **head, int value);
-void	init_var(t_var *var);
+void init_node(t_node **new_node, t_node **head, int value);
+void init_var(t_var *var, t_node **head);
