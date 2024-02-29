@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:14:41 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/29 18:13:31 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/17 12:39:27 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,43 +30,16 @@ int get_len(t_node *head)
 	return (i);
 }
 
-/*check if list has at least 2 nodes*/
-bool ch_2_nodes(t_node **head)
+/*copy src to dst, add new line, add null terminator*/
+void strcpy_nl(char *dst, char *src)
 {
-    t_node *current;
-
-    current = *head;
-    if (current != NULL)
-        if (current->next != current)
-            return (true);
-    return (false);
-}
-
-/*free the 'Stuck' list (pass 'a' and 'b' individual)*/
-void free_node(t_node **head)
-{
-	t_node *current;
-	t_node *temp;
-
-	if (*head != NULL)
+	while (*src)
 	{
-		current = (*head)->next;
-		while (current != *head)
-		{
-			temp = current;
-			current = current->next;
-			free(temp);
-			temp = NULL;
-		}
-		free(*head);
-		*head = NULL;
+		*dst = *src;
+		dst++;
+		src++;
 	}
-}
-
-void	init_var(t_var *var)
-{
-	var->count = 0;
-	// (*var)->len = get_len(*head);
-	// (*var)->start = true;
-	// (*var)->current = *head;
+	*dst = '\n';
+	dst++;
+	*dst = '\0';
 }

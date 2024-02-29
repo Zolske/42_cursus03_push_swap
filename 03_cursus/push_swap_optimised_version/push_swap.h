@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:45:23 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/29 18:17:36 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/29 13:05:21 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,6 @@ typedef struct s_node
     struct s_node *next;
 } t_node;
 
-typedef struct s_var
-{
-    int len;
-    int count;
-    bool start;
-    // struct s_node *current;
-} t_var;
 // typedef struct s_result
 // {
 //     char *bs_str;
@@ -63,7 +56,7 @@ void list_from_parameter(int argc, char **argv, t_node **head_ori);
 void split_str_to_list(char *str, t_node **head);
 void add_node(t_node **head, int value);
 // void add_node_res(t_result **head_re);
-// t_node *cop_node(t_node **head_ori);
+t_node *cop_node(t_node **head_ori);
 
 // write
 // void write_ats(t_result **head_res, char *res);
@@ -113,7 +106,7 @@ int *bubble_sort(int *ptr_arr, t_node **head);
 
 // helper
 int get_len(t_node *head);
-// void strcpy_nl(char *dst, char *src);
+void strcpy_nl(char *dst, char *src);
 
 // algorithm
 // void algo_half_bubble(t_node **head_ori, t_result **head_res);
@@ -124,11 +117,11 @@ int get_len(t_node *head);
 // void swap_stack(t_node **head_a, t_node **head_b, t_result **head_res, int message);
 // int ch_need_rotate(t_node **head_a, t_node **head_b, int message, int len);
 // void rotate_stack(t_node **head_a, t_node **head_b, t_result **head_res, int message);
-// bool not_sorted(t_node **head, bool acending);
+bool not_sorted(t_node **head, bool acending);
 
 void cheap_sort(t_node **head_ori);
 
-// bool not_sorted_b(t_node **head, bool acending);
+bool not_sorted_b(t_node **head, bool acending);
 
 // sorting
 void sort_3_node_a(t_node **head_a);
@@ -146,10 +139,10 @@ void sort_start(t_node **head_a);
 
 // short cut
 void short_cut(t_node **head_b);
-// int	ch_both_up(t_node **head_cur, int len_a, int len_b);
-// int	ch_both_down(t_node **head_cur, int len_a, int len_b);
-// int	ch_up_a_down_b(t_node **head_cur, int len_a, int len_b);
-// int	ch_down_a_up_b(t_node **head_cur, int len_a, int len_b);
+int	ch_both_up(t_node **head_cur, int len_a, int len_b);
+int	ch_both_down(t_node **head_cur, int len_a, int len_b);
+int	ch_up_a_down_b(t_node **head_cur, int len_a, int len_b);
+int	ch_down_a_up_b(t_node **head_cur, int len_a, int len_b);
 
 int	both_up(t_node **head_cur, int len_a, int len_b, bool write);
 int	both_down(t_node **head_cur, int len_a, int len_b, bool write);
@@ -161,5 +154,3 @@ int mv_instr_below_a(t_node **head_cur, int len, bool move_up, bool write);
 int mv_instr_upper_b(t_node **head_cur, int len, bool move_up, bool write);
 int mv_instr_below_b(t_node **head_cur, int len, bool move_up, bool write);
 void reset_mark(t_node **head_b);
-void	init_node(t_node **new_node, t_node **head, int value);
-void	init_var(t_var *var);

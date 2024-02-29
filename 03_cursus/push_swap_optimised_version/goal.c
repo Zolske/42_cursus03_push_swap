@@ -6,20 +6,20 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:01:29 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/29 15:28:07 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/16 17:20:24 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-/* add the index of the correct ordered list (i_goal)*/
+/* add the index of the correct ordered list (i_goal), free ptr_arr*/
+// void	add_goal_list(t_node **head, int *ptr_arr)
 void add_goal_list(t_node **head)
 {
 	t_node *current;
 	int i;
 	int len;
 	int *ptr_arr;
-	bool start;
 
 	len = get_len(*head);
 	i = 0;
@@ -27,14 +27,21 @@ void add_goal_list(t_node **head)
 	while (i < len)
 	{
 		current = *head;
-		start = true;
-		while (current != *head || start)
+		while (true)
 		{
-			start = false;
+			// if you find match save index and break loop
 			if (ptr_arr[i] == current->val && current->i_goal == -1)
-				current->i_goal = i++;
+			{
+				current->i_goal = i;
+				break;
+			}
+			// increment list
 			current = current->next;
+			// if you arrive at the beginning (head) break loop
+			if (current == *head)
+				break;
 		}
+		i++;
 	}
 	free(ptr_arr);
 	ptr_arr = NULL;

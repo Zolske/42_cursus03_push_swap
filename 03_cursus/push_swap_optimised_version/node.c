@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:02:51 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/29 16:31:57 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/28 13:16:31 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,11 @@ void split_str_to_list(char *str, t_node **head)
 		value = false;
 		while (*str == ' ')
 			str++;
-		if (*str == '-'&& str++)
+		if (*str == '-')
+		{
 			neg = true;
+			str++;
+		}
 		while (*str >= '0' && *str <= '9')
 		{
 			num = (num * 10) + (*str++ - '0');
@@ -53,10 +56,11 @@ void split_str_to_list(char *str, t_node **head)
 		}
 		if (neg)
 			num *= -1;
-		if (!value)
+		if (neg && !value)
 			error(head);
 		error_check_para(head, *str, num);
 		add_node(head, num);
+		// printf("something: %lld\n", num);
 	}
 }
 
@@ -69,7 +73,18 @@ void add_node(t_node **head, int value)
 	t_node *last_node;
 
 	new_node = (t_node *)malloc(sizeof(t_node));
-	init_node(&new_node, head, value);
+	new_node->val = value;
+	new_node->i_goal = -1;
+	new_node->pos = -1;
+	new_node->idx = -1;
+	new_node->cost = -1;
+	new_node->instr_a = -99;
+	new_node->instr_b = -99;
+	// new_node->target = -1;
+	new_node->tar = NULL;
+	new_node->move = false;
+	new_node->upper = true;
+	new_node->next = *head;
 
 	if (*head == NULL)
 	{
@@ -88,21 +103,30 @@ void add_node(t_node **head, int value)
 	}
 }
 
-/*initiate new node with default values*/
-void	init_node(t_node **new_node, t_node **head, int value)
-{
-	(*new_node)->val = value;
-	(*new_node)->i_goal = -1;
-	(*new_node)->pos = -1;
-	(*new_node)->idx = -1;
-	(*new_node)->cost = -1;
-	(*new_node)->instr_a = -99;
-	(*new_node)->instr_b = -99;
-	(*new_node)->tar = NULL;
-	(*new_node)->move = false;
-	(*new_node)->upper = true;
-	(*new_node)->next = *head;
-}
+/*add or create a new node for the "result" list,
+A new malloc pointer needs to be added for each algo!!*/
+// void add_node_res(t_result **head_re)
+// {
+// 	t_result *new_node;
+// 	t_result *last_node;
+
+// 	new_node = (t_result *)malloc(sizeof(t_result));
+// 	// new_node->bs_str = NULL;
+// 	new_node->next = NULL;
+// 	new_node->acs_str = NULL;
+// 	new_node->ahb_str = NULL;
+
+// 	// if head points to NULL then there is no list
+// 	if (*head_re == NULL)
+// 		*head_re = new_node;
+// 	else // if there is already a head
+// 	{
+// 		last_node = *head_re;
+// 		while (last_node->next != NULL)
+// 			last_node = last_node->next;
+// 		last_node->next = new_node;
+// 	}
+// }
 
 /*create a new list and copy the values from the original head to it*/
 t_node *cop_node(t_node **head_ori)

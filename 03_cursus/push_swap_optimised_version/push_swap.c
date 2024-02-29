@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 13:42:43 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/29 18:22:06 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/29 13:08:58 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,32 +21,71 @@ int main(int argc, char **argv)
 	else
 		list_from_parameter(argc, argv, &head_a);
 	add_goal_list(&head_a);
-	cheap_sort(&head_a);
-	free_node(&head_a);
 
-	// t_var *var = NULL;
-	// var->count = 42;
-	// // init_var(var);
-	// printf("value of count: %d\n", 24);
+	cheap_sort(&head_a);
+
+	free_node(&head_a);
 	return (0);
 }
 
 void cheap_sort(t_node **head_a)
 {
+	// t_node *head_a;
 	t_node *head_b;
 	int len;
 
+	// head_a = cop_node(head_a);
 	head_b = NULL;
 	len = get_len(*head_a);
+	// printf("start /////////////////////////////////////////////////////////////////////\n");
+	// print_node(head_a);
 	while (len-- > 3)
+	{
+		// printf("len: %d\n", len);
 		co_push_a_to_b(head_a, &head_b);
+	}
 	sort_3_node_a(head_a);
+	// printf("after tiny sort /////////////////////////////////////////////////////////////////////\n");
+	// print_node(head_a);
+	// printf("B /////////////////////////////////////////////////////////////////////\n");
+	// print_node(&head_b);
+	// update_idx(head_a);
+	// update_idx(&head_b);
+	// update_pos_base(&head_b);
+	// update_pos_base(head_a);
+	// update_cost_total(&head_b, head_a);
+	// update_all(head_a, &head_b);
+	// print_node_both(head_a, &head_b);
+	// mark_move(&head_b);
+	// update_all(head_a, &head_b);
+
+	// update_all(head_a, &head_b); // importent ?
+
+	// printf("start sort /////////////////////////////////////////////////////////////////////\n");
+	// print_node_both(head_a, &head_b);
+	// len = get_len(*head_a);
+	// while (get_len(head_a) <= len)
 	while (head_b != NULL)
 	{
 		update_all(head_a, &head_b);
+		// printf("before sort /////////////////////////////////////////////////////////////////////\n");
+		// print_node_both(head_a, &head_b);
 		sort_b(head_a, &head_b);
+		update_all(head_a, &head_b);
 	}
+	// printf("need rotating? /////////////////////////////////////////////////////////////////////\n");
+	// print_node_both(head_a, &head_b);
 	sort_start(head_a);
+	// printf("sorted /////////////////////////////////////////////////////////////////////\n");
+	// print_node_both(head_a, &head_b);
+	// update_idx(head_a);
+	// update_idx(&head_b);
+	// update_pos_base(&head_b);
+	// update_pos_base(head_a);
+	// update_cost_total(&head_b, head_a);
+	// mark_move(&head_b);
+	// printf("update cost /////////////////////////////////////////////////////////////////////\n");
+	// print_node_both(head_a, &head_b);
 	free_node(head_a);
 	free_node(&head_b);
 }
@@ -57,22 +96,30 @@ void update_all(t_node **head_a, t_node **head_b)
 	{
 		update_idx(head_a);
 		update_idx(head_b);
+		// printf("update idx /////////////////////////////////////////////////////////////////////\n");
+		// print_node_both(head_a, head_b);
 		update_pos_base(head_b);
 		update_pos_base(head_a);
+		// printf("update pos /////////////////////////////////////////////////////////////////////\n");
+		// print_node_both(head_a, head_b);
 		update_cost_total(head_b, head_a);
 		short_cut(head_b);
+		// printf("update shortcut /////////////////////////////////////////////////////////////////////\n");
+		// print_node_both(head_a, head_b);
+
+		// update_cost_total(head_b, head_a);
 		reset_mark(head_b);
 		mark_move(head_b);
+		// printf("mark cheapest /////////////////////////////////////////////////////////////////////\n");
+		// print_node_both(head_a, head_b);
 	}
 }
 
 void sort_3_node_a(t_node **head_a)
 {
-	if ((*head_a)->val > (*head_a)->next->val
-	&& (*head_a)->val > (*head_a)->prev->val)
+	if ((*head_a)->val > (*head_a)->next->val && (*head_a)->val > (*head_a)->prev->val)
 		co_rotate_a(head_a);
-	else if ((*head_a)->next->val > (*head_a)->val
-	&& (*head_a)->next->val > (*head_a)->prev->val)
+	else if ((*head_a)->next->val > (*head_a)->val && (*head_a)->next->val > (*head_a)->prev->val)
 		co_rev_rotate_a(head_a);
 	if ((*head_a)->val > (*head_a)->next->val)
 		co_swap_a(head_a);
@@ -128,43 +175,6 @@ void update_pos_base(t_node **head)
 		}
 		current = current->next;
 	}
-	// int len;
-	// // int count;
-	// // bool start;
-	// // t_node *current;
-
-	// len = get_len(*head);
-	// // count = 0;
-	// // start = true;
-	// // current = *head;
-
-	// t_node *current;
-	// t_var *var = NULL;
-	// init_var(&var, head);
-
-	// current = *head;
-
-	// while (current != *head || var->start)
-	// {
-	// 	var->start = false;
-	// 	current->upper = true;
-	// 	if (len % 2 != 0)
-	// 		if (current->idx <= len / 2)
-	// 			current->pos = current->idx;
-	// 		else
-	// 		{
-	// 			current->pos = len / 2 - var->count++;
-	// 			current->upper = false;
-	// 		}
-	// 	else if (current->idx < len / 2)
-	// 		current->pos = current->idx;
-	// 	else
-	// 	{
-	// 		current->pos = len / 2 - var->count++;
-	// 		current->upper = false;
-	// 	}
-	// 	current = current->next;
-	// }
 }
 /*need to reset values after use, for target -1*/
 void update_cost_total(t_node **head_b, t_node **head_a)
@@ -191,7 +201,15 @@ void update_cost_total(t_node **head_b, t_node **head_a)
 			if (current_a->i_goal > current_b->i_goal && current_a->i_goal < temp)
 			{
 				temp = current_a->i_goal;
+				// current_b->target = current_a->i_goal; // remove me
 				current_b->tar = current_a;
+				// if (current_b->upper == current_a->upper)
+				// 	if (current_b->pos >= current_a->pos)
+				// 		current_b->cost = 0;
+				// 	else
+				// 		current_b->cost = current_a->pos - current_b->pos;
+				// else
+				// 	current_b->cost = current_a->pos;
 			}
 			current_a = current_a->next;
 		}
@@ -207,15 +225,25 @@ void update_cost_total(t_node **head_b, t_node **head_a)
 				if (current_a->i_goal < temp)
 				{
 					temp = current_a->i_goal;
+					// current_b->target = current_a->i_goal; // remove me
 					current_b->tar = current_a;
+					// if (current_b->upper == current_a->upper)
+					// 	if (current_b->pos >= current_a->pos)
+					// 		current_b->cost = 0;
+					// 	else
+					// 		current_b->cost = current_a->pos - current_b->pos;
+					// else
+					// 	current_b->cost = current_a->pos;
 				}
 				current_a = current_a->next;
 			}
 		}
+		// current_b->cost += current_b->pos + 1;
 		current_b = current_b->next;
 	}
 }
 
+/*TODO: -> need to be after update -> protect for head_b null*/
 void short_cut(t_node **head_b)
 {
 	bool start;
@@ -224,20 +252,52 @@ void short_cut(t_node **head_b)
 	int len_a;
 	int len_b;
 
+	int test; // delete after
+
 	start = true;
 	current = *head_b;
 	len_a = get_len((*head_b)->tar);
 	len_b = get_len(*head_b);
 	while (current != *head_b || start)
 	{
+		test = 1; // delete after
 		start = false;
 		shortest = both_up(&current, len_a, len_b, true);
 		if (shortest > both_down(&current, len_a, len_b, false))
+		{
 			shortest = both_down(&current, len_a, len_b, true);
+			test = 2; // delete after
+		}
 		if (shortest > up_a_down_b(&current, len_a, len_b, false))
+		{
 			shortest = up_a_down_b(&current, len_a, len_b, true);
+			test = 3; // delete after
+		}
 		if (shortest > down_a_up_b(&current, len_a, len_b, false))
+		{
 			shortest = down_a_up_b(&current, len_a, len_b, true);
+			test = 4; // delete after
+		}
+
+		//////////////////////////////////// delete ////////////////////////////////////////
+		// switch (test) {
+  		// 	case 1:
+		// 		printf("both_up\n");
+  		// 	  	break;
+  		// 	case 2:
+		// 		printf("both_down\n");
+  		// 	  	break;
+		// 	case 3:
+		// 		printf("up_a_down_b(\n");
+  		// 	  	break;
+		// 	case 4:
+		// 		printf("down_a_up_b\n");
+  		// 	  	break;
+  		// 	default:
+    	// 		// code block
+		// }
+		//////////////////////////////////// delete ////////////////////////////////////////
+
 		current->cost = shortest;
 		current = current->next;
 	}

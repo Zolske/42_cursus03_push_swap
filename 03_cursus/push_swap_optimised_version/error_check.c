@@ -6,13 +6,14 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:26:55 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/29 15:02:06 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/02/24 18:47:07 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-/*Free node, write "Error", exits the programm with the status '0'*/
+/*Free node, write "Error" on the screen and exits the programm
+with the status '0'*/
 void error(t_node **head)
 {
     free_node(head);
