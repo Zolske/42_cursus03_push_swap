@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:01:29 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/01 13:41:30 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/01 16:05:02 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 /*create an array from the lists values, the '0' index contains the length*/
 int	*create_value_array(t_node **head)
 {
-	int len;
-	int i;
-	t_node *current;
-	int *ptr_arr;
+	int		len;
+	int		i;
+	int		*ptr_arr;
+	t_node	*current;
 
 	current = *head;
 	len = get_len(*head);
@@ -36,10 +36,10 @@ int	*create_value_array(t_node **head)
 /*sort integer array, from lowest to highest value*/
 int	*bubble_sort(int *ptr_arr, t_node **head)
 {
-	int i;
-	int swap;
-	bool unsorted;
-	int len;
+	int		i;
+	int		swap;
+	int		len;
+	bool	unsorted;
 
 	len = get_len(*head);
 	unsorted = true;

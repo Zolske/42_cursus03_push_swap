@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 13:07:39 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/01 13:43:32 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/01 16:15:54 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*move target and cheapest to top and pushes it over to a*/
 void	move_cheapest_node(t_node **head_a, t_node **head_b)
 {
-	t_node *move_node;
+	t_node	*move_node;
 
 	move_node = move_b_and_a_top(head_a, head_b);
 	move_b_top(head_b, &move_node);
@@ -24,9 +24,9 @@ void	move_cheapest_node(t_node **head_a, t_node **head_b)
 }
 
 /*moves both nodes together till one of them is on the top*/
-t_node *move_b_and_a_top(t_node **head_a, t_node **head_b)
+t_node	*move_b_and_a_top(t_node **head_a, t_node **head_b)
 {
-	t_node *move_node;
+	t_node	*move_node;
 
 	move_node = find_node_move(head_b);
 	while (move_node->instr_a > 0 && move_node->instr_b > 0)
@@ -77,8 +77,8 @@ void	move_a_top(t_node **head_a, t_node **move_node)
 /*returns the address of the first cheapest node to be moved*/
 t_node	*find_node_move(t_node **head_b)
 {
-	bool start;
-	t_node *current;
+	bool	start;
+	t_node	*current;
 
 	start = true;
 	current = *head_b;

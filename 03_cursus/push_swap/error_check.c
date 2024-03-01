@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:26:55 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/01 15:08:49 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/01 16:03:27 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ bool	double_para(t_node **head, int num)
 	current = *head;
 	start = true;
 	if (current != NULL)
+	{
 		while (current != *head || start)
 		{
 			start = false;
@@ -48,5 +49,6 @@ bool	double_para(t_node **head, int num)
 				return (true);
 			current = current->next;
 		}
+	}
 	return (false);
 }

@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:52:34 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/01 13:45:06 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/01 16:12:48 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 /*update target of each node in stack b*/
 void	update_target(t_node **head_b, t_node **head_a)
 {
-	bool start;
-	int temp;
-	t_node *current_b;
+	int		temp;
+	bool	start;
+	t_node	*current_b;
 
 	start = true;
 	current_b = *head_b;
@@ -35,10 +35,10 @@ void	update_target(t_node **head_b, t_node **head_a)
 return the pointer to it or NULL if there is none*/
 t_node	*next_bigger_goal(t_node **head_a, t_node *current_b)
 {
-	t_node *bigger_num;
-	t_node *current_a;
-	int temp;
-	bool start;
+	int		temp;
+	bool	start;
+	t_node	*bigger_num;
+	t_node	*current_a;
 
 	bigger_num = NULL;
 	current_a = *head_a;
@@ -60,10 +60,10 @@ t_node	*next_bigger_goal(t_node **head_a, t_node *current_b)
 /*find the smallest goal and return it's address*/
 t_node	*smallest_goal(t_node **head_a, t_node *current_b)
 {
-	t_node *smaller_num;
-	t_node *current_a;
-	int temp;
-	bool start;
+	int		temp;
+	bool	start;
+	t_node	*smaller_num;
+	t_node	*current_a;
 
 	smaller_num = NULL;
 	current_a = *head_a;
@@ -72,7 +72,6 @@ t_node	*smallest_goal(t_node **head_a, t_node *current_b)
 	while (current_a != *head_a || start)
 	{
 		start = false;
-
 		if (current_a->i_goal < temp)
 		{
 			temp = current_a->i_goal;

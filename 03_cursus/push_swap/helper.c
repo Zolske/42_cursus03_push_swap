@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:14:41 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/01 13:57:27 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/01 15:54:36 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,6 @@ void	init_var(t_var *var, t_node **head)
 {
 	var->count = 0;
 	var->len = get_len(*head);
-	var->start = true;
+	var->start = 0;
 	var->current = *head;
 }

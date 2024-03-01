@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:59:50 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/01 15:29:20 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/01 16:00:50 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,16 @@ void	update_idx(t_node **head)
 	}
 }
 
-/*update the position of each node in the stack*/
+/*update the position of each node in the stack, sorry for line 57, but I
+needed to save one line for norminette, 1. start is 0 which is negated to
+true with '!' after it becomes false for the rest of the iteration*/
 void	update_pos(t_node **head)
 {
 	t_var	var;
 
 	init_var(&var, head);
-	while (var.current != *head || var.start)
+	while (var.current != *head || !var.start++)
 	{
-		var.start = false;
 		var.current->upper = true;
 		if (var.len % 2 != 0)
 		{

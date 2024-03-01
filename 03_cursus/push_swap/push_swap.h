@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:45:23 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/01 14:49:01 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/01 16:01:22 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct s_var
 {
 	int				len;
 	int				count;
-	bool			start;
+	int				start;
 	struct s_node	*current;
 }	t_var;
 
