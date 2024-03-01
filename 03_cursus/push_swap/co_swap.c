@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   co_swap_push.c                                     :+:      :+:    :+:   */
+/*   co_swap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:29:13 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/29 14:57:20 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/01 13:56:25 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 /*swap the first node with the second node*/
 void	co_swap_a(t_node **head_a)
 {
-	t_node *old_sec;
-	t_node *old_head;
-	t_node *third_node;
-	t_node *last_node;
+	t_node	*old_sec;
+	t_node	*old_head;
+	t_node	*third_node;
+	t_node	*last_node;
 
 	if (ch_2_nodes(&(*head_a)))
 	{
@@ -39,10 +39,10 @@ void	co_swap_a(t_node **head_a)
 
 void	co_swap_b(t_node **head_b)
 {
-	t_node *old_sec;
-	t_node *old_head;
-	t_node *third_node;
-	t_node *last_node;
+	t_node	*old_sec;
+	t_node	*old_head;
+	t_node	*third_node;
+	t_node	*last_node;
 
 	if (ch_2_nodes(&(*head_b)))
 	{

@@ -6,42 +6,14 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:01:29 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/29 15:28:07 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/01 13:41:30 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-/* add the index of the correct ordered list (i_goal)*/
-void add_goal_list(t_node **head)
-{
-	t_node *current;
-	int i;
-	int len;
-	int *ptr_arr;
-	bool start;
-
-	len = get_len(*head);
-	i = 0;
-	ptr_arr = bubble_sort(create_value_array(head), head);
-	while (i < len)
-	{
-		current = *head;
-		start = true;
-		while (current != *head || start)
-		{
-			start = false;
-			if (ptr_arr[i] == current->val && current->i_goal == -1)
-				current->i_goal = i++;
-			current = current->next;
-		}
-	}
-	free(ptr_arr);
-	ptr_arr = NULL;
-}
-
 /*create an array from the lists values, the '0' index contains the length*/
-int *create_value_array(t_node **head)
+int	*create_value_array(t_node **head)
 {
 	int len;
 	int i;
@@ -62,7 +34,7 @@ int *create_value_array(t_node **head)
 }
 
 /*sort integer array, from lowest to highest value*/
-int *bubble_sort(int *ptr_arr, t_node **head)
+int	*bubble_sort(int *ptr_arr, t_node **head)
 {
 	int i;
 	int swap;

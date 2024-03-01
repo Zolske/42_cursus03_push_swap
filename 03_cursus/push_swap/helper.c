@@ -6,17 +6,17 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:14:41 by zkepes            #+#    #+#             */
-/*   Updated: 2024/02/29 20:23:11 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/01 13:57:27 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
 /*returns the length of the linked list*/
-int get_len(t_node *head)
+int	get_len(t_node *head)
 {
-	t_node *current;
-	int i;
+	int		i;
+	t_node	*current;
 
 	current = head;
 	i = 1;
@@ -31,9 +31,9 @@ int get_len(t_node *head)
 }
 
 /*check if list has at least 2 nodes*/
-bool ch_2_nodes(t_node **head)
+bool	ch_2_nodes(t_node **head)
 {
-	t_node *current;
+	t_node	*current;
 
 	current = *head;
 	if (current != NULL)
@@ -42,28 +42,7 @@ bool ch_2_nodes(t_node **head)
 	return (false);
 }
 
-/*free the 'Stuck' list (pass 'a' and 'b' individual)*/
-void free_node(t_node **head)
-{
-	t_node *current;
-	t_node *temp;
-
-	if (*head != NULL)
-	{
-		current = (*head)->next;
-		while (current != *head)
-		{
-			temp = current;
-			current = current->next;
-			free(temp);
-			temp = NULL;
-		}
-		free(*head);
-		*head = NULL;
-	}
-}
-
-void init_var(t_var *var, t_node **head)
+void	init_var(t_var *var, t_node **head)
 {
 	var->count = 0;
 	var->len = get_len(*head);
