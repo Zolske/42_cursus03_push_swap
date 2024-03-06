@@ -6,14 +6,13 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:45:23 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/01 16:01:22 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/04 16:12:07 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-# include <stdio.h> //TODO: remove for evaluation
 # include <stdlib.h>
 # include <stdbool.h>
 # include <unistd.h>
@@ -112,5 +111,10 @@ void	init_var(t_var *var, t_node **head);
 void	init_node(t_node **new_node, t_node **head, int value);
 
 // free
+bool	is_sorted(t_node *head);
+bool	is_sorted_just_rotate(t_node **head);
+bool	is_sorted_just_rotate(t_node **head);
 void	free_node(t_node **head);
+void	sort_5_node_a(t_node **head_a);
+void	sort_more_node(t_node **head_a, int len);
 #endif

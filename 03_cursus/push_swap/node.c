@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:02:51 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/01 13:52:03 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/04 16:05:54 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,25 @@ void	init_node(t_node **new_node, t_node **head, int value)
 	(*new_node)->move = false;
 	(*new_node)->upper = true;
 	(*new_node)->next = *head;
+}
+
+/*free the 'Stuck' list (pass 'a' and 'b' individual)*/
+void	free_node(t_node **head)
+{
+	t_node	*current;
+	t_node	*temp;
+
+	if (*head != NULL)
+	{
+		current = (*head)->next;
+		while (current != *head)
+		{
+			temp = current;
+			current = current->next;
+			free(temp);
+			temp = NULL;
+		}
+		free(*head);
+		*head = NULL;
+	}
 }

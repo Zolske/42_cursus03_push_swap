@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 13:42:43 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/01 14:01:54 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/04 16:20:12 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,13 @@ int	main(int argc, char **argv)
 	t_node	*head_a;
 
 	head_a = NULL;
-	if (argc == 1)
-		return (0);
+	if (1 == argc || (2 == argc && !argv[1][0]))
+		return (1);
 	else
 		list_from_parameter(argc, argv, &head_a);
 	add_goal_list(&head_a);
-	cheap_sort(&head_a);
+	if (false == is_sorted(head_a))
+		cheap_sort(&head_a);
 	free_node(&head_a);
 	return (0);
 }
@@ -76,38 +77,11 @@ void	cheap_sort(t_node **head_a)
 	int		len;
 	t_node	*head_b;
 
-	head_b = NULL;
 	len = get_len(*head_a);
-	while (len-- > 3)
-		co_push_a_to_b(head_a, &head_b);
-	sort_3_node_a(head_a);
-	while (head_b != NULL)
-	{
-		update_all(head_a, &head_b);
-		move_cheapest_node(head_a, &head_b);
-	}
-	sort_start(head_a);
-	free_node(head_a);
-	free_node(&head_b);
-}
-
-/*free the 'Stuck' list (pass 'a' and 'b' individual)*/
-void	free_node(t_node **head)
-{
-	t_node	*current;
-	t_node	*temp;
-
-	if (*head != NULL)
-	{
-		current = (*head)->next;
-		while (current != *head)
-		{
-			temp = current;
-			current = current->next;
-			free(temp);
-			temp = NULL;
-		}
-		free(*head);
-		*head = NULL;
-	}
+	if (1 == len)
+		return ;
+	else if (3 >= len)
+		sort_3_node_a(head_a);
+	else
+		sort_more_node(head_a, len);
 }
