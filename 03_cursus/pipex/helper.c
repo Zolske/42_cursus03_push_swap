@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 15:15:29 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/06 15:33:51 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/07 10:56:10 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,12 +121,12 @@ char	*new_str_from_cat(char *str_path, char *str_com)
 	return (str_cat);
 }
 
-size_t	ft_strlen(const char *s)
-{
-	size_t	count;
+// size_t	ft_strlen(const char *s)
+// {
+// 	size_t	count;
 
-	count = 0;
-	while (s[count])
-		count++;
-	return (count);
-}
+// 	count = 0;
+// 	while (s[count])
+// 		count++;
+// 	return (count);
+// }

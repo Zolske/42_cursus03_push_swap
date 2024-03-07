@@ -6,13 +6,14 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 13:17:00 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/06 16:31:28 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/07 13:16:26 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
+#include "libft/libft.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -22,10 +23,13 @@
 
 typedef struct s_data
 {
+	// command with arguments
+	char	*cmd1_full;
+	char	*cmd2_full;
 	// command without arguments (needed for path)
 	char	*cmd1;
 	char	*cmd2;
-	// path to command
+	// path including linux command
 	char	*cmd1_path;
 	char	*cmd2_path;
 	// name of the input and out file
@@ -55,4 +59,5 @@ void	error_cmd(char *msg, char *cmd);
 
 //free
 void	free_env_path(char **env_path);
+void	free_all(t_data *data);
 #endif
