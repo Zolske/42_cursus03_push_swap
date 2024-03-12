@@ -1,33 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/05 13:17:09 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/12 20:45:13 by zkepes           ###   ########.fr       */
+/*   Created: 2024/03/12 19:20:17 by zkepes            #+#    #+#             */
+/*   Updated: 2024/03/12 19:31:53 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int main(int argc, char *argv[], char *envp[])
+/*free all malloc, write error msg to stderr, exit program with error code 1*/
+void e_free_exit(t_data **d, char *msg)
 {
-	t_data d;
-
-	if (argc >= 5)
-	{
-		init_data(argc, argv, envp, &d);
-	}
-}
-
-void	init_data(int argc, char *argv[], char *envp[], t_data *d)
-{
-	init_data_null(&d);
-	init_file_val(argc, argv, &d);
-	init_cmd_data(argv, envp, &d);
-	print_all(d);
-	free_all(&d);
-	print_all(d);
+    free_all(d);
+    write(2, msg, ft_strlen(msg));
+    exit(1);
 }

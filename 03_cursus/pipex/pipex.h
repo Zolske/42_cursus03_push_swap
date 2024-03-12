@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 13:17:00 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/12 15:00:56 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/12 20:47:58 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,8 @@ void	free_data_entry(char ***entry, int len);
 // print
 void	print_data(char **tap_str, int len, char *msg);
 void	print_all(t_data *d);
+
+// error
+void	e_free_exit(t_data **d, char *msg);
 
 #endif
