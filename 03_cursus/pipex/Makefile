@@ -1,8 +1,9 @@
 NAME	= pipex
 HEADER	= pipex.h libft.h
-SRC		= pipex.c init.c
+SRC		= pipex.c init.c free.c \
+		  print.c
 LIBFT	= libft/libft.a
-CC		= cc
+CC		= clang
 FLAGS	= -Werror -Wextra -Wall -g
 vpath libft.h libft
 

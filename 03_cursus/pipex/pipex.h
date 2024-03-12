@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 13:17:00 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/12 12:50:19 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/12 15:00:56 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,13 @@ void	init_cmd_path(char *envp[], t_data **d);
 char	**init_env_path(char *envp[],  t_data **d);
 char	*new_str_from_cat(char *str_path, char *str_cmd);
 char	*get_command_path(char **tab_env, char *cmd);
+
+// free
+void	free_all(t_data **d);
+void	free_data_entry(char ***entry, int len);
+
+// print
+void	print_data(char **tap_str, int len, char *msg);
+void	print_all(t_data *d);
 
 #endif
