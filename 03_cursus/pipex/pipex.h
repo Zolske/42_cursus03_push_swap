@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 13:17:00 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/07 13:16:26 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/12 12:50:19 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,44 +20,40 @@
 #include <sys/wait.h>
 #include <stdlib.h> // for malloc
 #include <stdbool.h>
+#include <fcntl.h> // for open flags
 
 typedef struct s_data
 {
-	// command with arguments
-	char	*cmd1_full;
-	char	*cmd2_full;
-	// command without arguments (needed for path)
-	char	*cmd1;
-	char	*cmd2;
-	// path including linux command
-	char	*cmd1_path;
-	char	*cmd2_path;
-	// name of the input and out file
-	char	*fl_in;
-	char	*fl_out;
-	// process id
-	// pid_t	pid1;
-	// pid_t	pid2;
+	// files
+	char	*in_fl;			// input file
+	char	*out_fl;		// output file
+	// for looping
+	int		idx;			// index for iterating
+	// arguments
+	int		n_cmd;			// number of commands
+	char	**cmd;			// table of commands
+	char	**cmd_arg;		// table of arguments
+	char	**cmd_path;		// table of command paths
+	char	**cmd_full;		// table of commands including there arguments
+	// pipes
+	int		**pip;			// table of pipes
+	// process ids
+	pid_t	*pid;			// process id
+	// read input from cl
+	bool	in_cl;			// set to true if here_doc (input from cl)
 }	t_data;
 
-// meta data
-void	set_data(char *argv[], char *envp[], t_data *data);
+// init data
+void	init_data_null(t_data **d);
+void	init_data(int argc, char *argv[], char *envp[], t_data *d);
+void	init_file_val(int argc, char *argv[], t_data **d);
+void	init_cmd_data(char *argv[], char *envp[], t_data **d);
+void	init_cmd(char *argv[], t_data **d);
+void	init_cmd_full(char *argv[], t_data **d);
+void	init_cmd_arg(char *argv[], t_data **d);
+void	init_cmd_path(char *envp[], t_data **d);
+char	**init_env_path(char *envp[],  t_data **d);
+char	*new_str_from_cat(char *str_path, char *str_cmd);
+char	*get_command_path(char **tab_env, char *cmd);
 
-// helper
-char	*get_command(char *str);
-char	*get_command_path(char **env_path, char *cmd);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
-char	**get_env(char **envp);
-char	*new_str_from_src(char *src, int n);
-char	*new_str_from_cat(char *str_path, char *str_com);
-
-// libft
-size_t	ft_strlen(const char *s);
-
-//error
-void	error_cmd(char *msg, char *cmd);
-
-//free
-void	free_env_path(char **env_path);
-void	free_all(t_data *data);
 #endif

@@ -1,6 +1,6 @@
 NAME	= pipex
 HEADER	= pipex.h libft.h
-SRC		= pipex.c init.c
+SRC		= pipex.c helper.c e_msg.c
 LIBFT	= libft/libft.a
 CC		= cc
 FLAGS	= -Werror -Wextra -Wall -g
