@@ -6,12 +6,13 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 15:34:40 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/13 12:44:05 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/13 14:48:28 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+/*Initializes double pointers to NULL to prevent possible double free errors.*/
 void init_data_null(t_data **d)
 {
 	(*d)->cmd = NULL;
@@ -41,85 +42,109 @@ void init_cmd_data(char *argv[], char *envp[], t_data **d)
 	init_cmd_path(envp, d);
 }
 
+/*initialize a table with all the "shell commands" from the input,
+except 1st and last which are used for in- and outfile.
+=> idx == index character	=> arg == argument from program input
+=> OFFSET == offset for "program name" and "1st arg"*/
 void init_cmd(char *argv[], t_data **d)
 {
-	int idx_c;
+	int idx;
+	int arg;
+	const int OFFSET = 2;
 
+	arg = 0;
 	(*d)->cmd = (char **)malloc(sizeof(char *) * (*d)->n_cmd);
-	while ((*d)->idx < (*d)->n_cmd)
+	e_arr_mal((*d)->cmd, d, "init_cmd - array of pointers");
+	while (arg < (*d)->n_cmd)
 	{
-		idx_c = 0;
-		while (argv[(*d)->idx + 2][idx_c] != ' ' && argv[(*d)->idx + 2][idx_c])
-			idx_c++;
-		(*d)->cmd[(*d)->idx] = (char *)malloc(sizeof(char) * idx_c + 1);
-		idx_c = 0;
-		while (argv[(*d)->idx + 2][idx_c] != ' ' && argv[(*d)->idx + 2][idx_c])
+		idx = 0;
+		while (argv[arg + OFFSET][idx] != ' ' && argv[arg + OFFSET][idx])
+			idx++;
+		(*d)->cmd[arg] = (char *)malloc(sizeof(char) * idx + 1);
+		e_ptr_mal((*d)->cmd[arg], d, "init_cmd - pointer");
+		idx = 0;
+		while (argv[arg + OFFSET][idx] != ' ' && argv[arg + OFFSET][idx])
 		{
-			(*d)->cmd[(*d)->idx][idx_c] = argv[(*d)->idx + 2][idx_c];
-			idx_c++;
+			(*d)->cmd[arg][idx] = argv[arg + OFFSET][idx];
+			idx++;
 		}
-		(*d)->cmd[(*d)->idx][idx_c] = '\0';
-		// printf("cmd arg malloc: %s\n", (*d)->cmd[0]);
-		((*d)->idx)++;
+		(*d)->cmd[arg][idx] = '\0';
+		arg++;
 	}
-	(*d)->idx = 0;
 }
 
-/*program argument by itself, "cmd" needs to be initalized first*/
+/*initialize a table with all the "arguments from the shell command" from the
+input, except 1st and last which are used for in- and outfile.
+!!! "(*d)->cmd" needs to be initalized first. !!!
+=> idx == index character	=> arg == argument from program input
+=> OFFSET == offset for "program name" and "1st arg"*/
 void init_cmd_arg(char *argv[], t_data **d)
 {
 	int idx;
 	int arg;
+	const int OFFSET = 2;
 
 	arg = 0;
 	(*d)->cmd_arg = (char **)malloc(sizeof(char *) * (*d)->n_cmd);
+	e_arr_mal((*d)->cmd_arg, d, "init_cmd_arg - array of pointers");
 	while (arg < (*d)->n_cmd)
 	{
 		idx = 0;
-		while ((*d)->cmd[arg][idx] == argv[arg + 2][idx])
+		while ((*d)->cmd[arg][idx] == argv[arg + OFFSET][idx])
 		{
-			if (argv[arg + 2][idx] == '\0')
+			if (argv[arg + OFFSET][idx] == '\0')
 			{
 				(*d)->cmd_arg[arg] = NULL;
 				break;
 			}
 			idx++;
 		}
-		// (*d)->cmd_arg[arg] =  &argv[arg + 2][idx];
-		(*d)->cmd_arg[arg] = ft_strdup(&argv[arg + 2][idx]);
+		(*d)->cmd_arg[arg] = ft_strdup(&argv[arg + OFFSET][idx]);
+		e_ptr_mal((*d)->cmd_arg[arg], d, "init_cmd_arg - pointer ERROR");
 		arg++;
 	}
-	(*d)->idx = 0;
 }
 
+/*initialize a table with all the "shell commands + there arguments" from the
+input, except 1st and last which are used for in- and outfile.
+=> arg == argument from program input
+=> OFFSET == offset for "program name" and "1st arg"*/
 void init_cmd_full(char *argv[], t_data **d)
 {
+	int arg;
+	const int OFFSET = 2;
+
+	arg = 0;
 	(*d)->cmd_full = (char **)malloc(sizeof(char *) * (*d)->n_cmd);
-	while ((*d)->idx < (*d)->n_cmd)
+	e_arr_mal((*d)->cmd_full, d, "init_cmd_full - array of pointers");
+	while (arg < (*d)->n_cmd)
 	{
-		(*d)->cmd_full[(*d)->idx] = ft_strdup(argv[(*d)->idx + 2]);
-		// printf("cmd arg malloc: %s\n", (*d)->cmd_full[0]);
-		((*d)->idx)++;
+		(*d)->cmd_full[arg] = ft_strdup(argv[arg + OFFSET]);
+		e_ptr_mal((*d)->cmd_full[arg], d, "init_cmd_full - pointer ERROR");
+		arg++;
 	}
-	(*d)->idx = 0;
 }
 
 /*add working path + command to data, except for 2nd if 1st arg is "doc_here"*/
 void init_cmd_path(char *envp[], t_data **d)
 {
 	char **tab_env;
+	int idx;
 
+	idx = 0;
 	tab_env = init_env_path(envp, d);
 	(*d)->cmd_path = (char **)malloc(sizeof(char *) * (*d)->n_cmd);
-	while ((*d)->idx < (*d)->n_cmd)
+	if (NULL == (*d)->cmd_path)
 	{
-		if (false == ((*d)->in_cl && (*d)->idx == 0))
-			(*d)->cmd_path[(*d)->idx] = get_command_path(tab_env, (*d)->cmd[(*d)->idx]);
-		((*d)->idx)++;
+		free_data_entry(&tab_env, tablen(tab_env));
+		e_arr_mal((*d)->cmd_path, d, "init_cmd_path - array of pointers");
 	}
-	(*d)->idx = 0;
-	// free_data_entry(&tab_env, ft_strlen(&tab_env));
-	// printf("len tab: %d\n", tablen(tab_env));
+	while (idx < (*d)->n_cmd)
+	{
+		if (false == ((*d)->in_cl && idx == 0))
+			(*d)->cmd_path[idx] = get_command_path(tab_env, (*d)->cmd[idx]);
+		(idx)++;
+	}
 	free_data_entry(&tab_env, tablen(tab_env));
 }
 
@@ -151,13 +176,17 @@ char *get_command_path(char **tab_env, char *cmd)
 /*return a pointer to a new malloc, table of strings containing the env. paths*/
 char **init_env_path(char *envp[], t_data **d)
 {
+	char	**tab_env;
+	
 	while (*envp)
 	{
 		if (0 == ft_strncmp(*envp, "PATH=", 5))
 			break;
 		envp++;
 	}
-	return (ft_split(&envp[0][5], ':'));
+	tab_env = ft_split(&envp[0][5], ':');
+	e_arr_mal(tab_env, d, "init_env_path - array of pointers ERROR");
+	return (tab_env);
 }
 
 /*return a pointer to a new malloc, concatenate the input strings + '\0'*/

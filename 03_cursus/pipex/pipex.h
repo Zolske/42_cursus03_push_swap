@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 13:17:00 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/13 12:56:55 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/13 13:34:17 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ void	print_all(t_data *d);
 
 // error
 void	e_free_exit(t_data **d, char *msg);
+void e_arr_mal(char **parray, t_data **d, char *msg);
+void e_ptr_mal(char *ptr, t_data **d, char *msg);
 
 // helper
 int	tablen(char **tab);
