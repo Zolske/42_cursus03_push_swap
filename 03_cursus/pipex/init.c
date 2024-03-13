@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 15:34:40 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/12 20:56:17 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/13 12:44:05 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,9 @@ void init_cmd_path(char *envp[], t_data **d)
 		((*d)->idx)++;
 	}
 	(*d)->idx = 0;
-	free_data_entry(&tab_env, ft_strlen(*tab_env));
+	// free_data_entry(&tab_env, ft_strlen(&tab_env));
+	// printf("len tab: %d\n", tablen(tab_env));
+	free_data_entry(&tab_env, tablen(tab_env));
 }
 
 char *get_command_path(char **tab_env, char *cmd)
@@ -187,4 +189,15 @@ char *new_str_from_cat(char *str_path, char *str_cmd)
 	str_cat[len] = '\0';
 	// printf("in side cat: %s\n", str_cat);
 	return (str_cat);
+}
+
+/*returns the length of an **tab if it is '\0'*/
+int	tablen(char **tab)
+{
+	int	idx;
+
+	idx = 0;
+	while (tab[idx])
+		idx++;
+	return (idx);
 }

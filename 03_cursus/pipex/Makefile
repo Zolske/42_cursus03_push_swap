@@ -3,7 +3,7 @@ HEADER	= pipex.h libft.h
 SRC		= pipex.c init.c free.c error.c\
 		  print.c
 LIBFT	= libft/libft.a
-CC		= clang
+CC		= cc
 FLAGS	= -Werror -Wextra -Wall -g
 vpath libft.h libft
 

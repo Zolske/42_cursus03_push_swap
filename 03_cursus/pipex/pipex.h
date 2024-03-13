@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 13:17:00 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/12 20:47:58 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/13 12:56:55 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*new_str_from_cat(char *str_path, char *str_cmd);
 char	*get_command_path(char **tab_env, char *cmd);
 
 // free
-void	free_all(t_data **d);
+void	free_all(t_data *d);
 void	free_data_entry(char ***entry, int len);
 
 // print
@@ -66,5 +66,8 @@ void	print_all(t_data *d);
 
 // error
 void	e_free_exit(t_data **d, char *msg);
+
+// helper
+int	tablen(char **tab);
 
 #endif
