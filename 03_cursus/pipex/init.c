@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 15:34:40 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/13 14:48:28 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/13 15:36:41 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void init_data_null(t_data **d)
 	(*d)->cmd_arg = NULL;
 	(*d)->cmd_full = NULL;
 	(*d)->cmd_path = NULL;
+	(*d)->pip = NULL;
 }
 
 /*initialize file names, num of commands, idx = 0; if input from CL*/
@@ -40,6 +41,7 @@ void init_cmd_data(char *argv[], char *envp[], t_data **d)
 	init_cmd_full(argv, d);
 	init_cmd_arg(argv, d);
 	init_cmd_path(envp, d);
+	init_pipe(d);
 }
 
 /*initialize a table with all the "shell commands" from the input,

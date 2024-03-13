@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 13:17:00 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/13 13:34:17 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/13 15:38:13 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ char	*get_command_path(char **tab_env, char *cmd);
 // free
 void	free_all(t_data *d);
 void	free_data_entry(char ***entry, int len);
+void	free_data_int_entry(int ***entry, int len);
 
 // print
 void	print_data(char **tap_str, int len, char *msg);
@@ -68,8 +69,14 @@ void	print_all(t_data *d);
 void	e_free_exit(t_data **d, char *msg);
 void e_arr_mal(char **parray, t_data **d, char *msg);
 void e_ptr_mal(char *ptr, t_data **d, char *msg);
+void e_arr_int_mal(int **parray, t_data **d, char *msg);
+void e_ptr_int_mal(int *ptr, t_data **d, char *msg);
 
 // helper
 int	tablen(char **tab);
+
+// create pipe
+void	init_pipe(t_data **d);
+int	*create_pipe(t_data **d);
 
 #endif

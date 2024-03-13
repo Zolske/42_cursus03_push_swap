@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 19:20:17 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/13 14:37:04 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/13 15:28:17 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void e_free_exit(t_data **d, char *msg)
     exit(1);
 }
 
-/*Error in allocating memory to array of pointers, free everything and exit*/
+/*For char array, Error in malloc to array of ptr., free everything and exit*/
 void e_arr_mal(char **parray, t_data **d, char *msg)
 {
     if (parray == NULL)
@@ -32,7 +32,7 @@ void e_arr_mal(char **parray, t_data **d, char *msg)
     }
 }
 
-/*Error in allocating memory to pointer, free everything and exit*/
+/*For char pointer, Error in malloc to ptr., free everything and exit*/
 void e_ptr_mal(char *ptr, t_data **d, char *msg)
 {
     if (ptr == NULL)
@@ -40,6 +40,28 @@ void e_ptr_mal(char *ptr, t_data **d, char *msg)
         perror(msg);
         free_all(*d);
         // write(2, msg, ft_strlen(msg));
+        exit(1);
+    }
+}
+
+/*For int array, Error in malloc to array of ptr., free everything and exit*/
+void e_arr_int_mal(int **parray, t_data **d, char *msg)
+{
+    if (parray == NULL)
+    {
+        perror(msg);
+        free_all(*d);
+        exit(1);
+    }
+}
+
+/*For int pointer, Error in malloc to ptr., free everything and exit*/
+void e_ptr_int_mal(int *ptr, t_data **d, char *msg)
+{
+    if (ptr == NULL)
+    {
+        perror(msg);
+        free_all(*d);
         exit(1);
     }
 }
