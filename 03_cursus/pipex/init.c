@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 15:34:40 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/13 15:36:41 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/13 16:25:04 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void init_data_null(t_data **d)
 	(*d)->cmd_full = NULL;
 	(*d)->cmd_path = NULL;
 	(*d)->pip = NULL;
+	(*d)->pid = NULL;
 }
 
 /*initialize file names, num of commands, idx = 0; if input from CL*/
@@ -42,6 +43,7 @@ void init_cmd_data(char *argv[], char *envp[], t_data **d)
 	init_cmd_arg(argv, d);
 	init_cmd_path(envp, d);
 	init_pipe(d);
+	init_pid(d);
 }
 
 /*initialize a table with all the "shell commands" from the input,
@@ -231,4 +233,11 @@ int	tablen(char **tab)
 	while (tab[idx])
 		idx++;
 	return (idx);
+}
+
+/*Create all "process ids" based on the num of "program shell argument"*/
+void	init_pid(t_data **d)
+{
+	(*d)->pid = (pid_t *)malloc(sizeof(pid_t) * (*d)->n_cmd);
+	e_ptr_pidt_mal((*d)->pid, d, "init_pid - pointer of pid_t");
 }

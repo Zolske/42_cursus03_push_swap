@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 19:20:17 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/13 15:28:17 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/13 16:21:21 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,17 @@ void e_arr_int_mal(int **parray, t_data **d, char *msg)
 
 /*For int pointer, Error in malloc to ptr., free everything and exit*/
 void e_ptr_int_mal(int *ptr, t_data **d, char *msg)
+{
+    if (ptr == NULL)
+    {
+        perror(msg);
+        free_all(*d);
+        exit(1);
+    }
+}
+
+/*For pid_t pointer, Error in malloc to ptr., free everything and exit*/
+void e_ptr_pidt_mal(pid_t *ptr, t_data **d, char *msg)
 {
     if (ptr == NULL)
     {

@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:53:22 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/13 15:40:54 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/13 17:41:10 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	init_pipe(t_data **d)
 	int idx;
 
 	idx = 0;
-	(*d)->pip = (int **)malloc(sizeof(int *) * (*d)->n_cmd);
-	e_arr_int_mal((*d)->pip, d, "init_pipe - array of pointers");
+	(*d)->pip = (int **)malloc(sizeof(int*) * (*d)->n_cmd);
+	// e_arr_int_mal((*d)->pip, d, "init_pipe - array of pointers"); TODO: wrong tye, need to be for pointer
 	while ( idx < (*d)->n_cmd)
 	{
 		(*d)->pip[idx] = create_pipe(d);
@@ -33,7 +33,7 @@ int	*create_pipe(t_data **d)
 {
 	int *pipefd;
 
-	pipefd = (int *)malloc(sizeof(int *) * 2);
+	pipefd = (int *)malloc(sizeof(int) * 2);
 	e_ptr_int_mal(pipefd, d, "create_pipe - array pointer");
 	if (pipe(pipefd) == -1)
 	{

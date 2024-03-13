@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 13:17:00 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/13 15:38:13 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/13 17:41:37 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@
 #include <stdlib.h> // for malloc
 #include <stdbool.h>
 #include <fcntl.h> // for open flags
+
+enum {
+	READ = 0,
+	WRITE = 1,
+};
 
 typedef struct s_data
 {
@@ -38,7 +43,7 @@ typedef struct s_data
 	// pipes
 	int		**pip;			// table of pipes
 	// process ids
-	pid_t	*pid;			// process id
+	pid_t	*pid;			// process ids
 	// read input from cl
 	bool	in_cl;			// set to true if here_doc (input from cl)
 }	t_data;
@@ -52,6 +57,8 @@ void	init_cmd(char *argv[], t_data **d);
 void	init_cmd_full(char *argv[], t_data **d);
 void	init_cmd_arg(char *argv[], t_data **d);
 void	init_cmd_path(char *envp[], t_data **d);
+void	init_pipe(t_data **d);
+void	init_pid(t_data **d);
 char	**init_env_path(char *envp[],  t_data **d);
 char	*new_str_from_cat(char *str_path, char *str_cmd);
 char	*get_command_path(char **tab_env, char *cmd);
@@ -60,6 +67,7 @@ char	*get_command_path(char **tab_env, char *cmd);
 void	free_all(t_data *d);
 void	free_data_entry(char ***entry, int len);
 void	free_data_int_entry(int ***entry, int len);
+void	free_data_pidt_entry(pid_t **entry, int len);
 
 // print
 void	print_data(char **tap_str, int len, char *msg);
@@ -71,12 +79,14 @@ void e_arr_mal(char **parray, t_data **d, char *msg);
 void e_ptr_mal(char *ptr, t_data **d, char *msg);
 void e_arr_int_mal(int **parray, t_data **d, char *msg);
 void e_ptr_int_mal(int *ptr, t_data **d, char *msg);
+void e_ptr_pidt_mal(pid_t *ptr, t_data **d, char *msg);
 
 // helper
 int	tablen(char **tab);
 
 // create pipe
-void	init_pipe(t_data **d);
 int	*create_pipe(t_data **d);
+
+void	pipe_commands(t_data *d);
 
 #endif
