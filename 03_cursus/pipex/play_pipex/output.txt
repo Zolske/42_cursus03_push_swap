@@ -1,0 +1,14 @@
+total 76
+-rw-r--r-- 1 zkepes 2023_london  1158 Mar  7 15:02 children.c
+-rw-r--r-- 1 zkepes 2023_london  3090 Mar  7 14:24 end_pipe_to_file.c
+-rw-r--r-- 1 zkepes 2023_london    36 Mar  7 14:26 f_in.txt
+-rw-r--r-- 1 zkepes 2023_london   314 Mar  7 14:36 f_out.txt
+-rw-r--r-- 1 zkepes 2023_london  3034 Mar  7 14:46 main.c
+-rwxr-xr-x 1 zkepes 2023_london 16432 Mar 14 14:56 n_file_out
+-rw-r--r-- 1 zkepes 2023_london  2087 Mar 14 14:17 n_file_out.c
+-rwxr-xr-x 1 zkepes 2023_london 16320 Mar 14 13:16 one_pipe_many_childrer
+-rw-r--r-- 1 zkepes 2023_london  1782 Mar  7 15:42 one_pipe_many_childrer.c
+-rw-r--r-- 1 zkepes 2023_london     0 Mar 14 14:56 output.txt
+-rw-r--r-- 1 zkepes 2023_london  1015 Mar 11 14:33 pipe_test.c
+-rw-r--r-- 1 zkepes 2023_london  1556 Mar 11 12:27 start_discript_pipe_from_file.c
+-rw-r--r-- 1 zkepes 2023_london  3034 Mar  7 14:47 start_pipe_from_file.c

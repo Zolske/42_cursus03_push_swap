@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 15:34:40 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/13 16:25:04 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/14 10:59:26 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ except 1st and last which are used for in- and outfile.
 void init_cmd(char *argv[], t_data **d)
 {
 	int idx;
+	int	start;
 	int arg;
 	const int OFFSET = 2;
 
@@ -61,16 +62,16 @@ void init_cmd(char *argv[], t_data **d)
 	e_arr_mal((*d)->cmd, d, "init_cmd - array of pointers");
 	while (arg < (*d)->n_cmd)
 	{
-		idx = 0;
-		while (argv[arg + OFFSET][idx] != ' ' && argv[arg + OFFSET][idx])
-			idx++;
+		start = skip_space(argv[arg + OFFSET]);
+		idx	= skip_characters(&(argv[arg + OFFSET][start]));
 		(*d)->cmd[arg] = (char *)malloc(sizeof(char) * idx + 1);
 		e_ptr_mal((*d)->cmd[arg], d, "init_cmd - pointer");
 		idx = 0;
-		while (argv[arg + OFFSET][idx] != ' ' && argv[arg + OFFSET][idx])
+		while (argv[arg + OFFSET][start] != ' ' && argv[arg + OFFSET][start])
 		{
-			(*d)->cmd[arg][idx] = argv[arg + OFFSET][idx];
+			(*d)->cmd[arg][idx] = argv[arg + OFFSET][start];
 			idx++;
+			start++;
 		}
 		(*d)->cmd[arg][idx] = '\0';
 		arg++;
@@ -93,16 +94,9 @@ void init_cmd_arg(char *argv[], t_data **d)
 	e_arr_mal((*d)->cmd_arg, d, "init_cmd_arg - array of pointers");
 	while (arg < (*d)->n_cmd)
 	{
-		idx = 0;
-		while ((*d)->cmd[arg][idx] == argv[arg + OFFSET][idx])
-		{
-			if (argv[arg + OFFSET][idx] == '\0')
-			{
-				(*d)->cmd_arg[arg] = NULL;
-				break;
-			}
-			idx++;
-		}
+		idx = skip_space(argv[arg + OFFSET]);
+		idx += skip_characters(&argv[arg + OFFSET][idx]);
+		idx += skip_space(&argv[arg + OFFSET][idx]);
 		(*d)->cmd_arg[arg] = ft_strdup(&argv[arg + OFFSET][idx]);
 		e_ptr_mal((*d)->cmd_arg[arg], d, "init_cmd_arg - pointer ERROR");
 		arg++;
