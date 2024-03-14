@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 13:17:00 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/14 10:33:05 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/14 20:25:55 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ int	tablen(char **tab);
 int	*create_pipe(t_data **d);
 
 void	pipe_commands(t_data *d);
+void	child_process(int id, t_data *d);
+void	close_pipes(t_data *d);
 
 // helper
 int	skip_space(char *str);

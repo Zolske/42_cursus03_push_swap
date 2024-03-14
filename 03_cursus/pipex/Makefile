@@ -1,6 +1,6 @@
 NAME	= pipex
 HEADER	= pipex.h libft.h
-SRC		= pipex.c init.c free.c error.c init_pipe.c helper.c\
+SRC		= pipex.c init.c free.c error.c init_pipe.c helper.c pipe.c\
 		  print.c
 LIBFT	= libft/libft.a
 CC		= cc
@@ -12,7 +12,7 @@ all: NAME
 NAME: $(HEADER) $(SRC) $(SRC:.c=.o) ${LIBFT}
 	$(CC) $(FLAGS) $(SRC:.c=.o) -L./libft -lft -o $(NAME)
 
-$(LIBFT): 
+$(LIBFT):
 	make -C libft
 
 %.o: %.c

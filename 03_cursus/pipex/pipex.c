@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 13:17:09 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/14 17:05:35 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/14 20:30:32 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	pipe_commands(t_data *d)
         close(d->pip[0][WRITE]);
 
         // Call the desired Linux command using execve
-        char *args[] = {d->cmd[0], d->cmd_arg[0], NULL}; 
+        char *args[] = {d->cmd[0], d->cmd_arg[0], NULL};
 		// Example: list files in the current directory
         if (execve(d->cmd_path[0], args, NULL) == -1) {
             perror("execve");
@@ -68,42 +68,45 @@ void	pipe_commands(t_data *d)
         }
     }
     else // next child process
-    { 
-        printf("hello form 2nd child\n");
-        // Fork a child process
-        d->pid[1] = fork();
-        if (d->pid[1] == -1) {
-        perror("fork");
-        exit(EXIT_FAILURE);
-        }
-            // Child process
-        if (d->pid[1] == 0)
-        {
-            close(d->pip[0][WRITE]);
-            if (dup2(d->pip[0][READ], STDIN_FILENO) == -1) {
-                perror("dup2");
-                exit(EXIT_FAILURE);
-            }
-            close(d->pip[0][READ]);
-            close(d->pip[1][READ]);
-            if (dup2(d->pip[1][WRITE], STDOUT_FILENO) == -1) {
-                perror("dup2");
-                exit(EXIT_FAILURE);
-            }
-            close(d->pip[1][WRITE]);
-            char *args2[] = {d->cmd[1], d->cmd_arg[1], NULL}; 
-            if (execve(d->cmd_path[1], args2, NULL) == -1) {
-                perror("execve");
-                exit(EXIT_FAILURE);
-            }
-         }
-        else
+    {
+        // printf("hello form 2nd child\n");
+        // // Fork a child process
+        // d->pid[1] = fork();
+        // if (d->pid[1] == -1) {
+        // perror("fork");
+        // exit(EXIT_FAILURE);
+        // }
+        //     // Child process
+        // if (d->pid[1] == 0)
+        // {
+        //     close(d->pip[0][WRITE]);
+        //     if (dup2(d->pip[0][READ], STDIN_FILENO) == -1) {
+        //         perror("dup2");
+        //         exit(EXIT_FAILURE);
+        //     }
+        //     close(d->pip[0][READ]);
+        //     close(d->pip[1][READ]);
+        //     if (dup2(d->pip[1][WRITE], STDOUT_FILENO) == -1) {
+        //         perror("dup2");
+        //         exit(EXIT_FAILURE);
+        //     }
+        //     close(d->pip[1][WRITE]);
+        //     char *args2[] = {d->cmd[1], d->cmd_arg[1], NULL};
+        //     if (execve(d->cmd_path[1], args2, NULL) == -1) {
+        //         perror("execve");
+        //         exit(EXIT_FAILURE);
+        //     }
+        //  }
+        child_process(1, d);
+        // else
         { // next child process
-            close(d->pip[0][READ]);
-            close(d->pip[0][WRITE]);
-            close(d->pip[1][WRITE]);
-            waitpid(d->pid[0], NULL, 0);
-            waitpid(d->pid[1], NULL, 0);
+            close_pipes(d);
+            // close(d->pip[0][READ]);
+            // close(d->pip[0][WRITE]);
+            // close(d->pip[1][WRITE]);
+            wait(NULL);
+            // waitpid(d->pid[0], NULL, 0);
+            // waitpid(d->pid[1], NULL, 0);
             printf("hello form parent\n");
 
             // Open or create a file for writing
