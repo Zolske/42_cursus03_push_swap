@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 19:22:08 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/14 20:34:19 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/15 15:11:07 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,23 @@
 void	child_process(int id, t_data *d)
 {
 		int	id_prev;
-		char *args[3];
+		// char *args[3];
+        char *args[4];
 
 		id_prev = id - 1;
 		args[0] = d->cmd[id];
-		args[1] = d->cmd_arg[id];
-		args[2] = NULL;
-	    printf("hello form loop child\n");
+        args[1] = d->cmd_arg[id][0];
+        args[2] = NULL;
+        args[3] = NULL;
+
+        // args[1] = "-E";
+        // args[2] = "e$";
+        // args[3] = NULL;
+
+
+
+		// args[1] = d->cmd_arg[id][0];
+	    // printf("hello form loop child\n");
         // Fork a child process
         d->pid[id] = fork();
         if (d->pid[id] == -1)
@@ -45,8 +55,10 @@ void	child_process(int id, t_data *d)
                 perror("dup2 LOOP WRITE");
                 exit(EXIT_FAILURE);
             }
+            // printf("inside child process: |%s|\n", d->cmd_arg[id][0]);
             close(d->pip[id][WRITE]);
-            if (execve(d->cmd_path[id], args, NULL) == -1)
+            // if (execve(d->cmd_path[id], args, NULL) == -1)
+            if (execve(d->cmd_path[id], d->cmd_arg[id], NULL) == -1)
 			{
                 perror("execve");
                 exit(EXIT_FAILURE);

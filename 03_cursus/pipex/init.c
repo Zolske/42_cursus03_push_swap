@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 15:34:40 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/14 10:59:26 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/15 15:56:13 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void init_data_null(t_data **d)
 {
 	(*d)->cmd = NULL;
-	(*d)->cmd_arg = NULL;
+	// (*d)->cmd_arg = NULL;
 	(*d)->cmd_full = NULL;
 	(*d)->cmd_path = NULL;
 	(*d)->pip = NULL;
@@ -39,7 +39,7 @@ void init_file_val(int argc, char *argv[], t_data **d)
 void init_cmd_data(char *argv[], char *envp[], t_data **d)
 {
 	init_cmd(argv, d);
-	init_cmd_full(argv, d);
+	// init_cmd_full(argv, d);
 	init_cmd_arg(argv, d);
 	init_cmd_path(envp, d);
 	init_pipe(d);
@@ -88,18 +88,42 @@ void init_cmd_arg(char *argv[], t_data **d)
 	int idx;
 	int arg;
 	const int OFFSET = 2;
+	char	**tab_arg;
+	int len_tab;
 
 	arg = 0;
-	(*d)->cmd_arg = (char **)malloc(sizeof(char *) * (*d)->n_cmd);
-	e_arr_mal((*d)->cmd_arg, d, "init_cmd_arg - array of pointers");
+	(*d)->cmd_arg = (char ***)malloc(sizeof(char **) * (*d)->n_cmd);
+	//e_arr_mal((*d)->cmd_arg, d, "init_cmd_arg - array of pointers");
 	while (arg < (*d)->n_cmd)
 	{
-		idx = skip_space(argv[arg + OFFSET]);
-		idx += skip_characters(&argv[arg + OFFSET][idx]);
-		idx += skip_space(&argv[arg + OFFSET][idx]);
-		(*d)->cmd_arg[arg] = ft_strdup(&argv[arg + OFFSET][idx]);
-		e_ptr_mal((*d)->cmd_arg[arg], d, "init_cmd_arg - pointer ERROR");
+		tab_arg = ft_split(argv[arg + OFFSET], ' ');
+		len_tab = tablen(tab_arg);
+		(*d)->cmd_arg[arg] = (char **)malloc(sizeof(char *) * len_tab + 1);
+		idx = 0;
+		while (idx < len_tab)
+		{
+			(*d)->cmd_arg[arg][idx] = tab_arg[idx];
+			idx++;
+		}
+		(*d)->cmd_arg[arg][idx] = NULL;
 		arg++;
+
+		// for printing
+		// idx = 1;
+		// while (idx < len_tab + 2)
+		// 	printf("new arg: %s\n", (*d)->cmd_arg[arg][idx++]);
+
+
+		// str_arg = ft_strtrim(&argv[arg + OFFSET][idx], " ");
+		// e_ptr_mal(str_arg, d, "init_cmd_arg - pointer ERROR");
+		// if (0 == ft_strlen(str_arg))
+		// 	(*d)->cmd_arg[arg] = NULL;
+		// else
+		// 	(*d)->cmd_arg[arg] = str_arg;
+		// printf("arg: |%s|\n", (*d)->cmd_arg[arg]);
+		// idx += skip_space(&argv[arg + OFFSET][idx]);
+		// (*d)->cmd_arg[arg] = ft_strdup(&argv[arg + OFFSET][idx]);
+		// e_ptr_mal((*d)->cmd_arg[arg], d, "init_cmd_arg - pointer ERROR");
 	}
 }
 

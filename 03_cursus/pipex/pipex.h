@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 13:17:00 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/14 20:25:55 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/15 14:21:58 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef struct s_data
 	// arguments
 	int		n_cmd;			// number of commands
 	char	**cmd;			// table of commands
-	char	**cmd_arg;		// table of arguments
+	char	***cmd_arg;		// table of arguments
 	char	**cmd_path;		// table of command paths
 	char	**cmd_full;		// table of commands including there arguments
 	// pipes
@@ -71,6 +71,7 @@ void	free_data_pidt_entry(pid_t **entry, int len);
 
 // print
 void	print_data(char **tap_str, int len, char *msg);
+void	print_arg(char ***tab_str, int len, char *msg);
 void	print_all(t_data *d);
 
 // error
