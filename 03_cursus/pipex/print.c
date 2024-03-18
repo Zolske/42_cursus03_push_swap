@@ -5,57 +5,32 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/12 14:19:03 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/15 14:57:46 by zkepes           ###   ########.fr       */
+/*   Created: 2024/03/17 13:52:26 by zkepes            #+#    #+#             */
+/*   Updated: 2024/03/17 15:00:01 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void print_all(t_data *d)
+void	print_cmd_arg(t_data *d)
 {
-	print_data(d->cmd, d->n_cmd, "cmd");
-	// print_data(d->cmd_arg, d->n_cmd, "cmd_arg");
-	// print_data(d->cmd_full, d->n_cmd, "cmd_full");
-	print_data(d->cmd_path, d->n_cmd, "path");
-}
+	int	cmd;
+	int arg;
 
-void print_data(char **tab_str, int len, char *msg)
-{
-	int		idx;
-
-	idx = 0;
-	if (tab_str != NULL)
+	if (d->cmd_arg != NULL)
 	{
-		if (msg)
-			printf("\033[0;32m msg: %12s\033[0m", msg);
-		while (idx < len)
+		printf("\033[1;32m%7s\033[0m|\033[0;36m%-16s\033[0m|\033[0;31m%-5s\033[0m\n", "command", "path", "arguments");
+		cmd = 0;
+		while (d->cmd_arg[cmd])
 		{
-			printf("|\033[0;31m%-15s\033[0m", tab_str[idx]);
-			idx++;
+			arg = 0;
+			printf("\033[1;32m%7s\033[0m", d->cmd_arg[cmd][arg++]);
+			if (d->cmd_path[cmd])
+				printf("|\033[0;36m%-16s\033[0m", d->cmd_path[cmd]);
+			while (d->cmd_arg[cmd][arg])
+				printf("|\033[0;31m%-5s\033[0m", d->cmd_arg[cmd][arg++]);
+			printf("|\n");
+			cmd++;
 		}
-		printf("|\n");
 	}
-	else
-		printf("\n\t\t\033[1;31m>> NO DATA IN '%s' <<\033[0m\n", msg);
 }
-
-// void print_arg(char ***tab_str, int len, char *msg)
-// {
-// 	int		idx;
-
-// 	idx = 0;
-// 	if (tab_str != NULL)
-// 	{
-// 		if (msg)
-// 			printf("\033[0;32m msg: %12s\033[0m", msg);
-// 		while (idx < len)
-// 		{
-// 			printf("|\033[0;31m%-15s\033[0m", tab_str[idx][0]);
-// 			idx++;
-// 		}
-// 		printf("|\n");
-// 	}
-// 	else
-// 		printf("\n\t\t\033[1;31m>> NO DATA IN '%s' <<\033[0m\n", msg);
-// }

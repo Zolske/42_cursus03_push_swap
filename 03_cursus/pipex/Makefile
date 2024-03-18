@@ -1,6 +1,6 @@
 NAME	= pipex
 HEADER	= pipex.h libft.h
-SRC		= pipex.c init.c free.c error.c init_pipe.c helper.c pipe.c\
+SRC		= pipex.c init.c helper.c path.c free.c error.c pipping.c\
 		  print.c
 LIBFT	= libft/libft.a
 CC		= cc

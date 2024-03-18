@@ -6,12 +6,14 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 13:17:00 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/15 14:21:58 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/18 17:33:22 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
+
+#define BUFFER_SIZE 4096
 
 #include "libft/libft.h"
 #include <unistd.h>
@@ -32,68 +34,56 @@ typedef struct s_data
 	// files
 	char	*in_fl;			// input file
 	char	*out_fl;		// output file
-	// for looping
-	int		idx;			// index for iterating
 	// arguments
 	int		n_cmd;			// number of commands
-	char	**cmd;			// table of commands
 	char	***cmd_arg;		// table of arguments
 	char	**cmd_path;		// table of command paths
-	char	**cmd_full;		// table of commands including there arguments
+	bool	read_cl;		// read from command line
+	char	*limiter;		// when to stop reading form cl
 	// pipes
-	int		**pip;			// table of pipes
+	int		**pipes;		// pipes, communication child-parent
+	// offset from which program argument to read cmd
+	int		offset;
 	// process ids
-	pid_t	*pid;			// process ids
-	// read input from cl
-	bool	in_cl;			// set to true if here_doc (input from cl)
+	// pid_t	*pid;			// process ids
 }	t_data;
 
-// init data
-void	init_data_null(t_data **d);
+// set values
 void	init_data(int argc, char *argv[], char *envp[], t_data *d);
-void	init_file_val(int argc, char *argv[], t_data **d);
-void	init_cmd_data(char *argv[], char *envp[], t_data **d);
-void	init_cmd(char *argv[], t_data **d);
-void	init_cmd_full(char *argv[], t_data **d);
-void	init_cmd_arg(char *argv[], t_data **d);
-void	init_cmd_path(char *envp[], t_data **d);
-void	init_pipe(t_data **d);
-void	init_pid(t_data **d);
-char	**init_env_path(char *envp[],  t_data **d);
-char	*new_str_from_cat(char *str_path, char *str_cmd);
-char	*get_command_path(char **tab_env, char *cmd);
+void	init_data_null(t_data *d, char **argv, int argc);
+void	set_cmd_arg(t_data *d, char **argv);
+// set vale
+void	set_cmd_path(char *envp[], t_data *d);
+void	set_pipes(t_data *d);
+char	**init_env_path(char *envp[]);
+char	*get_command_path(char *cmd, char **tab_env, char *envp[]);
+
+// helper
+int	tab_len(char **tab);
+char *new_str_from_cat(char *str_path, char *str_cmd);
+
+// print
+void	print_cmd_arg(t_data *d);
 
 // free
 void	free_all(t_data *d);
-void	free_data_entry(char ***entry, int len);
-void	free_data_int_entry(int ***entry, int len);
-void	free_data_pidt_entry(pid_t **entry, int len);
-
-// print
-void	print_data(char **tap_str, int len, char *msg);
-void	print_arg(char ***tab_str, int len, char *msg);
-void	print_all(t_data *d);
+void	free_cmd_arg(t_data *d);
+void	free_path(t_data *d);
+void	free_tab(char **tab);
 
 // error
-void	e_free_exit(t_data **d, char *msg);
-void e_arr_mal(char **parray, t_data **d, char *msg);
-void e_ptr_mal(char *ptr, t_data **d, char *msg);
-void e_arr_int_mal(int **parray, t_data **d, char *msg);
-void e_ptr_int_mal(int *ptr, t_data **d, char *msg);
-void e_ptr_pidt_mal(pid_t *ptr, t_data **d, char *msg);
+void	e_mal_exit(char *ptr, t_data *d, char *msg);
+void	e_ptr2_mal_exit(char **ptr, t_data *d, char *msg);
+void	e_ptr3_mal_exit(char ***ptr, t_data *d, char *msg);
+void	e_ptr2_2x_mal_exit(char **ptr, char **tab, t_data *d, char *msg);
 
-// helper
-int	tablen(char **tab);
+void    pipe_commands(t_data *d);
+void	child_command(t_data *d, int id);
 
-// create pipe
-int	*create_pipe(t_data **d);
+void	close_all_pipes(t_data *d);
+void	write_outfile(t_data *d);
+void	pipe_from_file(t_data *d);
+void	pipe_from_cl(t_data *d);
 
-void	pipe_commands(t_data *d);
-void	child_process(int id, t_data *d);
-void	close_pipes(t_data *d);
-
-// helper
-int	skip_space(char *str);
-int	skip_characters(char *str);
 
 #endif

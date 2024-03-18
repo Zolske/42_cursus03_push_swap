@@ -5,76 +5,75 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/12 13:55:19 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/13 16:19:52 by zkepes           ###   ########.fr       */
+/*   Created: 2024/03/17 15:01:25 by zkepes            #+#    #+#             */
+/*   Updated: 2024/03/18 12:21:00 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void free_all(t_data *d)
+void	free_all(t_data *d)
 {
-	free_data_entry(&d->cmd, d->n_cmd);
-	free_data_entry(&d->cmd_arg, d->n_cmd);
-	free_data_entry(&d->cmd_full, d->n_cmd);
-	free_data_entry(&d->cmd_path, d->n_cmd);
-	free_data_int_entry(&d->pip, d->n_cmd);
-	free_data_pidt_entry(&d->pid, d->n_cmd);
+	free_cmd_arg(d);
+	free_path(d);
 }
 
-void free_data_entry(char ***entry, int len)
+void	free_cmd_arg(t_data *d)
 {
-	int idx;
+	int	cmd;
+	int	arg;
+
+	cmd = 0;
+	if (d->cmd_arg)
+	{
+		while (d->cmd_arg[cmd])
+		{
+			arg = 0;
+			while (d->cmd_arg[cmd][arg])
+			{
+				free(d->cmd_arg[cmd][arg]);
+				d->cmd_arg[cmd][arg] = NULL;
+				arg++;
+			}
+			free(d->cmd_arg[cmd]);
+			d->cmd_arg[cmd] = NULL;
+			cmd++;
+		}
+		free(d->cmd_arg);
+		d->cmd_arg = NULL;
+		cmd = 0;
+	}
+}
+
+void	free_path(t_data *d)
+{
+	int	cmd;
+
+	cmd = 0;
+	if (d->cmd_path)
+	{
+		while (d->cmd_path[cmd])
+		{
+			free(d->cmd_path[cmd]);
+			d->cmd_path[cmd] = NULL;
+			cmd++;
+		}
+		free(d->cmd_path);
+		d->cmd_path = NULL;
+	}
+}
+
+void	free_tab(char **tab)
+{
+	int	idx;
 
 	idx = 0;
-	if (*entry != NULL)
+	while (tab[idx])
 	{
-		// printf("inside free len: %d\n", len);
-		while (idx < len)
-		{
-			// printf("before free: %s\n", (*entry)[idx]);
-			free((*entry)[idx]);
-			(*entry)[idx] = NULL;
-			// printf("after free: %s\n", (*entry)[idx]);
-			idx++;
-		}
-		// printf("free big: %s\n", entry);
-		free(*entry);
-		*entry = NULL;
-	// printf("pointer: %p\n", *entry);
+		free(tab[idx]);
+		tab[idx] = NULL;
+		idx++;
 	}
-	// printf("I am finished\n");
-}
-
-void free_data_int_entry(int ***entry, int len)
-{
-	int idx;
-
-	idx = 0;
-	if (*entry != NULL)
-	{
-		// printf("inside free len: %d\n", len);
-		while (idx < len)
-		{
-			// printf("before free: %s\n", (*entry)[idx]);
-			free((*entry)[idx]);
-			(*entry)[idx] = NULL;
-			// printf("after free: %s\n", (*entry)[idx]);
-			idx++;
-		}
-		// printf("free big: %s\n", entry);
-		free(*entry);
-		*entry = NULL;
-	// printf("pointer: %p\n", *entry);
-	}
-	// printf("I am finished\n");
-}
-
-void free_data_pidt_entry(pid_t **entry, int len)
-{
-	if (*entry != NULL)
-	{
-		free(*entry);
-		*entry = NULL;
-	}
+	free(tab);
+	tab = NULL;
 }

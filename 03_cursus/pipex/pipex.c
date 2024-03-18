@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 13:17:09 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/15 15:12:52 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/18 17:34:53 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,138 +19,168 @@ int main(int argc, char *argv[], char *envp[])
 	if (argc >= 5)
 	{
 		init_data(argc, argv, envp, &d);
-		pipe_commands(&d);
+        pipe_commands(&d);
+        // free_all(&d);
 	}
 }
 
 void	init_data(int argc, char *argv[], char *envp[], t_data *d)
 {
-	init_data_null(&d);
-	init_file_val(argc, argv, &d);
-	init_cmd_data(argv, envp, &d);
-	// print_all(d);
-	// free_all(d);
-	// print_all(d);
+	init_data_null(d, argv, argc);
+    set_cmd_arg(d, argv);
+    set_cmd_path(envp, d);
+    set_pipes(d);
+    print_cmd_arg(d);
+    // print_cmd_arg(d);
 }
 
-#define BUFFER_SIZE 4096
-
-void	pipe_commands(t_data *d)
+void    pipe_commands(t_data *d)
 {
-    char buffer[BUFFER_SIZE];
-    ssize_t bytes_read;
-    int id_cmd;
-
-    id_cmd = 1;
-    // Fork a child process
-    d->pid[0] = fork();
-    if (d->pid[0] == -1) {
-        perror("fork");
-        exit(EXIT_FAILURE);
-    }
-
-
-    // Child process
-    if (d->pid[0] == 0)
+    // close(d->pipes[0][WRITE]);
+    // int fd_file = open(d->in_fl, O_RDONLY);
+    // if (dup2(fd_file, d->pipes[0][READ]) == -1)
+    // {
+    //     perror("dup2 READ PARENT");
+    //     exit(EXIT_FAILURE);
+    // }
+    if (false == d->read_cl)
+        pipe_from_file(d);
+    else
+        pipe_from_cl(d);
+    // else
+        printf("limiter is |%s|\n", d->limiter);
+    // close(d->pipes[0][READ]);
+    // fork child process
+    // pid = fork();
+    // if (pid == -1)
+    // {
+    //     perror("fork");
+    //     exit(EXIT_FAILURE);
+    // }
+    // if (pid == 0) // 1st Child
+    // {
+    //     // close(d->pipes[0][READ]);
+    //     // int fd_file = open(d->in_fl, O_RDONLY);
+    //     // if (dup2(fd_file, STDIN_FILENO) == -1)
+    //     // {
+    //     //     perror("dup2 READ 1st Child");
+    //     //     exit(EXIT_FAILURE);
+    //     // }
+    //     close(d->pipes[0][WRITE]);
+    //     if (dup2(d->pipes[0][READ], STDIN_FILENO) == -1)
+    //     {
+    //         perror("dup2 READ 1st Child");
+    //         exit(EXIT_FAILURE);
+    //     }
+    //     close(d->pipes[0][READ]);
+    //     close(d->pipes[1][READ]);
+    //     if (dup2(d->pipes[1][WRITE], STDOUT_FILENO) == -1)
+    //     {
+    //         perror("dup2 WRITE 1st Child ");
+    //         exit(EXIT_FAILURE);
+    //     }
+    //     close(d->pipes[1][WRITE]);
+    //     if (execve(d->cmd_path[0], d->cmd_arg[0], NULL) == -1) {
+    //         perror("execve");
+    //         exit(EXIT_FAILURE);
+    //     }
+    // }
+    printf("n commands %d\n", d->n_cmd);
+    int idx;
+    idx = 0;
+    while (idx < d->n_cmd)
     {
-        d->pip[0][READ] = open(d->in_fl, O_RDONLY);
-        if (dup2(d->pip[0][READ], STDIN_FILENO) == -1)
-        {
-            perror("dup2 1st");
-            exit(EXIT_FAILURE);
-        }
-        close(d->pip[0][READ]);
-        if (dup2(d->pip[0][WRITE], STDOUT_FILENO) == -1) {
-            perror("dup2");
-            exit(EXIT_FAILURE);
-        }
-        close(d->pip[0][WRITE]);
-
-        // Call the desired Linux command using execve
-        // char *args[] = {d->cmd[0], d->cmd_arg[0], NULL};
-        // char *args[3];
-        char *args[4];
-        args[0] = d->cmd[0];
-        // args[1] = d->cmd_arg[0];
-        // args[2] = NULL;
-        args[1] = "-1";
-        args[2] = "a";
-        args[3] = NULL;
-		// Example: list files in the current directory
-        // if (execve(d->cmd_path[0], d->cmd_arg[0], NULL) == -1) {
-        if (execve(d->cmd_path[0], d->cmd_arg[0], NULL) == -1) {
-            perror("execve");
-            exit(EXIT_FAILURE);
-        }
+        child_command(d, idx);
+        idx++;
     }
-    else // next child process
-    {
-        // printf("hello form 2nd child\n");
-        // // Fork a child process
-        // d->pid[1] = fork();
-        // if (d->pid[1] == -1) {
-        // perror("fork");
-        // exit(EXIT_FAILURE);
-        // }
-        //     // Child process
-        // if (d->pid[1] == 0)
+    // child_command(d, 1);
+    // else
+    // {
+    //     pid = fork();
+    //     if (pid == -1)
+    //     {
+    //         perror("fork");
+    //         exit(EXIT_FAILURE);
+    //     }
+    //     if (pid == 0) // 2nd Child
+    //     {
+    //         close(d->pipes[1][WRITE]);
+    //         if (dup2(d->pipes[1][READ], STDIN_FILENO) == -1)
+    //         {
+    //             perror("dup2 READ 2nd Child");
+    //             exit(EXIT_FAILURE);
+    //         }
+    //         close(d->pipes[1][READ]);
+    //         close(d->pipes[2][READ]);
+    //         if (dup2(d->pipes[2][WRITE], STDOUT_FILENO) == -1)
+    //         {
+    //             perror("dup2 WRITE 2nd Child");
+    //             exit(EXIT_FAILURE);
+    //         }
+    //         close(d->pipes[2][WRITE]);
+    //             if (execve(d->cmd_path[1], d->cmd_arg[1], NULL) == -1) {
+    //                 perror("execve");
+    //                 exit(EXIT_FAILURE);
+    //             }
+    //     }
+    //     else // PARENT
         // {
-        //     close(d->pip[0][WRITE]);
-        //     if (dup2(d->pip[0][READ], STDIN_FILENO) == -1) {
-        //         perror("dup2");
-        //         exit(EXIT_FAILURE);
-        //     }
-        //     close(d->pip[0][READ]);
-        //     close(d->pip[1][READ]);
-        //     if (dup2(d->pip[1][WRITE], STDOUT_FILENO) == -1) {
-        //         perror("dup2");
-        //         exit(EXIT_FAILURE);
-        //     }
-        //     close(d->pip[1][WRITE]);
-        //     char *args2[] = {d->cmd[1], d->cmd_arg[1], NULL};
-        //     if (execve(d->cmd_path[1], args2, NULL) == -1) {
-        //         perror("execve");
-        //         exit(EXIT_FAILURE);
-        //     }
-        //  }
-        while (id_cmd < d->n_cmd )
-        {
-            child_process(id_cmd, d);
-            id_cmd++;
-        }
-        // else
-        { // next child process
-            close_pipes(d);
-            // close(d->pip[0][READ]);
-            // close(d->pip[0][WRITE]);
-            // close(d->pip[1][WRITE]);
+            // close(d->pipes[0][READ]);
+            // close(d->pipes[0][WRITE]);
+            // close(d->pipes[1][READ]);
+            // close(d->pipes[1][WRITE]);
+            // close(d->pipes[2][WRITE]);
+            close_all_pipes(d);
             wait(NULL);
-            // waitpid(d->pid[0], NULL, 0);
-            // waitpid(d->pid[1], NULL, 0);
+            // int fd_outf;
+            // char buffer[BUFFER_SIZE];
+            // ssize_t bytes_read;
 
-            // Open or create a file for writing
-            int fd = open(d->out_fl, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-            if (fd == -1) {
-                perror("open");
-                exit(EXIT_FAILURE);
-            }
-
-            // Read from the read end of the pipe and write to the file
-            while ((bytes_read = read(d->pip[1][READ], buffer, BUFFER_SIZE)) > 0) {
-                if (write(fd, buffer, bytes_read) != bytes_read) {
-                    perror("write");
-                    exit(EXIT_FAILURE);
-                }
-            }
-
-            if (bytes_read == -1) {
-                perror("read");
-                exit(EXIT_FAILURE);
-            }
-
-            // Close the file descriptor and the read end of the pipe
-            close(fd);
-            close(d->pip[1][READ]);
-        }
-    }
+            // fd_outf = open(d->out_fl, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+            // if (fd_outf == -1)
+            //     perror("open or create output file");
+            // while ((bytes_read = read(d->pipes[2][READ], buffer, BUFFER_SIZE)) > 0)
+            // {
+            //     if (write(fd_outf, buffer, bytes_read) != bytes_read)
+            //     {
+            //         perror("write to output file");
+            //         exit(EXIT_FAILURE);
+            //     }
+            // }
+            // if (bytes_read == -1)
+            // {
+            //     perror("read");
+            //     exit(EXIT_FAILURE);
+            // }
+            // close(fd_outf);
+            write_outfile(d);
+            close(d->pipes[d->n_cmd][READ]);
+    //     }
+    // }
 }
+
+// void    write_output_file(int id, t_data *d)
+// {
+//     int fd_outf;
+//     char buffer[BUFFER_SIZE];
+//     ssize_t bytes_read;
+
+//     fd_outf = open(d->out_fl, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+//     if (fd_outf == -1)
+//         perror("open or create output file");
+//     while ((bytes_read = read(d->pip[id][READ], buffer, BUFFER_SIZE)) > 0)
+//     {
+//         if (write(fd_outf, buffer, bytes_read) != bytes_read)
+//         {
+//             perror("write to output file");
+//             exit(EXIT_FAILURE);
+//         }
+//     }
+//     if (bytes_read == -1)
+//     {
+//         perror("read");
+//         exit(EXIT_FAILURE);
+//     }
+//     close(fd_outf);
+//     close(d->pip[id][READ]);
+// }
