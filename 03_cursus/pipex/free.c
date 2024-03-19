@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:01:25 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/19 13:38:37 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/19 14:19:12 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	free_pipes(t_data *d)
 	idx = 0;
 	if (d->pipes)
 	{
-		while (d->pipes[idx])
+		while (idx <= d->n_cmd)
 		{
 			free(d->pipes[idx]);
 			d->pipes[idx] = NULL;

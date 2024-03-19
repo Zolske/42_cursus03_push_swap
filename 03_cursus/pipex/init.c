@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 12:55:25 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/19 13:16:53 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/19 13:57:27 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void	set_pipes(t_data *d)
 
 	idx = 0;
 	d->pipes = (int **) malloc(sizeof(int *) * d->n_cmd + 1);
+	// e_int_ptr2_mal_exit((void **) d->pipes, d, "set/pipes");
 	while (idx <= d->n_cmd)
 	{
 		d->pipes[idx] = (int *) malloc(sizeof(int) * 2);

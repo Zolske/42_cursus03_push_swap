@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 13:17:00 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/19 13:38:15 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/19 13:53:12 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	e_mal_exit(char *ptr, t_data *d, char *msg);
 void	e_ptr2_mal_exit(char **ptr, t_data *d, char *msg);
 void	e_ptr3_mal_exit(char ***ptr, t_data *d, char *msg);
 void	e_ptr2_2x_mal_exit(char **ptr, char **tab, t_data *d, char *msg);
+void	e_int_ptr2_mal_exit(void **pipe, t_data *d, char *msg);
 
 void    pipe_commands(t_data *d);
 void	child_command(t_data *d, int id);
