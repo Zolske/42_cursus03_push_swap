@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 16:07:27 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/13 14:08:30 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/19 18:20:54 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 #include "libft.h"
 #include <stdlib.h>
-#include<stdio.h>
+#include <stdio.h>
 
 char	*ft_strdup(const char *s)
 {

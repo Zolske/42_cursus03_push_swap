@@ -20,7 +20,7 @@ n ==>	number of bytes to be filled
 NOTE
 The bzero() function is deprecated, use memset(3) instead.*/
 
-#include<stdio.h>
+#include <stdio.h>
 
 void	ft_bzero(void *s, size_t n)
 {

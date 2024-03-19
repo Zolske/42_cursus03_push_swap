@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkepes <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 16:43:55 by zkepes            #+#    #+#             */
-/*   Updated: 2023/11/14 17:54:40 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/19 18:29:42 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@
  * 	write_start_end	writes the beginnig of the string and the null
  * 					terminator*/
 
-#include<stdio.h>
-#include<stdlib.h>
-#include<limits.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
 
 static int	num_len(int n)
 {

@@ -6,9 +6,11 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 12:55:25 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/19 13:57:27 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/19 18:02:37 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*initializes and sets values in the t_data d structure*/
 
 #include "pipex.h"
 
@@ -20,8 +22,7 @@ void	init_data_null(t_data *d, char **argv, int argc)
 	d->cmd_arg = NULL;
 	d->cmd_path = NULL;
 	d->pipes = NULL;
-	// d->pid = NULL;
-	if ( 0 == ft_strncmp(argv[1], "here_doc", 9))
+	if (0 == ft_strncmp(argv[1], "here_doc", 9))
 	{
 		d->read_cl = true;
 		d->limiter = argv[2];
@@ -46,14 +47,13 @@ void	set_cmd_arg(t_data *d, char **argv)
 
 	cmd = 0;
 	d->cmd_arg = (char ***) malloc(sizeof(char **) * d->n_cmd + 1);
-	e_ptr3_mal_exit(d->cmd_arg, d, "set_cmd_arg()/cmd_arg");
+	e_ptr3_mal_exit((void ***) d->cmd_arg, d, "set_cmd_arg()/cmd_arg");
 	while (cmd < d->n_cmd)
 	{
 		tab_arg = ft_split(argv[cmd + d->offset], ' ');
-		e_ptr2_mal_exit(tab_arg, d, "set_cmd_arg()/tab_arg");
-		d->cmd_arg[cmd] = (char**) malloc(sizeof(char*) * tab_len(tab_arg) + 1);
-		e_ptr2_2x_mal_exit(d->cmd_arg[cmd], tab_arg, d,
-		"set_cmd_arg()/d->cmd_arg[cmd]");
+		e_ptr2_mal_exit((void **) tab_arg, d, "set_cmd_arg()/tab_arg");
+		d->cmd_arg[cmd] = (char **) malloc(sizeof(char *) * tab_l(tab_arg) + 1);
+		e_ptr2_2x_mal_exit((void **) d->cmd_arg[cmd], tab_arg, d, "set_cmd_ar");
 		arg = 0;
 		while (tab_arg[arg])
 		{
@@ -71,13 +71,13 @@ void	set_cmd_arg(t_data *d, char **argv)
 /*test which "path + command" passes access(), saves the correct one*/
 void	set_cmd_path(char *envp[], t_data *d)
 {
-	char **tab_env;
-	int	cmd;
+	int		cmd;
+	char	**tab_env;
 
-	tab_env = init_env_path(envp);
 	cmd = 0;
+	tab_env = init_env_path(envp);
 	d->cmd_path = (char **)malloc(sizeof(char *) * d->n_cmd + 1);
-	e_ptr2_mal_exit(d->cmd_path, d, "set_cmd_path/d->cmd_path");
+	e_ptr2_mal_exit((void **) d->cmd_path, d, "set_cmd_path/d->cmd_path");
 	while (cmd < d->n_cmd)
 	{
 		d->cmd_path[cmd] = get_command_path(d->cmd_arg[cmd][0], tab_env, envp);
@@ -94,10 +94,11 @@ void	set_pipes(t_data *d)
 
 	idx = 0;
 	d->pipes = (int **) malloc(sizeof(int *) * d->n_cmd + 1);
-	// e_int_ptr2_mal_exit((void **) d->pipes, d, "set/pipes");
+	e_ptr2_mal_exit((void **) d->pipes, d, "set/pipes");
 	while (idx <= d->n_cmd)
 	{
 		d->pipes[idx] = (int *) malloc(sizeof(int) * 2);
+		e_mal_exit((void *) d->pipes[idx], d, "set/pipes");
 		pipe(d->pipes[idx]);
 		idx++;
 	}

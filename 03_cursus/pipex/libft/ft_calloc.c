@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkepes <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 14:00:47 by zkepes            #+#    #+#             */
-/*   Updated: 2023/11/17 16:28:17 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/19 18:23:55 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ IMPLEMENTATION
 2. ->	create memory of the size ntimes * size
 3. ->	set every byte in the memory to zero*/
 
-#include<string.h>
+#include <string.h>
 #include <stdlib.h>
 #include "libft.h"
-#include<limits.h>
+#include <limits.h>
 
 void	*ft_calloc(size_t nitems, size_t size)
 {

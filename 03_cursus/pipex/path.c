@@ -6,31 +6,32 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 14:22:00 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/17 15:23:12 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/19 18:03:53 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
 /*return a pointer to a new malloc, table of strings containing the env. paths*/
-char **init_env_path(char *envp[])
+char	**init_env_path(char *envp[])
 {
 	char	**tab_env;
 
 	while (*envp)
 	{
 		if (0 == ft_strncmp(*envp, "PATH=", 5))
-			break;
+			break ;
 		envp++;
 	}
 	tab_env = ft_split(&envp[0][5], ':');
 	return (tab_env);
 }
 
-char *get_command_path(char *cmd, char **tab_env, char *envp[])
+/*returns the valid path for the command*/
+char	*get_command_path(char *cmd, char **tab_env, char *envp[])
 {
-	int idx;
-	char *str_path;
+	int		idx;
+	char	*str_path;
 
 	idx = 0;
 	while (tab_env[idx])

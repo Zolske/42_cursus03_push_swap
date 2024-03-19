@@ -6,9 +6,11 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:01:25 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/19 14:19:12 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/19 14:50:48 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*free mallocs and set pointer to NULL to avoid possible double frees*/
 
 #include "pipex.h"
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkepes <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 13:44:07 by zkepes            #+#    #+#             */
-/*   Updated: 2023/11/15 16:20:02 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/19 18:27:26 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ The argument 'c' needs to be casted to an character.
 The return needs to be casted to a poniter of char return ((char *) &str[ind]),
 because of the const parameter*/
 
-#include<stdio.h>
+#include <stdio.h>
 
 char	*ft_strrchr(const char *str, int c)
 {

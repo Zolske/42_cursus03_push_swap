@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkepes <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 10:54:20 by zkepes            #+#    #+#             */
-/*   Updated: 2023/11/15 15:27:16 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/19 18:26:27 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ data in memory even if the original data type is larger
 NOTE
 The memory areas must not overlap. Use memmove() for overlap.*/
 
-#include<stdio.h>
+#include <stdio.h>
 
 void	*ft_memcpy(void *dest, const void *src, size_t n)
 {

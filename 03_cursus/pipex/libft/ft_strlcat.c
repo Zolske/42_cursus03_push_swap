@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkepes <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 18:39:48 by zkepes            #+#    #+#             */
-/*   Updated: 2023/11/17 16:20:59 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/19 18:27:44 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ IMPLEMENTATION
 ELSE:	just copy the difference of 'size - dst -1 (Null T.)' from src to
 		dst and null terminate the last place*/
 
-#include<stdio.h>
-#include"libft.h"
+#include <stdio.h>
+#include "libft.h"
 
 size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {

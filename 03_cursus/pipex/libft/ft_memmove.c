@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkepes <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:43:08 by zkepes            #+#    #+#             */
-/*   Updated: 2023/11/15 15:25:26 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/19 18:22:38 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ data in memory even if the original data type is larger
 NOTE
 memmove dose the same as memcpy but it but it can also handle string overlap*/
 
-#include<stdio.h>
+#include <stdio.h>
 
 void	*ft_memmove(void *dest, const void *src, size_t n)
 {

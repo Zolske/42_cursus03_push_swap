@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkepes <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 16:22:12 by zkepes            #+#    #+#             */
-/*   Updated: 2023/11/17 14:51:09 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/19 18:25:46 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ l56:	use string n compare which advances by the index und compares
 l57:	if found gets the value '0' (sring is equal) return the
 		position in str */
 
-#include<string.h>
-#include<stdio.h>
-#include"libft.h"
+#include <string.h>
+#include <stdio.h>
+#include "libft.h"
 
 char	*ft_strnstr(const char *str, const char *sub, size_t len)
 {

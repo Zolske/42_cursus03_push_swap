@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 13:52:26 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/17 15:00:01 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/19 16:03:29 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	print_cmd_arg(t_data *d)
 {
 	int	cmd;
-	int arg;
+	int	arg;
 
 	if (d->cmd_arg != NULL)
 	{

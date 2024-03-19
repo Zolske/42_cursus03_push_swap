@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkepes <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 18:44:14 by zkepes            #+#    #+#             */
-/*   Updated: 2023/11/14 16:09:54 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/19 18:26:57 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
  * The new string. NULL if the allocation fails. */
 
 #include "libft.h"
-#include<stdlib.h>
+#include <stdlib.h>
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
