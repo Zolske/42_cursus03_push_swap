@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:34:44 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/18 17:46:55 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/19 13:46:08 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	close_all_pipes(t_data *d)
 		idx++;
 	}
 	close(d->pipes[idx][WRITE]);
+	close(d->fd_start);
 }
 
 /*write the content form the last pipe into the "output file"*/
@@ -90,11 +91,9 @@ void	write_outfile(t_data *d)
 
 void	pipe_from_file(t_data *d)
 {
-	int fd_file;
-
 	close(d->pipes[0][WRITE]);
-    fd_file = open(d->in_fl, O_RDONLY);
-    if (dup2(fd_file, d->pipes[0][READ]) == -1)
+    d->fd_start = open(d->in_fl, O_RDONLY);
+    if (dup2(d->fd_start, d->pipes[0][READ]) == -1)
     {
         perror("dup2 READ PARENT");
         exit(EXIT_FAILURE);
@@ -103,33 +102,29 @@ void	pipe_from_file(t_data *d)
 
 void	pipe_from_cl(t_data *d)
 {
-	pid_t pid;
-	// char	*arg[2];
-	// arg[0] = "cat";
-	// arg[1] = "<<";
-	// arg[2] = d->limiter;
-	// arg[3] = NULL;
-	// arg[1] = NULL;
-	//fork child process
-	char *arg[] = {"cat", "<< STOP", NULL};
-    pid = fork();
-    if (pid == -1)
+	char *buffer;
+
+	buffer = NULL;
+	d->fd_start = open(TEMP_FILE, O_RDWR | O_CREAT | O_TRUNC, 0666);
+	while (true)
+	{
+		buffer = get_next_line(STDIN_FILENO);
+		if (0 == ft_strncmp(buffer, d->limiter, ft_strlen(d->limiter)))
+		{
+			free(buffer);
+			buffer = NULL;
+			break;
+		}
+		write(d->fd_start, buffer, ft_strlen(buffer));
+		free(buffer);
+		buffer = NULL;
+	}
+	close(d->fd_start);
+	close(d->pipes[0][WRITE]);
+    d->fd_start = open(TEMP_FILE, O_RDONLY);
+    if (dup2(d->fd_start, d->pipes[0][READ]) == -1)
     {
-        perror("fork");
+        perror("dup2 READ PARENT");
         exit(EXIT_FAILURE);
     }
-    if (pid == 0) // 1st Child
-    {
-		close(d->pipes[0][WRITE]);
-    	if (dup2(STDOUT_FILENO, d->pipes[0][READ]) == -1)
-    	{
-    	perror("dup2 READ PARENT");
-    	exit(EXIT_FAILURE);
-    	}
-		if (execve("/usr/bin/cat", arg, NULL) == -1)
-		{
-    	    perror("execve");
-    	    exit(EXIT_FAILURE);
-    	}
-	}
 }

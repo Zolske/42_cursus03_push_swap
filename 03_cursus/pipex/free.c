@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:01:25 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/18 12:21:00 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/19 13:38:37 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	free_all(t_data *d)
 {
 	free_cmd_arg(d);
 	free_path(d);
+	free_pipes(d);
 }
 
 void	free_cmd_arg(t_data *d)
@@ -76,4 +77,22 @@ void	free_tab(char **tab)
 	}
 	free(tab);
 	tab = NULL;
+}
+
+void	free_pipes(t_data *d)
+{
+	int	idx;
+
+	idx = 0;
+	if (d->pipes)
+	{
+		while (d->pipes[idx])
+		{
+			free(d->pipes[idx]);
+			d->pipes[idx] = NULL;
+			idx++;
+		}
+		free(d->pipes);
+		d->pipes = NULL;
+	}
 }

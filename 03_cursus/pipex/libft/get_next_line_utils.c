@@ -6,12 +6,10 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 10:54:29 by zkepes            #+#    #+#             */
-/*   Updated: 2023/11/20 10:54:31 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/19 11:20:04 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdbool.h>
 #include "get_next_line.h"
 
 int	ft_malloc_set_idx(char **ptr, size_t size, bool mal)

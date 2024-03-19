@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 10:54:50 by zkepes            #+#    #+#             */
-/*   Updated: 2023/11/20 11:16:47 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/19 11:21:13 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define GET_NEXT_LINE_H
 # include <stdlib.h>
 # include <stdbool.h>
+# include <unistd.h>
 # define STR_RETURN 1025
 # define STR_SWAP 1026
 # define N 1027

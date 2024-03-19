@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 13:17:00 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/18 17:33:22 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/19 13:38:15 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PIPEX_H
 
 #define BUFFER_SIZE 4096
+#define TEMP_FILE "temp.txt"
 
 #include "libft/libft.h"
 #include <unistd.h>
@@ -40,12 +41,12 @@ typedef struct s_data
 	char	**cmd_path;		// table of command paths
 	bool	read_cl;		// read from command line
 	char	*limiter;		// when to stop reading form cl
+	// starter file descriptor
+	int		fd_start;
 	// pipes
 	int		**pipes;		// pipes, communication child-parent
 	// offset from which program argument to read cmd
 	int		offset;
-	// process ids
-	// pid_t	*pid;			// process ids
 }	t_data;
 
 // set values
@@ -70,6 +71,7 @@ void	free_all(t_data *d);
 void	free_cmd_arg(t_data *d);
 void	free_path(t_data *d);
 void	free_tab(char **tab);
+void	free_pipes(t_data *d);
 
 // error
 void	e_mal_exit(char *ptr, t_data *d, char *msg);

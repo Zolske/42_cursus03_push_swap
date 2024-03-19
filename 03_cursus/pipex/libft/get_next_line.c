@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 10:53:54 by zkepes            #+#    #+#             */
-/*   Updated: 2023/12/08 11:48:19 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/19 11:20:11 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 	may	open to 1024 per process. (0 - 1023)
 */
 
-#include <unistd.h>
-#include <stdbool.h>
 #include "get_next_line.h"
 
 char	*get_next_line(int fd)
