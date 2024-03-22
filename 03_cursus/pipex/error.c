@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 12:25:46 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/19 15:26:12 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/22 11:15:53 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ void	e_ptr2_2x_mal_exit(void **ptr, char **tab, t_data *d, char *msg)
 
 /*displays msg + error code from the "Errno env variable", free all mallocs
 and exist program with error code ("Program terminated unsuccessfully" == 1)*/
-void	e_message_exit(t_data *d, char *msg)
+void	e_message_free_exit(t_data *d, char *msg)
 {
 	perror(msg);
 	free_all(d);
-	exit(EXIT_FAILURE);
+	exit(1);
 }

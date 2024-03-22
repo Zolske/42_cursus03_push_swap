@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 13:17:09 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/19 16:11:39 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/22 11:38:32 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,17 @@ int	main(int argc, char *argv[], char *envp[])
 
 	if (argc == 5)
 	{
+		validate_arg(argv, argc, &d);
 		init_data(argc, argv, envp, &d);
+		if (false == d.read_cl)
+			validate_input_file(argv, &d);
 		pipe_commands(&d);
 		free_all(&d);
 	}
+	else
+		write(2, "Must take 4 arguments: "\
+		"\"./pipex file1 cmd1 cmd2 file2\".\n", 56);
+	return (0);
 }
 
 void	init_data(int argc, char *argv[], char *envp[], t_data *d)
@@ -33,6 +40,20 @@ void	init_data(int argc, char *argv[], char *envp[], t_data *d)
 	set_cmd_arg(d, argv);
 	set_cmd_path(envp, d);
 	set_pipes(d);
+}
+
+/*check if the first arg is a valid file, otherwise free and exit*/
+void	validate_input_file(char **argv, t_data *d)
+{
+	int	fd;
+
+	fd = access(argv[1], R_OK);
+	if (fd == -1)
+	{
+		perror(argv[1]);
+		free_all(d);
+		exit(errno);
+	}
 }
 
 void	pipe_commands(t_data *d)

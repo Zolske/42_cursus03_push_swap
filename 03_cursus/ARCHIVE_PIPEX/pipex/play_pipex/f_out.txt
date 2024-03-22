@@ -1,6 +1,0 @@
-total 28
--rw-r--r-- 1 zkepes 2023_london  3090 Mar  7 14:24 end_pipe_to_file.c
--rw-r--r-- 1 zkepes 2023_london    36 Mar  7 14:26 f_in.txt
--rw-r--r-- 1 zkepes 2023_london     0 Mar  7 14:36 f_out.txt
--rwxr-xr-x 1 zkepes 2023_london 16264 Mar  7 14:23 main
--rw-r--r-- 1 zkepes 2023_london  3092 Mar  7 14:36 main.c

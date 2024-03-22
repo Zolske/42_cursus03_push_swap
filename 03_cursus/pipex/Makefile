@@ -1,6 +1,6 @@
 NAME	= pipex
 HEADER	= pipex.h libft.h
-SRC		= init.c helper.c path.c free.c error.c pipping.c\
+SRC		= init.c helper.c path.c free.c error.c error_2.c pipping.c\
 		  # print.c # only for testing, file removed
 MANDA	= pipex.c
 BONUS	= pipex_bonus.c

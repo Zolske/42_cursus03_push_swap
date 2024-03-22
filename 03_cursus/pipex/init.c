@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 12:55:25 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/19 18:02:37 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/22 15:26:53 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ void	set_cmd_path(char *envp[], t_data *d)
 	e_ptr2_mal_exit((void **) d->cmd_path, d, "set_cmd_path/d->cmd_path");
 	while (cmd < d->n_cmd)
 	{
-		d->cmd_path[cmd] = get_command_path(d->cmd_arg[cmd][0], tab_env, envp);
+		d->cmd_path[cmd] = get_command_path(
+				d, d->cmd_arg[cmd][0], tab_env, envp);
 		cmd++;
 	}
 	d->cmd_path[cmd] = NULL;
@@ -101,5 +102,31 @@ void	set_pipes(t_data *d)
 		e_mal_exit((void *) d->pipes[idx], d, "set/pipes");
 		pipe(d->pipes[idx]);
 		idx++;
+	}
+}
+
+/*check if the is an empty argument*/
+void	validate_arg(char **argv, int argc, t_data *d)
+{
+	int	idx_arg;
+	int	idx_ch;
+	int	count;
+
+	idx_arg = 0;
+	while (idx_arg < argc)
+	{
+		if ('\0' == argv[idx_arg][0])
+			e_message_exit("permission denied:");
+		count = 0;
+		idx_ch = 0;
+		while (argv[idx_arg][idx_ch])
+		{
+			if (argv[idx_arg][idx_ch] != ' ')
+				count++;
+			idx_ch++;
+		}
+		if (0 == count)
+			e_message_exit("command not found:");
+		idx_arg++;
 	}
 }

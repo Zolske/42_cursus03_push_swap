@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 14:22:00 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/19 18:03:53 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/21 12:34:41 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	**init_env_path(char *envp[])
 }
 
 /*returns the valid path for the command*/
-char	*get_command_path(char *cmd, char **tab_env, char *envp[])
+char	*get_command_path(t_data *d, char *cmd, char **tab_env, char *envp[])
 {
 	int		idx;
 	char	*str_path;
@@ -43,6 +43,11 @@ char	*get_command_path(char *cmd, char **tab_env, char *envp[])
 		str_path = NULL;
 		idx++;
 	}
-	perror(cmd);
+	write(2, "command not found: ", 19);
+	write(2, cmd, ft_strlen(cmd));
+	write(2, "\n", 1);
+	free_tab(tab_env);
+	free_all(d);
+	exit(errno);
 	return (NULL);
 }

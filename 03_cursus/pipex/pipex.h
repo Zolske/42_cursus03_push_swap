@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 13:17:00 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/19 18:14:22 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/22 15:21:35 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <stdlib.h>
 # include <stdbool.h>
 # include <fcntl.h>
+# include <errno.h>
 
 enum
 {
@@ -52,7 +53,7 @@ char	**init_env_path(char *envp[]);
 void	set_cmd_arg(t_data *d, char **argv);
 void	set_cmd_path(char *envp[], t_data *d);
 void	set_pipes(t_data *d);
-char	*get_command_path(char *cmd, char **tab_env, char *envp[]);
+char	*get_command_path(t_data *d, char *cmd, char **tab_env, char *envp[]);
 
 // pipping, forking, writing
 void	pipe_from_file(t_data *d);
@@ -79,6 +80,9 @@ void	e_mal_exit(void *ptr, t_data *d, char *msg);
 void	e_ptr2_mal_exit(void **ptr, t_data *d, char *msg);
 void	e_ptr3_mal_exit(void ***ptr, t_data *d, char *msg);
 void	e_ptr2_2x_mal_exit(void **ptr, char **tab, t_data *d, char *msg);
-void	e_message_exit(t_data *d, char *msg);
+void	e_message_free_exit(t_data *d, char *msg);
+void	e_message_exit(char *msg);
+void	validate_input_file(char **argv, t_data *d);
+void	validate_arg(char **argv, int argc, t_data *d);
 
 #endif
