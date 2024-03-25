@@ -1,8 +1,9 @@
-NAME	= pipex
-HEADER	= pipex.h libft.h
-SRC	= pipex.c init.c helper.c path.c free.c error.c error_2.c pipping.c
+NAME	= so_long
+HEADER	= so_long.h libft.h
+SRC		= so_long.c map_into_struct.c map_validation.c error.c print.c \
+		  free.c
 LIBFT	= libft/libft.a
-CC	= cc
+CC		= cc
 FLAGS	= -Werror -Wextra -Wall -g
 vpath libft.h libft
 
