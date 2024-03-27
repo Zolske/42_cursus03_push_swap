@@ -1,6 +1,7 @@
 NAME	= so_long
 HEADER	= so_long.h libft.h
-SRC		= so_long.c map_into_struct.c map_validation.c error.c print.c \
+SRC		= so_long.c file_into_struct.c validate_map.c validate_map_help.c \
+		  error.c print.c floodfill.c\
 		  free.c
 LIBFT	= libft/libft.a
 CC		= cc

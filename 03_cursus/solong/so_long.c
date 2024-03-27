@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 10:27:59 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/25 14:59:54 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/27 12:58:12 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,22 @@
 
 int	main(int argc, char *argv[])
 {
-	t_map	map;
+	t_data	d;
 	
 	if (argc == 2)
 	{
-		init(&map);
-		map_into_struct(argv[1], &map);
-		print_map(&map);
-		free_all(&map);
+		init(&d, argv);
+		file_into_struct(argv[1], &d);
+		validate_map(&d);
+		free_all(&d);
 	}
 }
 
-void	init(t_map *map)
+void	init(t_data *d, char *argv[])
 {
-	map->height = 0;
-	map->width = 0;
-	map->map = NULL;
+	d->file = argv[1];
+	d->height = 0;
+	d->width = 0;
+	d->map = NULL;
+	d->found = false;
 }

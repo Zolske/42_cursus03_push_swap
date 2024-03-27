@@ -6,18 +6,18 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 14:42:24 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/25 16:50:52 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/27 13:24:15 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	free_all(t_map *map)
+void	free_all(t_data *d)
 {
-	free_map(map->map);
+	free_map(d->map);
 }
 
-/*frees a table of characters ("the map") and sets its pointers to NULL*/
+/*free table of strings and set it's pointers to NULL*/
 void	free_map(char **map)
 {
 	int	idx_height;
@@ -33,5 +33,15 @@ void	free_map(char **map)
 		}
 		free(map);
 		map = NULL;
+	}
+}
+
+/*free string and set it's pointer to NULL*/
+void	free_str(char *str)
+{
+	if (str)
+	{
+		free(str);
+		str = NULL;
 	}
 }
