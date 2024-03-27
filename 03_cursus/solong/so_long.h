@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 10:28:17 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/27 16:53:18 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/27 18:42:19 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@
 # include <errno.h>
 # include <fcntl.h>
 # include <stdlib.h>
+
+// minilibx
+# include "mlx_Linux/mlx.h"
 
 
 typedef struct s_data
@@ -87,5 +90,8 @@ void	e_data(t_data *d, char *msg);
 void	free_all(t_data *d);
 void	free_map(char **map);
 void	free_str(char *str);
+
+// minilibx
+void	start_game(t_data *d);
 
 #endif
