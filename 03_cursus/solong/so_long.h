@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 10:28:17 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/27 18:42:19 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/03/28 13:09:16 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,14 @@ typedef struct s_data
 	int		y;			// vertical, top to bottom, colum
 	bool	found;		// has found item
 } t_data;
+
+typedef struct	s_img_data {
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}				t_i_data;
 
 typedef struct s_position
 {
@@ -93,5 +101,8 @@ void	free_str(char *str);
 
 // minilibx
 void	start_game(t_data *d);
+void	my_mlx_pixel_put(t_i_data *data, int x, int y, int color);
+int		key_press(int keycode, void *param);
+int		mouse_move(int x, int y, void *param);
 
 #endif
