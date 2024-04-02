@@ -13,18 +13,18 @@ FLAG = -Werror -Wextra -Wall
 all: $(NAME)
 
 $(NAME): $(SOURCE:=.o) libft.h get_next_line.h
-	ar rcs $(NAME) $(SOURCE:=.o)
+	@ar rcs $(NAME) $(SOURCE:=.o)
 
 %.o: %.c
-	$(CC) -c  $(FLAG) $< -o $@
+	@$(CC) -c  $(FLAG) $< -o $@
 
 # remove "object files"
 clean:
-	rm -f $(SOURCE:=.o)
+	@rm -f $(SOURCE:=.o)
 
 # remove "object files" and  "library"
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 # remove "object files", "library" and rebuild
 re: fclean all
