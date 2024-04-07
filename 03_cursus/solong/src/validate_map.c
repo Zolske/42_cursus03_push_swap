@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 10:26:24 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/31 18:01:22 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/03 12:28:21 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	validate_map(t_data *d)
 {
 	if (not_valid_character(d))
 		e_data(d, "Map has invalid or missing characters!");
-	if (not_rectangular_map(d->width, d))
+	if (not_rectangular_map(d->map.width, d))
 		e_data(d, "Map is not rectangular!");
 	if (not_surrounded_wall(d))
 		e_data(d, "Map is not surrounded by a wall!");
@@ -31,10 +31,10 @@ bool	not_rectangular_map(int width, t_data *d)
 	int	idx_row;
 
 	idx_row = 0;
-	while (d->map[idx_row])
+	while (d->map.map[idx_row])
 	{
-		len = ft_strlen(d->map[idx_row]);
-		if ('\n' == d->map[idx_row][len - 1])
+		len = ft_strlen(d->map.map[idx_row]);
+		if ('\n' == d->map.map[idx_row][len - 1])
 			len--;
 		if (width != len)
 			return (true);
@@ -49,12 +49,12 @@ bool	not_surrounded_wall(t_data *d)
 	int			idx_row;
 
 	idx_row = 0;
-	if (not_eq_line_char(d->map[idx_row], WALL))
+	if (not_eq_line_char(d->map.map[idx_row], WALL))
 		return (true);
-	while (++idx_row < d->height - 1)
-		if (not_eq_first_last_char((d->map[idx_row]), WALL))
+	while (++idx_row < d->map.height - 1)
+		if (not_eq_first_last_char((d->map.map[idx_row]), WALL))
 			return (true);
-	if (not_eq_line_char(d->map[idx_row], WALL))
+	if (not_eq_line_char(d->map.map[idx_row], WALL))
 		return (true);
 	return (false);
 }

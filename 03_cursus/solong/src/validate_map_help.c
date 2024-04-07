@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:42:00 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/31 18:01:22 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/03 12:27:36 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ bool	not_valid_map_char(t_data *d)
 	int idx_col;
 
 	idx_row = 0;
-	while (d->map[idx_row])
+	while (d->map.map[idx_row])
 	{
 		idx_col = 0;
-		while (d->map[idx_row][idx_col])
+		while (d->map.map[idx_row][idx_col])
 		{
-			if (NULL == ft_strchr(MAPCHAR, d->map[idx_row][idx_col]))
+			if (NULL == ft_strchr(MAPCHAR, d->map.map[idx_row][idx_col]))
 			{
 				write(2, "Invalid character in map!\n", 26);
 				return (true);
@@ -90,12 +90,12 @@ int	count_arg1_in_map(char arg1, t_data *d)
 
 	idx_row = 0;
 	counter = 0;
-	while (d->map[idx_row])
+	while (d->map.map[idx_row])
 	{
 		idx_col = 0;
-		while (d->map[idx_row][idx_col])
+		while (d->map.map[idx_row][idx_col])
 		{
-			if (arg1 == d->map[idx_row][idx_col])
+			if (arg1 == d->map.map[idx_row][idx_col])
 				counter++;
 			idx_col++;
 		}

@@ -1,5 +1,5 @@
 NAME	= so_long
-HEADER	= include/so_long.h include/render.h
+HEADER	= include/so_long.h include/render.h include/struct.h
 SRC_DIR = src/
 SRC		= $(addprefix $(SRC_DIR), \
 			so_long.c file_into_struct.c validate_map.c validate_map_help.c \

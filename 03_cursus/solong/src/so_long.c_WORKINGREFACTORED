@@ -1,0 +1,208 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   so_long.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/25 10:27:59 by zkepes            #+#    #+#             */
+/*   Updated: 2024/04/04 10:23:29 by zkepes           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/so_long.h"
+
+int	main(int argc, char *argv[])
+{
+	t_data	data;
+	
+	if (argc == 2)
+	{
+		init(&data, argv);
+		file_into_struct(argv[1], &data);
+		validate_map(&data);
+		start_game(&data);
+		free_all(&data);
+	}
+}
+
+void	init(t_data *d, char *argv[])
+{
+	d->map.file = argv[1];
+	d->map.height = 0;
+	d->map.width = 0;
+	d->map.map = NULL;
+	d->map.tmp_map = NULL;
+	d->map.valid_path = false;
+}
+
+void	start_game(t_data *d)
+{
+	d->mlx.win_w = 1920;
+	d->mlx.win_h = 1080;
+	d->mlx.mlx_ptr = mlx_init();
+	d->mlx.win_ptr = mlx_new_window(
+			d->mlx.mlx_ptr, d->mlx.win_w, d->mlx.win_h, WIN_TITLE);
+	create_canvas(d, d->mlx.win_w, d->mlx.win_h);
+	init_images(d);
+
+// => uncoment from here ///////////////////////////////////////////////////
+	int idx_y = 0;
+	int idx_x;
+	while (d->map.map[idx_y])
+	{
+		idx_x = 0;
+		while (d->map.map[idx_y][idx_x])
+		{
+			if (WALL == d->map.map[idx_y][idx_x])
+			{
+				if (d->map.height -1 > idx_y && WALL == d->map.map[idx_y + 1][idx_x])
+					put_img_to_img(d->img.canvas, d->img.ba.wall_top, (TILE * idx_x) + OFFSET_L, TILE * idx_y);
+				else
+					put_img_to_img(d->img.canvas, d->img.ba.wall, (TILE * idx_x) + OFFSET_L, TILE * idx_y);
+			}
+			if ((SPACE == d->map.map[idx_y][idx_x])
+				|| (PLAYER == d->map.map[idx_y][idx_x])
+				|| (EXIT == d->map.map[idx_y][idx_x]))
+					put_img_to_img(d->img.canvas, d->img.ba.floor , (TILE * idx_x) + OFFSET_L, TILE * idx_y);
+			if (COLLEC == d->map.map[idx_y][idx_x])
+					put_img_to_img(d->img.canvas, d->img.fr[0].collect, (TILE * idx_x) + OFFSET_L, TILE * idx_y);
+			idx_x++;
+		}
+		idx_y++;
+	}
+	idx_y = 0;
+	while (idx_y < d->map.height)
+	{
+		put_img_to_img(d->img.canvas, d->img.ba.la_ro_lm, 0, idx_y * TILE);
+		put_img_to_img(d->img.canvas, d->img.ba.la_ro_rm, (d->map.width * TILE) + OFFSET_L, idx_y * TILE);
+		idx_y++;
+	}
+
+	put_img_to_img(d->img.canvas, d->img.fr[0].la_ro_l, 0, d->map.height * TILE);
+	put_img_to_img(d->img.canvas, d->img.fr[0].la_ro_r, (d->map.width * TILE) + OFFSET_L , d->map.height * TILE);
+	idx_x = 0;
+	while (idx_x < d->map.width)
+	{
+		put_img_to_img(d->img.canvas, d->img.fr[0].la_ro_m, (idx_x * TILE) + OFFSET_L, d->map.height * TILE);
+		idx_x++;
+	}
+	mlx_put_image_to_window(d->mlx.mlx_ptr, d->mlx.win_ptr, d->img.canvas.img_ptr, 0, 0);
+	mlx_loop(d->mlx.mlx_ptr);
+	mlx_destroy_window(d->mlx.mlx_ptr, d->mlx.win_ptr);
+}
+
+// int	update_frame(t_xpm *xpm)
+// {
+// 	int	idx_x;
+
+// 	if (4000 == xpm->fr_idx)
+// 	{
+// 		idx_x = 0;
+// 		while (idx_x < xpm->w)
+// 		{
+// 			put_img_to_img(*(xpm->base_img), xpm->fr_0.la_ro_m, (idx_x * TILE) + OFFSET_L, xpm->h * TILE);
+// 			idx_x++;
+// 		}
+// 		// printf("frame: 0\n");
+// 	}
+// 	else if (8000 == xpm->fr_idx)
+// 	{
+// 		idx_x = 0;
+// 		while (idx_x < xpm->w)
+// 		{
+// 			put_img_to_img(*(xpm->base_img), xpm->fr_1.la_ro_m, (idx_x * TILE) + OFFSET_L, xpm->h * TILE);
+// 			idx_x++;
+// 		}
+// 		// printf("frame: 1\n");
+// 		xpm->fr_idx = 0;
+// 	}
+// 	xpm->fr_idx++;
+// 	if (12000 == xpm->fr_idx)
+// 		xpm->fr_idx = 0;
+	
+// 	mlx_put_image_to_window ((*(xpm->base_img)).win.mlx_ptr, (*(xpm->base_img)).win.win_ptr, (*(xpm->base_img)).img_ptr, 0, 0);
+// 	return (0);
+// }
+
+// void	init_xpm(t_xpm *xpm, t_data *d, t_img *base_img, t_win window)
+// {
+// 	xpm->base_img = base_img;
+// 	init_map(xpm);
+// 	init_base(xpm, window);
+// 	init_frame_0(xpm, window);
+// 	init_frame_1(xpm, window);
+// }
+
+// void	init_map(t_xpm *xpm)
+// {
+// 	xpm->h = 5;
+// 	xpm->w = 13;
+// 	// xpm->map = d->map.map;
+// 	xpm->fr_idx = 0;
+// }
+
+void	init_images(t_data *d)
+{
+		init_base(d);
+		init_frame(d);
+}
+
+void	init_base(t_data *d)
+{
+	d->img.ba.floor = new_file_img(d, "img/ba/floor.xpm");
+	d->img.ba.wall = new_file_img(d, "img/ba/wall.xpm");
+	d->img.ba.wall_top = new_file_img(d, "img/ba/wall_top.xpm");
+	d->img.ba.la_ro_lm = new_file_img(d, "img/ba/lava_rock_lm.xpm");
+	d->img.ba.la_ro_rm = new_file_img(d, "img/ba/lava_rock_rm.xpm");
+}
+
+// void	init_frame(t_xpm *xpm, t_win window)
+void	init_frame(t_data *d)
+{
+	d->img.fr[0].collect = new_file_img(d, "img/fr_0/collect_0.xpm");
+	d->img.fr[0].la_ro_l = new_file_img(d, "img/fr_0/lava_rock_l_0.xpm");
+	d->img.fr[0].la_ro_m = new_file_img(d, "img/fr_0/lava_rock_m_0.xpm");
+	d->img.fr[0].la_ro_r = new_file_img(d, "img/fr_0/lava_rock_r_0.xpm");
+	d->img.fr[1].collect = new_file_img(d, "img/fr_1/collect_1.xpm");
+	d->img.fr[1].la_ro_l = new_file_img(d, "img/fr_1/lava_rock_l_1.xpm");
+	d->img.fr[1].la_ro_m = new_file_img(d, "img/fr_1/lava_rock_m_1.xpm");
+	d->img.fr[1].la_ro_r = new_file_img(d, "img/fr_1/lava_rock_r_1.xpm");
+}
+
+// void	init_frame_1(t_xpm *xpm, t_win window)
+// {
+// 	(*xpm).fr_1.collect = new_file_img("img/fr_1/collect_1.xpm", window);
+// 	(*xpm).fr_1.la_ro_l = new_file_img("img/fr_1/lava_rock_l_1.xpm", window);
+// 	(*xpm).fr_1.la_ro_m = new_file_img("img/fr_1/lava_rock_m_1.xpm", window);
+// 	(*xpm).fr_1.la_ro_r = new_file_img("img/fr_1/lava_rock_r_1.xpm", window);
+// }
+
+
+// FOR TESTING ONLY
+// t_win_test new_window(int w, int h, char *str)
+// {
+// 	void	*mlx_ptr;
+
+// 	mlx_ptr = mlx_init();
+// 	return ((t_win_test) {mlx_ptr, mlx_new_window(mlx_ptr, w, h, str), w, h});
+// }
+
+t_img_data	new_img(int w, int h, t_data *d, t_img_data *base_image)
+{
+	// t_img_data	image;
+
+	// image.win = window;
+	// image.img_ptr = mlx_new_image(window.mlx_ptr, w, h);
+	d->img.canvas.img_ptr = mlx_new_image(d->mlx.mlx_ptr, w, h);
+	d->img.canvas.addr = mlx_get_data_addr(d->img.canvas.img_ptr, &(d->img.canvas.bpp),
+			&(d->img.canvas.line_len), &(d->img.canvas.endian));
+	d->img.canvas.w = w;
+	d->img.canvas.h = h;	
+	// base_image->img_ptr = mlx_new_image(d->mlx.mlx_ptr, w, h);
+	// base_image->addr = mlx_get_data_addr(base_image->img_ptr, &(base_image->bpp),
+	// 		&(base_image->line_len), &(base_image->endian));
+	// base_image->w = w;
+	// base_image->h = h;
+	return (*base_image);
+}

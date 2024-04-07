@@ -6,133 +6,115 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:22:53 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/31 18:01:22 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/03 12:25:06 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long.h"
 
 /*check if there is a valid path from the player to the exit*/
-bool	not_valid_path_exit(t_data *data)
+bool	not_valid_path_exit(t_data *d)
 {
-	t_data	tmp_data;
-	t_pos	position;
-	bool	valid_path;
-
-	cpy_struct_data(&tmp_data, data);
-	find_position(&tmp_data, PLAYER, &position);
-	search_path(&tmp_data, EXIT, position);
-	valid_path = tmp_data.found;
-	free_all(&tmp_data);
-	if (valid_path)
-		return (false);
-	else
-		return (true);
+	cpy_map_tmp(d);
+	find_position(d, PLAYER);
+	d->map.valid_path = false;
+	search_path(d, EXIT, d->map.y, d->map.x);
+	free_map(d->map.tmp_map);
+	return (!d->map.valid_path);
 }
 
 /*check if all the collectables have a valid path to the player*/
-bool	not_valid_path_collac(t_data *data)
+bool	not_valid_path_collac(t_data *d)
 {
-	t_data	tmp_data;
-	t_pos	position;
-	int		num_collec;
-	int		count;
-	bool	valid_path;
+	int	num_collec;
 
-	cpy_struct_data(&tmp_data, data);
-	find_position(&tmp_data, PLAYER, &position);
-	num_collec = count_arg1_in_map(COLLEC, &tmp_data);
-	count = 1;
-	while (count++ <= num_collec)
+	cpy_map_tmp(d);
+	find_position(d, PLAYER);
+	num_collec = count_arg1_in_map(COLLEC, d);
+	while (num_collec--)
 	{
-		tmp_data.found = false;
-		search_path(&tmp_data, COLLEC, position);
-		replace_arg1_with_arg2_in_map(CHECKED, SPACE, &tmp_data);
+		d->map.valid_path = false;
+		search_path(d, COLLEC, d->map.y, d->map.x);
+		if (!d->map.valid_path)
+			break;
+		replace_arg1_with_arg2_in_map(CHECKED, SPACE, d);
 	}
-	valid_path = tmp_data.found;
-	free_all(&tmp_data);
-	if (tmp_data.found)
-	{
-		return (false);
-	}
-		return (true);
+	free_map(d->map.tmp_map);
+	return (!d->map.valid_path);
 }
 
 /*search the map in tmp_d if there is a valid path*/
-void	search_path(t_data *tmp_d, char item, t_pos pos)
+void	search_path(t_data *d, char item, int y, int x)
 {
-	if (tmp_d->found)
+	if (d->map.valid_path)
 		return;
-	if (outside_map(tmp_d, &pos))
+	if (outside_map(d))
 		return;
-	if (WALL == tmp_d->map[pos.y][pos.x])
+	if (WALL == d->map.tmp_map[y][x])
 		return;
-	if (CHECKED == tmp_d->map[pos.y][pos.x])
+	if (CHECKED == d->map.tmp_map[y][x])
 		return;
-	if (item == tmp_d->map[pos.y][pos.x])
+	if (item == d->map.tmp_map[y][x])
 	{
-		tmp_d->found = true;
-		tmp_d->map[pos.y][pos.x] = SPACE;
+		d->map.valid_path = true;
+		d->map.tmp_map[y][x] = SPACE;
 		return;
 	}
-	tmp_d->map[pos.y][pos.x] = CHECKED;
-	search_path(tmp_d, item, (t_pos){pos.y +1, pos.x});
-	search_path(tmp_d, item, (t_pos){pos.y -1, pos.x});
-	search_path(tmp_d, item, (t_pos){pos.y, pos.x +1});
-	search_path(tmp_d, item, (t_pos){pos.y, pos.x -1});
+	d->map.tmp_map[y][x] = CHECKED;
+	search_path(d, item, y +1, x);
+	search_path(d, item, y -1, x);
+	search_path(d, item, y, x +1);
+	search_path(d, item, y, x -1);
 	return;
 }
 
 /*check if coordinates are outside of map*/
-bool	outside_map(t_data *tmp_d, t_pos *pos)
+bool	outside_map(t_data *d)
 {
-	if (0 > pos->y)
+	if (0 > d->map.y)
 		return (true);
-	else if (tmp_d->height <= pos->y)
+	else if (d->map.height <= d->map.y)
 		return (true);
-	else if (0 > pos->x)
+	else if (0 > d->map.x)
 		return (true);
-	else if (tmp_d->width <= pos->x)
+	else if (d->map.width <= d->map.x)
 		return (true);
 	return (false);
 }
 
-/*initialize structure with values from src struct and some base values*/
-void	cpy_struct_data(t_data *dst, t_data *src)
+/*copy original map to tmp_map*/
+void	cpy_map_tmp(t_data *d)
 {
-	int	idx_hight;
+	int	idx_height;
 	
-	idx_hight = 0;
-	dst->found = false;
-	dst->height = src->height;
-	dst->width = src->width;
-	dst->map = (char **) ft_calloc(dst->height + 1, sizeof(char *));
-	while (idx_hight < dst->height)
+	idx_height = 0;
+	d->map.tmp_map = (char **) ft_calloc(d->map.height + 1, sizeof(char *));
+	while (idx_height < d->map.height)
 	{
-		dst->map[idx_hight] = ft_strdup(src->map[idx_hight]);
-		idx_hight++;
+		d->map.tmp_map[idx_height] = ft_strdup(d->map.map[idx_height]);
+		idx_height++;
 	}
-	dst->map[idx_hight] = NULL;
+	d->map.tmp_map[idx_height] = NULL;
 }
 
-/*check position of character 'c' in map, if not values are negative*/
-void	find_position(t_data *tmp_d, char c, t_pos *pos)
+/*find position of character 'c' in map, if not found values are negative*/
+void	find_position(t_data *d, char c)
 {
 	int	idx_y;
 	int	idx_x;
 
 	idx_y = 0;
-	pos->y = -1;
-	pos->x = -1;
-	while (tmp_d->map[idx_y])
+	d->map.x = -1;
+	d->map.y = -1;
+	while (d->map.tmp_map[idx_y])
 	{
 		idx_x = 0;
-		while (tmp_d->map[idx_y][idx_x])
+		while (d->map.tmp_map[idx_y][idx_x])
 		{
-			if (c == tmp_d->map[idx_y][idx_x])
+			if (c == d->map.tmp_map[idx_y][idx_x])
 			{
-				pos->y = idx_y;
-				pos->x = idx_x;
+				d->map.y = idx_y;
+				d->map.x = idx_x;
 			}
 			idx_x++;
 		}
@@ -141,20 +123,20 @@ void	find_position(t_data *tmp_d, char c, t_pos *pos)
 }
 
 /*replace the checked fields in the map with space*/
-void	replace_arg1_with_arg2_in_map(char arg1, char arg2, t_data *tmp_d)
+void	replace_arg1_with_arg2_in_map(char arg1, char arg2, t_data *d)
 {
 	int	idx_y;
 	int	idx_x;
 
 	idx_y = 0;
-	while (tmp_d->map[idx_y])
+	while (d->map.tmp_map[idx_y])
 	{
 		idx_x = 0;
-		while (tmp_d->map[idx_y][idx_x])
+		while (d->map.tmp_map[idx_y][idx_x])
 		{
-			if (arg1 == tmp_d->map[idx_y][idx_x])
+			if (arg1 == d->map.tmp_map[idx_y][idx_x])
 			{
-				tmp_d->map[idx_y][idx_x] = arg2;
+				d->map.tmp_map[idx_y][idx_x] = arg2;
 			}
 			idx_x++;
 		}

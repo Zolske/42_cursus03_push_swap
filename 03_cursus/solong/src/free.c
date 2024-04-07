@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 14:42:24 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/31 18:01:22 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/03 12:25:34 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_all(t_data *d)
 {
-	free_map(d->map);
+	free_map(d->map.map);
 }
 
 /*free table of strings and set it's pointers to NULL*/
