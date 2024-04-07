@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 10:06:35 by zkepes            #+#    #+#             */
-/*   Updated: 2024/04/05 19:09:10 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/07 16:37:45 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct s_map
 	int		****map_4d;	// to hold perspective, char as int, x and y coordinates
 	int		x;			// coordinate horizontal axis, left to right
 	int		y;			// coordinate vertical axis, top to bottom
+	int		perspective;
 	bool	valid_path;
 }	t_map;
 
@@ -47,14 +48,34 @@ typedef struct s_img_data
 	int		line_len;
 }	t_img_data;
 
+typedef struct s_img_stat
+{
+	t_img_data	wall;
+	t_img_data	sand;
+}	t_img_stat;
+
+typedef struct s_img_anim
+{
+	t_img_data	idle;
+}	t_img_anim;
 
 typedef struct s_images
 {
 	int			idx_fr;		// store current frame index
 	t_img_data	canvas;		// all images are put on the canvas
-	// t_base		ba;			// base images (no animation)
+	t_img_stat	i_sta;			// base images (no animation)
+	t_img_anim	i_ani;
 	// t_frame		fr[7];		// array of frames
 }	t_img;
+
+typedef struct s_tmp_tile
+{
+	int	x;
+	int	y;
+	int	per;
+	int	tile;
+	int	layer;
+}	t_tmp_tile;
 
 typedef struct s_data
 {
@@ -62,6 +83,7 @@ typedef struct s_data
 	t_mlx		mlx;
 	t_img_data	img_d;
 	t_img		img;
+	t_tmp_tile	tmp;
 } t_data;
 
 enum
@@ -70,10 +92,12 @@ enum
 	VIEW_RIGHT = 1,
 	VIEW_TOP = 2,
 	VIEW_LEFT = 3,
+	LAYER = -50,	// negative values move tiles up, center is in the middle
 	TAB_C = 0,
 	TAB_X = 1,
 	TAB_Y = 2
 };
+
 // typedef struct	s_img_data { // my structure
 // 	void	*img;
 // 	char	*addr;
@@ -117,6 +141,8 @@ enum
 // }	t_xpm;
 
 #endif
+
+
 
 // static images with no animation
 // typedef struct s_base

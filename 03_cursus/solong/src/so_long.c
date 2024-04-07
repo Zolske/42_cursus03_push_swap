@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 10:27:59 by zkepes            #+#    #+#             */
-/*   Updated: 2024/04/07 09:35:52 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/07 17:47:28 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void init(t_data *d, char *argv[])
 	d->map.map = NULL;
 	d->map.tmp_map = NULL;
 	d->map.valid_path = false;
+	d->map.perspective = VIEW_BOTTOM;
 }
 
 void start_game(t_data *d)
@@ -43,6 +44,8 @@ void start_game(t_data *d)
 	d->mlx.mlx_ptr = mlx_init();
 	d->mlx.win_ptr = mlx_new_window(d->mlx.mlx_ptr, d->mlx.win_w, d->mlx.win_h, WIN_TITLE);
 	create_canvas(d, d->mlx.win_w, d->mlx.win_h);
+	init_static_img(d);
+	init_anim_img(d);
 
 	t_img_data wall_light;
 	t_img_data wall_dark;
@@ -71,47 +74,104 @@ void start_game(t_data *d)
 
 	init_map_4d(d);
 	cpy_map_4d(d);
-	update_coordinates(d, VIEW_BOTTOM);
-	print_map_4d_char(d, VIEW_BOTTOM);
-	print_map_4d_coordinates(d, VIEW_BOTTOM);
-	paint_map(d, VIEW_BOTTOM, wall_light);
+	update_maps(d);
+	// update_coordinates(d, VIEW_BOTTOM);
+	// update_table_perspective(d);
+	// print_map_4d_char(d, VIEW_BOTTOM);
+	print_map_4d_char(d, VIEW_RIGHT);
+	// print_map_4d_char(d, VIEW_TOP);
+	// print_map_4d_char(d, VIEW_LEFT);
+	// print_map_4d_coordinates(d, VIEW_BOTTOM);
+	paint_map(d, VIEW_BOTTOM, 0);
+	paint_map(d, VIEW_BOTTOM, 1);
 	// put_img_to_img(d->img.canvas, lava, CEN_X_OFF, CEN_Y_OFF);			// center
 
-	// int x_axis = 0;
-	// int y_axis = 0;
-	// int down = 50;
-	// int idx_1 = 0;	// columns, going to the right
-	// int idx_2 = 0; // rows, coming forward
-	// int step = 0;
-	// while (idx_1--)
-	// {
-	// 	while (idx_2--)
-	// 	{
-	// 		put_img_to_img(d->img.canvas, wall_light ,1920/2 -50 - x_axis + y_axis, down);
-	// 		down += 25;
-	// 		x_axis += 50;
-	// 	}
-	// 	step += 25;
-	// 	y_axis += 50;
-	// 	down = 50 + step;
-	// 	x_axis = 0;
-	// 	idx_2 = 19;
-	// 	// put_img_to_img(d->img.canvas, wall_light ,1920/2 -50 -50, 25);
-	// }
-	// x_axis = 0;
-	// down = 0;
-	// idx_2 = 0;
-	// while (idx_2--)
-	// {
-	// 	put_img_to_img(d->img.canvas, wall_light ,1920/2 -50 - x_axis, down);
-	// 	down += 25;
-	// 	x_axis += 50;
-	// }
 
 	mlx_put_image_to_window(d->mlx.mlx_ptr, d->mlx.win_ptr, d->img.canvas.img_ptr, 0, 0);
+	mlx_key_hook(d->mlx.win_ptr, key_hook, d);
 	mlx_hook(d->mlx.win_ptr, 17, 1L << 0, close_window, d);
+	mlx_loop_hook(d->mlx.mlx_ptr, render_next_frame, d);
 	mlx_loop(d->mlx.mlx_ptr);
 }
+
+void	process_move(int keysym, t_data *d)
+{
+	keysym = translate_keysym(keysym, d);
+	printf("keysym: %d\n", keysym);
+}
+
+int	translate_keysym(int keysym, t_data *d)
+{
+	if (d->map.perspective == VIEW_RIGHT)
+	{
+		if (keysym == XK_Right)
+			return (XK_Down);
+		else if (keysym == XK_Down)
+			return (XK_Left);
+		else if (keysym == XK_Left)
+			return (XK_Up);
+		else if (keysym == XK_Up)
+			return (XK_Right);
+	}
+	else if (d->map.perspective == VIEW_TOP)
+	{
+		if (keysym == XK_Right)
+			return (XK_Left);
+		else if (keysym == XK_Down)
+			return (XK_Up);
+		else if (keysym == XK_Left)
+			return (XK_Right);
+		else if (keysym == XK_Up)
+			return (XK_Down);
+	}
+	else if (d->map.perspective == VIEW_LEFT)
+	{
+		if (keysym == XK_Right)
+			return (XK_Up);
+		else if (keysym == XK_Down)
+			return (XK_Right);
+		else if (keysym == XK_Left)
+			return (XK_Up);
+		else if (keysym == XK_Up)
+			return (XK_Left);
+	}
+	return (keysym);
+}
+
+int render_next_frame(t_data *d)
+{
+	mlx_destroy_image(d->mlx.mlx_ptr, d->img.canvas.img_ptr);
+	create_canvas(d, d->mlx.win_w, d->mlx.win_h);
+	update_maps(d);
+	paint_map(d, d->map.perspective, 0);
+	paint_map(d, d->map.perspective, 1);
+	mlx_put_image_to_window(d->mlx.mlx_ptr, d->mlx.win_ptr, d->img.canvas.img_ptr, 0, 0);
+	// printf("next frame, perspective: %d\n", d->map.perspective);
+}
+
+int	key_hook(int keysym, t_data *d)
+{
+	if (keysym == XK_Up)
+		printf("Up\n");
+	else if (keysym == XK_Right)
+		printf("Right\n");
+	else if (keysym == XK_Down)
+		printf("Down\n");
+	else if (keysym == XK_Left)
+		printf("Left\n");
+	else if (keysym == XK_Tab)
+	{
+		printf("tab\n");
+		if (VIEW_LEFT == d->map.perspective)
+			d->map.perspective = VIEW_BOTTOM;
+		else
+			d->map.perspective++;
+	}
+	else if (keysym == XK_Escape)
+		close_window(d);
+	return (0);
+}
+
 
 int close_window(t_data *d)
 {
@@ -189,6 +249,43 @@ void cpy_map_4d(t_data *d)
 	}
 }
 
+void	update_table_perspective(t_data *d)
+{
+	int idx_row;
+	int idx_col;
+	int idx_row_last;
+	int idx_col_last;
+	char cpy;
+
+	idx_row_last = d->map.height;
+	idx_row = 0;
+	while (d->map.map_4d[VIEW_BOTTOM][TAB_C][idx_row] != NULL)
+	{
+		idx_row_last--;
+		idx_col = 0;
+		idx_col_last = d->map.width;
+		while (d->map.map_4d[VIEW_BOTTOM][TAB_C][idx_row][idx_col] != INT_MAX)
+		{
+			idx_col_last--;
+			cpy = d->map.map_4d[VIEW_BOTTOM][TAB_C][idx_row][idx_col];
+			d->map.map_4d[VIEW_RIGHT][TAB_C][idx_col][idx_row_last] = cpy;
+			d->map.map_4d[VIEW_TOP][TAB_C][idx_row_last][idx_col_last] = cpy;
+			d->map.map_4d[VIEW_LEFT][TAB_C][idx_col_last][idx_row] = cpy;
+			idx_col++;
+		}
+		idx_row++;
+	}
+}
+
+void	update_maps(t_data *d)
+{
+	update_table_perspective(d);
+	update_coordinates(d, VIEW_BOTTOM);
+	update_coordinates(d, VIEW_RIGHT);
+	update_coordinates(d, VIEW_TOP);
+	update_coordinates(d, VIEW_LEFT);
+}
+
 /*coor. must coordinate[2], [0] is for x axis, [1] for y axis*/
 void player_coordinate(t_data *d, int *coor_x, int *coor_y, int per)
 {
@@ -239,26 +336,65 @@ void update_coordinates(t_data *d, int per)
 	}
 }
 
-void paint_map(t_data *d, int per, t_img_data elem)
+void paint_map(t_data *d, int per, int level)
 {
 	int idx_row;
 	int idx_col;
-	int x;
-	int y;
-
+	
+	d->tmp.per = per;
+	d->tmp.layer = level;
 	idx_row = 0;
 	while (d->map.map_4d[per][TAB_C][idx_row] != NULL)
 	{
-		printf("idx_row: %d\n", idx_row);
 		idx_col = 0;
 		while (d->map.map_4d[per][TAB_X][idx_row][idx_col] != INT_MAX)
 		{
-			x = d->map.map_4d[per][TAB_X][idx_row][idx_col];
-			y = d->map.map_4d[per][TAB_Y][idx_row][idx_col];
-			printf("x: %d, y: %d\n", x, y);
-			put_img_to_img(d->img.canvas, elem, CEN_X_OFF + x, CEN_Y_OFF + y);
+			d->tmp.x = CEN_X_OFF + d->map.map_4d[per][TAB_X][idx_row][idx_col];
+			d->tmp.y = CEN_Y_OFF + d->map.map_4d[per][TAB_Y][idx_row][idx_col]
+				+ (LAYER * level);
+			d->tmp.tile = d->map.map_4d[per][TAB_C][idx_row][idx_col];
+			d->tmp.layer = level;
+			paint_tile(d);
 			idx_col++;
 		}
 		idx_row++;
 	}
+}
+
+void	paint_tile(t_data *d)
+{
+	t_img_data tile_img;
+	bool		paint_tile;
+
+	paint_tile = false;
+	if (0 == d->tmp.layer)
+	{
+		tile_img = d->img.i_sta.sand;
+		paint_tile = true;
+	}
+	else if ('1' == d->tmp.tile)
+	{
+		tile_img = d->img.i_sta.wall;
+		paint_tile = true;
+	}
+	else if ('P' == d->tmp.tile)
+	{
+		tile_img = d->img.i_ani.idle;
+		put_img_to_img(d->img.canvas, tile_img, d->tmp.x , d->tmp.y);
+		paint_tile = false;
+	}
+
+	if (paint_tile)
+		put_img_to_img(d->img.canvas, tile_img, d->tmp.x, d->tmp.y);
+}
+
+void	init_static_img(t_data *d)
+{
+	d->img.i_sta.wall =  new_file_img(d, "img/stonebrickbluefull.xpm");
+	d->img.i_sta.sand =  new_file_img(d, "img/sandfull.xpm");
+}
+
+void	init_anim_img(t_data *d)
+{
+	d->img.i_ani.idle =  new_file_img(d, "img/crusader_idle_00000.xpm");
 }

@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 10:28:17 by zkepes            #+#    #+#             */
-/*   Updated: 2024/04/07 08:32:03 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/07 17:16:26 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 # define CEN_Y_OFF 1080/2 -25
 # define TILE_WIDTH 100
 # define TILE_HEIGHT 50
+# define FLOOR 0
+# define GROUND 1
 
 // dont change values, just to make it more readable
 // # define VIEW_BOTTOM 0
@@ -51,6 +53,7 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include <limits.h>
+#include <X11/keysym.h>
 
 
 
@@ -206,8 +209,18 @@ void	init_map_4d(t_data *d);
 void	cpy_map_4d(t_data *d);
 void	player_coordinate(t_data *d, int *coor_x, int *coor_y, int perspective);
 void	update_coordinates(t_data *d, int per);
-void	paint_map(t_data *d, int per, t_img_data elem);
+void	paint_map(t_data *d, int per, int layer);
+void	init_static_img(t_data *d);
+void	paint_tile(t_data *d);
+void	update_table_perspective(t_data *d);
+void	update_maps(t_data *d);
+void	init_anim_img(t_data *d);
+int render_next_frame(t_data *d);
+void	process_move(int keysym, t_data *d);
+int		translate_keysym(int keysym, t_data *d);
 
 // close window
 int	close_window(t_data *d);
+
+int	key_hook(int keycode, t_data *d);
 #endif

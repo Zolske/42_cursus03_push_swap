@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 12:46:33 by zkepes            #+#    #+#             */
-/*   Updated: 2024/04/05 19:57:25 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/07 12:57:06 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ void	print_map_4d_char(t_data *d, int per)
 	player_coordinate(d, &play_x, &play_y, per);
 	printf("\nCHARACTER TABLE:\n");
 	printf("Player coordinate: x=%d, y=%d\n\n", play_x, play_y);
-	while (idx_row < d->map.height)
+	while (d->map.map_4d[per][TAB_C][idx_row] != NULL)
 	{
 		idx_col = 0;
-		while (idx_col < d->map.width)
+		while (d->map.map_4d[per][TAB_C][idx_row][idx_col] != INT_MAX)
 		{
 			printf("%c|", (char) d->map.map_4d[per][TAB_C][idx_row][idx_col]);
 			idx_col++;
