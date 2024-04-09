@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 14:42:24 by zkepes            #+#    #+#             */
-/*   Updated: 2024/04/03 12:25:34 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/08 11:04:15 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,35 @@ void	free_tab(char **tab)
 		free(tab);
 		tab = NULL;
 	}
+}
+
+void	free_map_4d(t_data *d)
+{
+	int	idx_per;
+	int	idx_tab;
+	int	idx_row;
+
+	idx_per = 0;
+	while (idx_per < 4)
+	{
+		idx_tab = 0;
+		while (idx_tab < 3)
+		{
+			idx_row = 0;
+			while (d->map.map_4d[idx_per][idx_tab][idx_row] != NULL)
+			{
+				free(d->map.map_4d[idx_per][idx_tab][idx_row]);
+				d->map.map_4d[idx_per][idx_tab][idx_row] = NULL;
+				idx_row++;
+			}
+			free(d->map.map_4d[idx_per][idx_tab]);
+			d->map.map_4d[idx_per][idx_tab] = NULL;
+			idx_tab++;
+		}
+		free(d->map.map_4d[idx_per]);
+		d->map.map_4d[idx_per] = NULL;
+		idx_per++;
+	}
+	free(d->map.map_4d);
+	d->map.map_4d = NULL;
 }

@@ -20,7 +20,7 @@ $(NAME): $(OBJ_DIR) $(OBJ) $(SRC) $(HEADER) libft/libft.a
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(HEADER)
 	@$(CC) -c $(FLAG) $< -o $@
 
 libft/libft.a:

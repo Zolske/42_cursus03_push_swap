@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 10:06:35 by zkepes            #+#    #+#             */
-/*   Updated: 2024/04/07 16:37:45 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/09 17:19:02 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,18 @@ typedef struct s_map
 	int		x;			// coordinate horizontal axis, left to right
 	int		y;			// coordinate vertical axis, top to bottom
 	int		perspective;
+	bool	keys_locked;
+	bool	play_animation;
+
+	int		move_x;
+	int		move_y;
 	bool	valid_path;
 }	t_map;
 
 typedef struct s_mlx
 {
 	void	*mlx_ptr;	// MALLOC! to struct for connection to x service
-	void	*win_ptr;	// MALLOC! to window
+	void	*win_ptr;	// MALLOC! to window 
 	int		win_h;
 	int		win_w;
 }	t_mlx;
@@ -54,27 +59,42 @@ typedef struct s_img_stat
 	t_img_data	sand;
 }	t_img_stat;
 
-typedef struct s_img_anim
+// typedef struct s_img_anim
+// {
+// 	t_img_data	idle;
+// }	t_img_anim;
+
+typedef struct s_player
 {
-	t_img_data	idle;
-}	t_img_anim;
+	int			state;
+	int			fr;
+	int			last_fr;
+	t_img_data	idle[16];
+	t_img_data	down[12];
+	t_img_data	up[12];
+	t_img_data	left[12];
+	t_img_data	right[12];
+}	t_player;
 
 typedef struct s_images
 {
 	int			idx_fr;		// store current frame index
+	// int			sta_player;	// animation state of the player
 	t_img_data	canvas;		// all images are put on the canvas
 	t_img_stat	i_sta;			// base images (no animation)
-	t_img_anim	i_ani;
+	t_player	player;
+	// t_img_anim	i_ani;
+
 	// t_frame		fr[7];		// array of frames
 }	t_img;
 
-typedef struct s_tmp_tile
+typedef struct s_tmp_tile	// temp data overwritten after each tile render
 {
-	int	x;
+	int	x;					// coordinate of tile placement in the map
 	int	y;
-	int	per;
-	int	tile;
-	int	layer;
+	int	per;				// perspective
+	int	tile;				// tile to be rendered
+	int	layer;				// layer (FLOOR, GROUND)
 }	t_tmp_tile;
 
 typedef struct s_data
@@ -161,3 +181,4 @@ enum
 // 	t_img_data	la_ro_m;		// lava rock middle (bottom)
 // 	t_img_data	la_ro_r;		// lava rock right (bottom)
 // }	t_frame;
+//

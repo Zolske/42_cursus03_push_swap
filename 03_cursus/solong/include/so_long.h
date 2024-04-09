@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 10:28:17 by zkepes            #+#    #+#             */
-/*   Updated: 2024/04/07 17:16:26 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/09 18:14:07 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,13 @@
 # define TILE_HEIGHT 50
 # define FLOOR 0
 # define GROUND 1
+// entity states
+# define WALK_DOWN 0
+# define WALK_RIGHT 1
+# define WALK_UP 2
+# define WALK_LEFT 3
+# define IDLE 4
+
 
 // dont change values, just to make it more readable
 // # define VIEW_BOTTOM 0
@@ -143,6 +150,7 @@ void	free_all(t_data *d);
 void	free_map(char **map);
 void	free_str(char *str);
 void	free_tab(char **tab);
+void	free_map_4d(t_data *d);
 
 // minilibx
 void	start_game(t_data *d);
@@ -217,7 +225,24 @@ void	update_maps(t_data *d);
 void	init_anim_img(t_data *d);
 int render_next_frame(t_data *d);
 void	process_move(int keysym, t_data *d);
-int		translate_keysym(int keysym, t_data *d);
+int		translate_key(int keysym, t_data *d);
+
+// init images
+void	init_images(t_data *d);
+void	init_img_player(t_data *d);
+void	init_img_player_idle(t_data *d);
+void	init_img_player_walk_down(t_data *d);
+void	init_img_player_walk_up(t_data *d);
+void	init_img_player_walk_right(t_data *d);
+void	init_img_player_walk_left(t_data *d);
+void	increment_img_frame(t_data *d);
+
+// render
+void	render_player(t_data *d);
+void	move_player_down(t_data *d);
+void	move_player_up(t_data *d);
+void	move_player_right(t_data *d);
+void	move_player_left(t_data *d);
 
 // close window
 int	close_window(t_data *d);
