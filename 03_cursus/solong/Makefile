@@ -1,10 +1,13 @@
 NAME	= so_long
-HEADER	= include/so_long.h include/render.h include/struct.h
+HEADER	= include/so_long.h include/struct.h
 SRC_DIR = src/
 SRC		= $(addprefix $(SRC_DIR), \
 			so_long.c file_into_struct.c validate_map.c validate_map_help.c \
-			error.c print.c floodfill.c free.c validate_map.c \
-			validate_map_help.c put_img.c)
+			error.c floodfill.c  floodfill_help.c free.c \
+			validate_map.c render.c validate_map_help.c put_img.c \
+			move_player.c init_img_player.c init_img.c array_4d.c free_img.c \
+			free_img_player.c update.c move.c keys_window.c)
+# print.c
 OBJ_DIR	= obj/
 OBJ		= $(SRC:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
 LIB_FT	= -L./libft -lft

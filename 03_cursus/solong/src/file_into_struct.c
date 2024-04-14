@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 10:40:22 by zkepes            #+#    #+#             */
-/*   Updated: 2024/04/03 12:18:44 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/14 07:49:51 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,13 @@ void	write_map_size(char *map_file, t_data *d)
 {
 	int		fd;
 	char	*map_row;
-	
+
+	if (not_valid_file_extension(d))
+		e_data(d, "Invalid file extension!");
 	fd = open(map_file, O_RDONLY);
-	e_fd(d, fd, "ERROR: invalid argument, 'file'.");
+	e_fd(d, fd, "Invalid argument, 'file'.");
 	map_row = get_next_line(fd);
-	e_str(d, map_row, fd, "ERROR: '*.ber' file, is empty.");
+	e_str(d, map_row, fd, "'*.ber' file, is empty.");
 	d->map.width = ft_strlen(map_row) -1;
 	d->map.height = 0;
 	while (NULL != map_row)
@@ -48,25 +50,40 @@ void	write_map(char *map_file, t_data *d)
 	int		fd;
 	int		len_row;
 	char	*map_row;
-	
+
 	idx_row = 0;
 	fd = open(map_file, O_RDONLY);
-	e_fd(d, fd, "ERROR: invalid argument, 'file'.");
+	e_fd(d, fd, "Invalid argument, 'file'.");
 	d->map.map = (char **) ft_calloc(d->map.height + 1, sizeof(char *));
-	e_tab(d, d->map.map, fd, "ERROR: in 'write_map()'");
+	e_tab(d, d->map.map, fd, "In 'write_map()'");
 	while (idx_row < d->map.height)
 	{
 		map_row = get_next_line(fd);
-		e_str(d, map_row, fd, "ERROR: get line from file.");
+		e_str(d, map_row, fd, "Get line from file.");
 		len_row = ft_strlen(map_row);
 		if ('\n' == map_row[len_row - 1])
 			len_row--;
 		d->map.map[idx_row] = ft_substr(map_row, 0, len_row);
 		free_str(map_row);
-		e_str(d, d->map.map[idx_row], fd, "ERROR: file-line to map structure.");
+		e_str(d, d->map.map[idx_row], fd, "File-line to map structure.");
 		idx_row++;
 	}
 	d->map.map[idx_row] = NULL;
 	close(fd);
 }
 
+bool	not_valid_file_extension(t_data *d)
+{
+	int	len;
+
+	len = ft_strlen(d->map.file);
+	if (d->map.file[--len] != 'r')
+		return (true);
+	if (d->map.file[--len] != 'e')
+		return (true);
+	if (d->map.file[--len] != 'b')
+		return (true);
+	if (d->map.file[--len] != '.')
+		return (true);
+	return (false);
+}

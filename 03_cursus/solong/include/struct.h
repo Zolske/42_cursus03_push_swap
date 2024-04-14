@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 10:06:35 by zkepes            #+#    #+#             */
-/*   Updated: 2024/04/09 17:19:02 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/14 10:45:28 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdbool.h>
 
+// map data
 typedef struct s_map
 {
 	char	*file;		// name of program input map file "*.ber"
@@ -22,26 +23,29 @@ typedef struct s_map
 	int		height;		// map size in characters
 	char	**map;		// MALLOC! map as characters from input filename
 	char	**tmp_map;	// MALLOC! temporay map
-	int		****map_4d;	// to hold perspective, char as int, x and y coordinates
+	int		****map_4d;	// MALLOC! perspective, char as int, x and y coordinates
 	int		x;			// coordinate horizontal axis, left to right
 	int		y;			// coordinate vertical axis, top to bottom
-	int		perspective;
-	bool	keys_locked;
-	bool	play_animation;
-
-	int		move_x;
-	int		move_y;
-	bool	valid_path;
+	int		per;		// perspective, map
+	int		coins;		// number of coins to be collected
+	bool	keys_locked;// lock keys while animation is running
+	bool	show_exit;	// show exit after all coins collected
+	bool	game_won;	// show game won message
+	int		move_x;		// move towards the x direction
+	int		move_y;		// move towards the y direction
+	bool	valid_path;	// path to exit, collectables
+	int		count_moves;// number of moves
+	bool	copy_exit;	// copy exit back into 4d map, only once
 }	t_map;
 
+// needed by mlx library
 typedef struct s_mlx
 {
 	void	*mlx_ptr;	// MALLOC! to struct for connection to x service
 	void	*win_ptr;	// MALLOC! to window 
-	int		win_h;
-	int		win_w;
 }	t_mlx;
 
+// needed by mlx library for images
 typedef struct s_img_data
 {
 	void	*img_ptr;
@@ -53,42 +57,62 @@ typedef struct s_img_data
 	int		line_len;
 }	t_img_data;
 
+// static images
 typedef struct s_img_stat
 {
 	t_img_data	wall;
 	t_img_data	sand;
+	t_img_data	wallh;
 }	t_img_stat;
 
-// typedef struct s_img_anim
-// {
-// 	t_img_data	idle;
-// }	t_img_anim;
-
+// player images
 typedef struct s_player
 {
-	int			state;
-	int			fr;
-	int			last_fr;
-	t_img_data	idle[16];
-	t_img_data	down[12];
-	t_img_data	up[12];
-	t_img_data	left[12];
-	t_img_data	right[12];
+	int			state;		// player state, idle, walk, ...
+	int			fr;			// current player frame
+	int			last_fr;	// last frame
+	t_img_data	idle[12];	// sprites for idle player
+	t_img_data	down[12];	// sprites for walking down
+	t_img_data	up[12];		// sprites for walking up
+	t_img_data	left[12];	// sprites for walking left
+	t_img_data	right[12];	// sprites for walking right
 }	t_player;
 
+// player images
+typedef struct s_dragon
+{
+	int			state;		// player state, idle, walk, ...
+	int			fr;			// current player frame
+	int			last_fr;	// last frame
+	t_img_data	idle[12];	// sprites for idle player
+	t_img_data	down[12];	// sprites for walking down
+	t_img_data	up[12];		// sprites for walking up
+	t_img_data	left[12];	// sprites for walking left
+	t_img_data	right[12];	// sprites for walking right
+}	t_dragon;
+
+// GUI
+typedef struct s_text
+{
+	t_img_data	arrow_key;	// legend for keys
+	t_img_data	won;		// win message
+}	t_text;
+
+// containing all images
 typedef struct s_images
 {
 	int			idx_fr;		// store current frame index
-	// int			sta_player;	// animation state of the player
 	t_img_data	canvas;		// all images are put on the canvas
-	t_img_stat	i_sta;			// base images (no animation)
-	t_player	player;
-	// t_img_anim	i_ani;
-
-	// t_frame		fr[7];		// array of frames
+	t_img_stat	i_sta;		// static images
+	t_player	player;		// struct for player images
+	t_dragon	dragon;
+	t_img_data	coin[12];	// collectable sprite
+	t_img_data	exit[12];	// exit portal sprite
+	t_text		text;		// structure for gui
 }	t_img;
 
-typedef struct s_tmp_tile	// temp data overwritten after each tile render
+// temp data overwritten after each tile render
+typedef struct s_tmp_tile
 {
 	int	x;					// coordinate of tile placement in the map
 	int	y;
@@ -97,88 +121,14 @@ typedef struct s_tmp_tile	// temp data overwritten after each tile render
 	int	layer;				// layer (FLOOR, GROUND)
 }	t_tmp_tile;
 
+// containing all other structures / data
 typedef struct s_data
 {
-	t_map		map;
-	t_mlx		mlx;
-	t_img_data	img_d;
-	t_img		img;
-	t_tmp_tile	tmp;
-} t_data;
-
-enum
-{
-	VIEW_BOTTOM = 0,
-	VIEW_RIGHT = 1,
-	VIEW_TOP = 2,
-	VIEW_LEFT = 3,
-	LAYER = -50,	// negative values move tiles up, center is in the middle
-	TAB_C = 0,
-	TAB_X = 1,
-	TAB_Y = 2
-};
-
-// typedef struct	s_img_data { // my structure
-// 	void	*img;
-// 	char	*addr;
-// 	int		bits_per_pixel;
-// 	int		line_length;
-// 	int		endian;
-// }				t_img_d;
-
-// typedef struct s_base
-// {
-// 	t_img	wall;
-// 	t_img	wall_top;
-// 	t_img	floor;
-// 	t_img	la_ro_lm;
-// 	t_img	la_ro_rm;
-// }	t_base;
-
-// typedef struct s_frame
-// {
-// 	t_img	collect;
-// 	t_img	la_ro_l;
-// 	t_img	la_ro_m;
-// 	t_img	la_ro_r;
-// }		t_frame;
-
-// typedef struct s_xpm
-// {
-// 	char		**map;
-// 	int			h;
-// 	int			w;
-// 	int			fr_idx;
-// 	t_img		*base_img;
-// 	t_base		ba;
-// 	t_frame		fr_0;
-// 	t_frame		fr_1;
-// 	t_frame		fr_2;
-// 	t_frame		fr_3;
-// 	t_frame		fr_4;
-// 	t_frame		fr_5;
-// 	t_frame		fr_6;
-// }	t_xpm;
+	t_map		map;		// struct containing map data
+	t_mlx		mlx;		// struct for mlx lib
+	t_img_data	img_d;		// struct for mlx lib used for images
+	t_img		img;		// struct for images
+	t_tmp_tile	tmp;		// temporay data, image tiles
+}	t_data;
 
 #endif
-
-
-
-// static images with no animation
-// typedef struct s_base
-// {
-// 	t_img_data	wall;		// wall with front view
-// 	t_img_data	wall_top;	// wall top view
-// 	t_img_data	floor;		// ground (replaces 0 == SPACE from map)
-// 	t_img_data	la_ro_lm;	// lava rock left middle 
-// 	t_img_data	la_ro_rm;	// lava rock right middle
-// }	t_base;
-
-// typedef struct s_frame
-// {
-// 	t_img_data	collect;		// collectables
-// 	t_img_data	la_ro_l;		// lava rock left (bottom)
-// 	t_img_data	la_ro_m;		// lava rock middle (bottom)
-// 	t_img_data	la_ro_r;		// lava rock right (bottom)
-// }	t_frame;
-//

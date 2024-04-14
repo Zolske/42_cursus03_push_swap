@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 14:42:24 by zkepes            #+#    #+#             */
-/*   Updated: 2024/04/08 11:04:15 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/14 07:12:49 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	free_str(char *str)
 
 void	free_tab(char **tab)
 {
-		int	idx_height;
+	int	idx_height;
 
 	idx_height = 0;
 	if (tab)
@@ -71,24 +71,21 @@ void	free_map_4d(t_data *d)
 	int	idx_row;
 
 	idx_per = 0;
-	while (idx_per < 4)
+	while (d->map.map_4d[idx_per])
 	{
 		idx_tab = 0;
-		while (idx_tab < 3)
+		while (d->map.map_4d[idx_per][idx_tab])
 		{
 			idx_row = 0;
-			while (d->map.map_4d[idx_per][idx_tab][idx_row] != NULL)
+			while (d->map.map_4d[idx_per][idx_tab][idx_row])
 			{
 				free(d->map.map_4d[idx_per][idx_tab][idx_row]);
-				d->map.map_4d[idx_per][idx_tab][idx_row] = NULL;
 				idx_row++;
 			}
 			free(d->map.map_4d[idx_per][idx_tab]);
-			d->map.map_4d[idx_per][idx_tab] = NULL;
 			idx_tab++;
 		}
 		free(d->map.map_4d[idx_per]);
-		d->map.map_4d[idx_per] = NULL;
 		idx_per++;
 	}
 	free(d->map.map_4d);

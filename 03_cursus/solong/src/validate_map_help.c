@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:42:00 by zkepes            #+#    #+#             */
-/*   Updated: 2024/04/03 12:27:36 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/14 09:57:55 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ bool	not_eq_first_last_char(char *str, char c)
 bool	not_valid_map_char(t_data *d)
 {
 	int	idx_row;
-	int idx_col;
+	int	idx_col;
 
 	idx_row = 0;
 	while (d->map.map[idx_row])
@@ -48,7 +48,7 @@ bool	not_valid_map_char(t_data *d)
 		{
 			if (NULL == ft_strchr(MAPCHAR, d->map.map[idx_row][idx_col]))
 			{
-				write(2, "Invalid character in map!\n", 26);
+				write(2, "Error\nInvalid character in map!\n", 32);
 				return (true);
 			}
 			idx_col++;
@@ -63,21 +63,21 @@ bool	not_sufficient_items_map(t_data *data)
 {
 	int	exit;
 	int	player;
-	int collect;
+	int	collect;
 
 	exit = count_arg1_in_map(EXIT, data);
 	player = count_arg1_in_map(PLAYER, data);
 	collect = count_arg1_in_map(COLLEC, data);
 	if (1 < exit)
-		return (write(2, "More then one 'EXIT' in map!\n", 29));
+		return (write(2, "Error\nMore then one 'EXIT' in map!\n", 35));
 	else if (0 == exit)
-		return (write(2, "NO 'EXIT' in map!\n", 18));
+		return (write(2, "Error\nNO 'EXIT' in map!\n", 24));
 	else if (1 < player)
-		return (write(2, "More then one 'Player' in map!\n", 31));
+		return (write(2, "Error\nMore then one 'Player' in map!\n", 37));
 	else if (0 == player)
-		return (write(2, "NO 'Player' in map!\n", 20));
+		return (write(2, "Error\nNO 'Player' in map!\n", 26));
 	else if (0 == collect)
-		return (write(2, "NO 'Collectables' in map!\n", 26));
+		return (write(2, "Error\nNO 'Collectables' in map!\n", 32));
 	return (false);
 }
 
@@ -103,4 +103,3 @@ int	count_arg1_in_map(char arg1, t_data *d)
 	}
 	return (counter);
 }
-
