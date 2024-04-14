@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 10:44:12 by zkepes            #+#    #+#             */
-/*   Updated: 2024/04/13 17:25:41 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/14 19:08:32 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,16 @@ void	free_all_img(t_data *d)
 	free_img_player_walk_up(d);
 	free_img_player_walk_right(d);
 	free_img_player_walk_left(d);
+	free_img_dragon_idle(d);
+	free_img_talk(d);
+	free_img_num(d);
 }
 
 void	free_txt(t_data *d)
 {
 	mlx_destroy_image(d->mlx.mlx_ptr, d->img.text.arrow_key.img_ptr);
 	mlx_destroy_image(d->mlx.mlx_ptr, d->img.text.won.img_ptr);
+	mlx_destroy_image(d->mlx.mlx_ptr, d->img.text.lost.img_ptr);
 }
 
 void	free_img_static(t_data *d)

@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 10:44:12 by zkepes            #+#    #+#             */
-/*   Updated: 2024/04/14 07:37:48 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/14 19:07:17 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,16 @@ void	init_images(t_data *d)
 	init_img_coin(d);
 	init_img_exit(d);
 	init_static(d);
+	init_img_dragon_idle(d);
+	init_img_num(d);
+	init_img_talk(d);
 }
 
 void	init_static(t_data *d)
 {
 	d->img.text.arrow_key = new_file_img(d, "img/text/keys2.xpm");
 	d->img.text.won = new_file_img(d, "img/text/won.xpm");
+	d->img.text.lost = new_file_img(d, "img/text/lost.xpm");
 	d->img.i_sta.wall = new_file_img(d, "img/stonebrickbluefull.xpm");
 	d->img.i_sta.sand = new_file_img(d, "img/sandfull.xpm");
 	d->img.i_sta.wallh = new_file_img(d, "img/stonebrickblue.xpm");

@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 10:26:24 by zkepes            #+#    #+#             */
-/*   Updated: 2024/04/03 12:28:21 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/14 21:45:25 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	validate_map(t_data *d)
 		e_data(d, "Map is not surrounded by a wall!");
 	if (not_valid_path(d))
 		e_data(d, "Map has no valid path!");
+	d->map.found_dragon = count_arg1_in_map(DRAGON, d);
 }
 
 /*check if map is rectangular while subtracting '\n' from EOL*/

@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:42:00 by zkepes            #+#    #+#             */
-/*   Updated: 2024/04/14 09:57:55 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/14 21:12:57 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ bool	not_valid_map_char(t_data *d)
 {
 	int	idx_row;
 	int	idx_col;
+	char	*tmp;
 
 	idx_row = 0;
 	while (d->map.map[idx_row])
@@ -46,7 +47,10 @@ bool	not_valid_map_char(t_data *d)
 		idx_col = 0;
 		while (d->map.map[idx_row][idx_col])
 		{
-			if (NULL == ft_strchr(MAPCHAR, d->map.map[idx_row][idx_col]))
+			tmp = ft_strchr(MAPCHAR, d->map.map[idx_row][idx_col]);
+			if (d->map.bonus)
+				tmp = ft_strchr(MAPCHAR_BONUS, d->map.map[idx_row][idx_col]);
+			if (NULL == tmp)
 			{
 				write(2, "Error\nInvalid character in map!\n", 32);
 				return (true);

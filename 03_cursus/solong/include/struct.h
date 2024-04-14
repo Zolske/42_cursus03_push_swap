@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 10:06:35 by zkepes            #+#    #+#             */
-/*   Updated: 2024/04/14 10:45:28 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/14 21:22:53 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 // map data
 typedef struct s_map
 {
+	bool	bonus;		// set to true in solong.c init function for bonus
+	bool	found_dragon; // if there is a dragon then render it
 	char	*file;		// name of program input map file "*.ber"
 	int		width;		// map size in characters
 	int		height;		// map size in characters
@@ -31,18 +33,20 @@ typedef struct s_map
 	bool	keys_locked;// lock keys while animation is running
 	bool	show_exit;	// show exit after all coins collected
 	bool	game_won;	// show game won message
+	bool	game_lost;	// show game lost message
 	int		move_x;		// move towards the x direction
 	int		move_y;		// move towards the y direction
 	bool	valid_path;	// path to exit, collectables
 	int		count_moves;// number of moves
 	bool	copy_exit;	// copy exit back into 4d map, only once
+	int		dragon_speed;
 }	t_map;
 
 // needed by mlx library
 typedef struct s_mlx
 {
 	void	*mlx_ptr;	// MALLOC! to struct for connection to x service
-	void	*win_ptr;	// MALLOC! to window 
+	void	*win_ptr;	// MALLOC! to window
 }	t_mlx;
 
 // needed by mlx library for images
@@ -71,6 +75,8 @@ typedef struct s_player
 	int			state;		// player state, idle, walk, ...
 	int			fr;			// current player frame
 	int			last_fr;	// last frame
+	int			state_talk;	// what text to display for talk
+	int			talk_idx;
 	t_img_data	idle[12];	// sprites for idle player
 	t_img_data	down[12];	// sprites for walking down
 	t_img_data	up[12];		// sprites for walking up
@@ -91,11 +97,22 @@ typedef struct s_dragon
 	t_img_data	right[12];	// sprites for walking right
 }	t_dragon;
 
+// player images
+typedef struct s_talk
+{
+	int			time;		// counting up to controll how long to show talk
+	t_img_data	money[6];	// talk when see coin
+	t_img_data	wall[6];	// talk when see wall
+}	t_talk;
+
 // GUI
 typedef struct s_text
 {
 	t_img_data	arrow_key;	// legend for keys
 	t_img_data	won;		// win message
+	t_img_data	lost;		// lost message
+	t_img_data	num[10];	// digits to show moves
+	t_img_data	moves;		// word moves to show before num
 }	t_text;
 
 // containing all images
@@ -109,6 +126,7 @@ typedef struct s_images
 	t_img_data	coin[12];	// collectable sprite
 	t_img_data	exit[12];	// exit portal sprite
 	t_text		text;		// structure for gui
+	t_talk		talk;
 }	t_img;
 
 // temp data overwritten after each tile render
