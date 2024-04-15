@@ -39,16 +39,16 @@ $(MAIN_O): $(MAIN) $(HEADER)
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(HEADER)
 	@$(CC) -c $(FLAG) $< -o $@
 
-bonus: $(MAIN_B)
+bonus: $(NAME_B)
 
-$(MAIN_B): $(SRC) $(OBJ_DIR) $(MAIN_BO) $(OBJ) $(HEADER) libft/libft.a
+$(NAME_B): $(MAIN_B) $(SRC) $(OBJ_DIR) $(MAIN_BO) $(OBJ) $(HEADER) libft/libft.a
 	@if [ -f $(MAIN_O) ]; then \
 	rm $(MAIN_O); \
 	fi
 	@echo "bonus";
-	$(CC) $(FLAGS) $(OBJ_DIR)*.o -o $(NAME) $(LIB)
+	$(CC) $(FLAGS) $(OBJ_DIR)*.o -o $(NAME_B) $(LIB)
 
-$(MAIN_BO): $(HEADER)
+$(MAIN_BO): $(MAIN_B) $(HEADER)
 	@$(CC) -c $(FLAG) $(MAIN_B) -o $(MAIN_BO)
 
 libft/libft.a:
@@ -59,7 +59,7 @@ clean:
 	@make -s clean -C libft
 
 fclean: clean
-	@rm -rf $(NAME)
+	@rm -rf $(NAME) $(NAME_B)
 	@make -s fclean -C libft
 
 re: fclean $(NAME)
