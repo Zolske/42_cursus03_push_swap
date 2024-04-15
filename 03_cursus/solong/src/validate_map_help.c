@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:42:00 by zkepes            #+#    #+#             */
-/*   Updated: 2024/04/14 21:12:57 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/15 12:33:16 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ bool	not_eq_first_last_char(char *str, char c)
 /*check if there is a character in the map which is not in 'MAPCHAR'*/
 bool	not_valid_map_char(t_data *d)
 {
-	int	idx_row;
-	int	idx_col;
+	int		idx_row;
+	int		idx_col;
 	char	*tmp;
 
 	idx_row = 0;

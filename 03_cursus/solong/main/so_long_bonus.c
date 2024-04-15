@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 10:27:59 by zkepes            #+#    #+#             */
-/*   Updated: 2024/04/14 21:54:57 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/15 12:17:34 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@ int	main(int argc, char *argv[])
 		validate_map(&data);
 		start_game(&data);
 	}
+	return (0);
 }
 
-// set "d->map.bonus = true" if you want to play with bonus
+// set "d->map.bonus = false" if you want to play without bonus
 void	init(t_data *d, char *argv[])
 {
 	d->map.bonus = true;
@@ -67,8 +68,7 @@ void	start_game(t_data *d)
 	init_map_4d(d);
 	cpy_map_4d(d);
 	update_maps(d);
-	if (!d->map.keys_locked)
-		mlx_key_hook(d->mlx.win_ptr, key_hook, d);
+	mlx_key_hook(d->mlx.win_ptr, key_hook, d);
 	mlx_hook(d->mlx.win_ptr, 17, 1L << 0, close_window, d);
 	mlx_loop_hook(d->mlx.mlx_ptr, render_next_frame, d);
 	mlx_loop(d->mlx.mlx_ptr);
@@ -93,6 +93,7 @@ int	render_next_frame(t_data *d)
 	d->img.idx_fr++;
 	if (d->img.idx_fr > GAME_SPEED)
 		d->img.idx_fr = 0;
+	return (0) ;
 }
 
 void	increment_img_frame(t_data *d)

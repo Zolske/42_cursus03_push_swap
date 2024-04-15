@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 10:28:17 by zkepes            #+#    #+#             */
-/*   Updated: 2024/04/14 21:13:34 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/15 12:37:24 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # define CHECKED 'X'
 # define DRAGON 'D'
 // window and tile sizes
-// # define WIN_TITLE "solong"
 # define WIN_WIDTH 1920
 # define WIN_HEIGHT 1080
 # define CEN_X 960				// norminette does not allow WIN_WIDTH/2
@@ -104,7 +103,6 @@ void			find_position(t_data *data, char c);
 void			replace_arg1_arg2_map(char arg1, char arg2, t_data *tmp_d);
 // game
 void			start_game(t_data *d);
-void			destroy_image(t_img img);
 void			create_canvas(t_data *d, int w, int h);
 bool			validate_move(t_data *d, int move);
 void			process_move(int key, t_data *d);
@@ -180,9 +178,9 @@ void			free_img_num(t_data *d);
 int				close_window(t_data *d);
 
 // print for debugging and checking correct data
-void	print_map(t_data *d);
-void	print_map_4d_char(t_data *d, int per);
-void	print_map_4d_coordinates(t_data *d, int per);
+// void	print_map(t_data *d);
+// void	print_map_4d_char(t_data *d, int per);
+// void	print_map_4d_coordinates(t_data *d, int per);
 
 void	dragon_move(t_data *d);
 void	dragon_move_clockwise(t_data *d, bool clockwise);

@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 06:42:03 by zkepes            #+#    #+#             */
-/*   Updated: 2024/04/14 06:42:57 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/15 12:32:49 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,19 @@
 
 int	key_hook(int key, t_data *d)
 {
-	d->map.keys_locked = true;
-	if (XK_Up == key || XK_Right == key || XK_Down == key || XK_Left == key)
-		process_move(key, d);
-	else if (XK_Tab == key)
+	if (!d->map.keys_locked)
 	{
-		if (VIEW_LEFT == d->map.per)
-			d->map.per = VIEW_BOTTOM;
-		else
-			d->map.per++;
+		if (XK_Up == key || XK_Right == key || XK_Down == key || XK_Left == key)
+			process_move(key, d);
+		else if (XK_Tab == key)
+		{
+			if (VIEW_LEFT == d->map.per)
+				d->map.per = VIEW_BOTTOM;
+			else
+				d->map.per++;
+		}
 	}
-	else if (XK_Escape == key)
+	if (XK_Escape == key)
 		close_window(d);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 06:30:01 by zkepes            #+#    #+#             */
-/*   Updated: 2024/04/14 21:04:04 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/15 11:38:51 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ bool	validate_move(t_data *d, int move)
 	if (WALL == d->map.map_4d[d->map.per][move][0][TAB_C])
 	{
 		d->img.player.state_talk = TALK_WALL;
+		d->map.keys_locked = false;
 		return (false);
 	}
 	else if (COLLEC == d->map.map_4d[d->map.per][move][0][TAB_C])
