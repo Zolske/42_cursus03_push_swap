@@ -23,13 +23,15 @@ OBJ_DIR			= obj/
 OBJ				= $(SRC:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
 # LIBRARY
 LIB_FT			= -L./libft -lft
-LIB_MLX 		= -L./libmlx -lmlx
+LIB_MLX 		= -L./minilibx-linux -lmlx
 LIB_X			= -L/usr/X11/lib -lXext -lX11 -lz
 LIB				= $(LIB_MLX) $(LIB_FT) $(LIB_X)
-ARC				= libft/libft.a libmlx/libmlx.a
+ARC				= libft/libft.a minilibx-linux/libmlx.a
 # COMPILE
 CC				= cc
 FLAGS			= -Werror -Wextra -Wall -g -O3
+
+all: $(NAME)
 
 $(NAME): $(MAIN) $(SRC) $(OBJ_DIR) $(MAIN_OBJ) $(OBJ) $(HEADER) $(ARC)
 	@if [ -f $(MAIN_BONUS_OBJ) ]; then \
@@ -43,7 +45,7 @@ $(OBJ_DIR):
 $(MAIN_OBJ): $(MAIN) $(HEADER)
 	@$(CC) -c $(FLAG) $(MAIN) -o $(MAIN_OBJ)
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(HEADER)
+$(OBJ_DIR)%.o: $(SRC_DIR)/%.c $(HEADER)
 	@$(CC) -c $(FLAG) $< -o $@
 
 bonus: $(NAME_BONUS)
@@ -59,7 +61,7 @@ $(MAIN_BONUS_OBJ): $(MAIN_BONUS) $(HEADER)
 
 $(ARC):
 	@make -s -C libft
-	@make -s -C libmlx -f Makefile.mk
+	@make -s -C minilibx-linux -f Makefile.mk
 
 clean:
 	@rm -rf $(OBJ_DIR)
@@ -68,11 +70,14 @@ clean:
 fclean: clean
 	@rm -rf $(NAME) $(NAME_BONUS)
 	@make -s fclean -C libft
-	@make -s clean -C libmlx -f Makefile.mk
+	@make -s clean -C minilibx-linux -f Makefile.mk
 
 re: fclean $(NAME)
 
-.PHONY: clean fclean re
+norm:
+	clear && norminette main src
+
+.PHONY: all clean fclean re norm
 
 # NOTE: for more informatin how to include the mlx_Library see:
 # https://reactive.so/post/42-a-comprehensive-guide-to-so_long

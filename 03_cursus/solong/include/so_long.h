@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 10:28:17 by zkepes            #+#    #+#             */
-/*   Updated: 2024/04/15 12:37:24 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/16 12:23:32 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@
 # define TAB_Y 2				// y coordinate
 
 # include "../libft/libft.h"
-# include "../libmlx/mlx.h"		// minilibx
+# include "../minilibx-linux/mlx.h"		// minilibx
 # include "struct.h"
 
 # include <stdbool.h>
@@ -182,10 +182,10 @@ int				close_window(t_data *d);
 // void	print_map_4d_char(t_data *d, int per);
 // void	print_map_4d_coordinates(t_data *d, int per);
 
-void	dragon_move(t_data *d);
-void	dragon_move_clockwise(t_data *d, bool clockwise);
-bool	can_dragon_move_down(t_data *d);
-bool	can_dragon_move_up(t_data *d);
-bool	can_dragon_move_left(t_data *d);
-bool	can_dragon_move_right(t_data *d);
+void			dragon_move(t_data *d);
+void			dragon_move_clockwise(t_data *d, bool clockwise);
+bool			can_dragon_move_down(t_data *d);
+bool			can_dragon_move_up(t_data *d);
+bool			can_dragon_move_left(t_data *d);
+bool			can_dragon_move_right(t_data *d);
 #endif

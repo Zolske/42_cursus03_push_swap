@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 10:27:59 by zkepes            #+#    #+#             */
-/*   Updated: 2024/04/15 12:17:34 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/16 12:03:38 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ void	start_game(t_data *d)
 	d->mlx.mlx_ptr = mlx_init();
 	if (!d->map.bonus)
 		d->mlx.win_ptr = mlx_new_window(
-			d->mlx.mlx_ptr, WIN_WIDTH, WIN_HEIGHT, "so_long");
+				d->mlx.mlx_ptr, WIN_WIDTH, WIN_HEIGHT, "so_long");
 	else
 		d->mlx.win_ptr = mlx_new_window(
-			d->mlx.mlx_ptr, WIN_WIDTH, WIN_HEIGHT, "so_long BONUS");
+				d->mlx.mlx_ptr, WIN_WIDTH, WIN_HEIGHT, "so_long BONUS");
 	init_images(d);
 	init_map_4d(d);
 	cpy_map_4d(d);
@@ -93,7 +93,7 @@ int	render_next_frame(t_data *d)
 	d->img.idx_fr++;
 	if (d->img.idx_fr > GAME_SPEED)
 		d->img.idx_fr = 0;
-	return (0) ;
+	return (0);
 }
 
 void	increment_img_frame(t_data *d)
