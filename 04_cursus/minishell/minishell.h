@@ -13,6 +13,6 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }	t_cmd;
 
-void	add_cmd_node(t_cmd **cmd_list);
+void	add_cmd_node(t_cmd **cmd_list, int val);
 
 #endif
