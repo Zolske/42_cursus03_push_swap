@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 13:33:10 by zkepes            #+#    #+#             */
-/*   Updated: 2024/04/24 20:25:08 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/04/25 16:54:32 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	main(int argc, char *argv[], char *env[])
 	add_cmd_node(&cmd_list, 3);
 	add_cmd_node(&cmd_list, 4);
 	add_cmd_node(&cmd_list, 5);
+	add_cmd_node(&cmd_list, 6);
+	add_cmd_node(&cmd_list, 7);
 
 	t_cmd *current;
 	current = cmd_list;
@@ -63,6 +65,7 @@ void	add_cmd_node(t_cmd **cmd_list, int val)
 	new_node->pip_out[0] = val;
 	new_node->prev = NULL;
 	new_node->next = NULL;
+
 	if (*cmd_list == NULL)
 		*cmd_list = new_node;
 	else
@@ -72,8 +75,8 @@ void	add_cmd_node(t_cmd **cmd_list, int val)
 		
 		while (current->next != NULL)
 		{
-			new_node->prev = current;
 			current = current->next;
+			new_node->prev = current;
 		}
 		current->next = new_node;
 	}
