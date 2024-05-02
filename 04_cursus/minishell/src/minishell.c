@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 13:33:10 by zkepes            #+#    #+#             */
-/*   Updated: 2024/05/01 13:03:09 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/05/02 10:39:07 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,7 @@ void	init_env_paths(t_data *d, char *env[])
 		env++;
 	}
 	d->tab_env_cmd_path = ft_split(&((*env)[5]), ':');
-	print_tab(d->tab_env_cmd_path);
-	free_tab(d->tab_env_cmd_path);
+	// print_tab(d->tab_env_cmd_path);
 }
 
 bool	prompt_user(t_data *d)

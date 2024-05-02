@@ -14,7 +14,9 @@
 typedef struct s_cmd
 {
 	struct s_cmd	*prev;
-	char			*cmd[3];		// MALLOC!! for cmd-path and cmd-arg
+	// cmd[0] => path + cmd, cmd[1] => arg, cmd[2] => NULL
+	char			*cmd;			// MALLOC!! for cmd-path and cmd-arg
+	char			**cmd_arg;		// arguments for the command
 	int				pip_out[2];		// pipe for the next node
 	struct s_cmd	*next;
 }	t_cmd;
