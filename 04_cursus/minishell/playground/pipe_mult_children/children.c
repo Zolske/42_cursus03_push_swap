@@ -1,60 +1,70 @@
 #include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
 #include <stdlib.h>
-#include <string.h>
+#include <unistd.h>
 #include <sys/wait.h>
 
-#define MAX_CHILDREN 3
+#define NUM_COMMANDS 3
 
-int main( void )
-{
-    pid_t pid;
+int main() {
+    int pipes[NUM_COMMANDS - 1][2]; // Array to hold pipes for communication between commands
+    pid_t child_pids[NUM_COMMANDS]; // Array to hold child process IDs
 
-    int fd[2];
-
-
-    char str[] = "Hello";
-
-    for(int num_process = 0; num_process < MAX_CHILDREN; num_process++)
-    {
-        if(pipe(fd) == -1)
-        {
-            perror( "pipe Failed" );
-            continue;
+    // Create pipes
+    for (int i = 0; i < NUM_COMMANDS - 1; i++) {
+        if (pipe(pipes[i]) == -1) {
+            perror("pipe");
+            exit(EXIT_FAILURE);
         }
+    }
 
-        pid = fork();
-
-        if(pid < 0)
-        {
-            perror("fork failed");
-            exit(1);
-        }
-
-        if(pid == 0)
-        { //child code
-            char buff[50];
-            printf("Child %i (pid= %i)\n", num_process, getpid());
-            close(fd[1]);
-
-            if ( read( fd[0], buff, sizeof(buff)) <= 0) //read from pipe
-            {
-                perror( "read failed" );
-                exit( EXIT_FAILURE );
+    // Fork child processes
+    for (int i = 0; i < NUM_COMMANDS; i++) {
+        pid_t pid = fork();
+        if (pid == -1) {
+            perror("fork");
+            exit(EXIT_FAILURE);
+        } else if (pid == 0) { // Child process
+            // Redirect input for all but the first child
+			//zk redirect previous pipe to stdin, except first
+            if (i > 0) {
+                dup2(pipes[i - 1][0], STDIN_FILENO);
+                close(pipes[i - 1][0]); // Close read end of previous pipe
             }
-
-            printf("Read child = %s\n", buff);
-            exit(0);
+            // Redirect output for all but the last child
+            if (i < NUM_COMMANDS - 1) {
+                dup2(pipes[i][1], STDOUT_FILENO);
+                close(pipes[i][1]); // Close write end of current pipe
+            }
+            // Close all other pipes
+			//zk close all future and past pipes, just not current and last pipe
+            for (int j = 0; j < NUM_COMMANDS - 1; j++) {
+                if (j != i - 1 && j != i) {
+                    close(pipes[j][0]);
+                    close(pipes[j][1]);
+                }
+            }
+            // Execute command using execve (replace with your desired command)
+            char *args[] = {"/bin/ls", "-l", NULL};
+            execve(args[0], args, NULL);
+            // If execve fails
+            perror("execve");
+            exit(EXIT_FAILURE);
         }
-
-        else{//parent
-            printf("Im parent %i\n",getpid());
-            close(fd[0]);
-            write(fd[1], str,strlen(str)+1);
-            printf("Parent send %s\n", str);
-            wait(NULL);
+		else
+		{ // Parent process
+            child_pids[i] = pid;
         }
+    }
+
+    // Close all pipes in parent
+    for (int i = 0; i < NUM_COMMANDS - 1; i++) {
+        close(pipes[i][0]);
+        close(pipes[i][1]);
+    }
+
+    // Wait for all child processes to terminate
+    for (int i = 0; i < NUM_COMMANDS; i++) {
+        waitpid(child_pids[i], NULL, 0);
     }
 
     return 0;

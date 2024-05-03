@@ -21,7 +21,7 @@ typedef struct s_cmd
 	// cmd[0] => path + cmd, cmd[1] => arg, cmd[2] => NULL
 	char			*cmd_path;			// MALLOC!! for cmd-path and cmd-arg
 	char			**cmd_arg;		// arguments for the command
-	int				pip_out[2];		// pipe for the next node
+	int				pip[2];		// pipe for the next node
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -43,7 +43,7 @@ int		count_cmd(char **tab);
 void	init_env_paths(t_data *d, char *env[]);
 char	*join_path_cmd(const char *str_path, const char *str_cmd);
 void	pipe_cmds(t_data *d);
-void	close_prev_fd(t_cmd *node);
+void	close_all_other_fd(t_cmd *node);
 
 // init
 void	init_new_node(t_data *data, t_cmd *new_node, char *cmd);
@@ -51,6 +51,7 @@ void	add_cmd_path(t_data *d, t_cmd *new_node);
 
 // print tab
 void	print_tab(char **tab);
+void	print_pipe(int fd);
 
 // free
 void	free_all(t_data *data);
