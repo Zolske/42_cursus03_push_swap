@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 12:09:36 by zkepes            #+#    #+#             */
-/*   Updated: 2024/05/03 13:28:34 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/05/08 16:47:13 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,19 @@ void	print_pipe(int fd)
 	}
 	printf("<<< end  read:\n");
 
+}
+
+// for debugging
+void	read_from_fd(int fd)
+{
+	char	buff[100];
+	int 	count = 1;
+	int		len;
+	write(1, "/// start /// read from fd ////\n", 32);
+	while (count--)
+	{
+		len = read(fd, buff, 100);
+		write(1, buff, len);
+	}
+	write(1, "/// end /// read from fd ////\n", 30);
 }

@@ -4,10 +4,15 @@
 # define STR_PROMPT "<MINISHELL>"
 # define COLOR_PROMPT "\033[36;1m"
 # define COLOR_STOP "\033[0m"
+# define CHILD_PROCESS 0
+# define READ 0
+# define WRITE 1
 
 #include "../libft/libft.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <signal.h>
+#include <errno.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <unistd.h>
@@ -17,12 +22,11 @@
 
 typedef struct s_cmd
 {
-	struct s_cmd	*prev;
+	struct s_cmd	*prev;			// previous node in the list
 	// cmd[0] => path + cmd, cmd[1] => arg, cmd[2] => NULL
-	char			*cmd_path;			// MALLOC!! for cmd-path and cmd-arg
-	char			**cmd_arg;		// arguments for the command
-	int				pip[2];		// pipe for the next node
-	struct s_cmd	*next;
+	char			*cmd_path;		// MALLOC!! for cmd-path and cmd-arg
+	char			**cmd_arg;		// MALLOC!! arguments for the command
+	struct s_cmd	*next;			// next node in the list
 }	t_cmd;
 
 typedef struct s_data
@@ -30,8 +34,11 @@ typedef struct s_data
 	char			*str_input;		// MALLOC!! user input string
 	int				n_pipes;		// number of pipes
 	int				n_cmd;			// number of commands
-	char			**tab_env_cmd_path; // table with all env path variables
-	struct s_cmd	*lst_cmd;		// list of commands
+	int				pip_out[2];		// fd for pipe to be used for child output
+	int				pip_in[2];		// fd for pipe to be used for child input
+	char			**tab_env_cmd_path; // MALLOC!! table with all env path variables
+	struct s_cmd	*list_cmd;		// MALLOC!! list of commands
+	bool			last_cmd;	
 } t_data;
 
 void	add_cmd_node(t_data *data, t_cmd **lst_cmd, char *cmd);
@@ -43,7 +50,9 @@ int		count_cmd(char **tab);
 void	init_env_paths(t_data *d, char *env[]);
 char	*join_path_cmd(const char *str_path, const char *str_cmd);
 void	pipe_cmds(t_data *d);
-void	close_all_other_fd(t_cmd *node);
+void	prepare_pipe(t_data *d, t_cmd *current);
+void	process_child(t_data *data, t_cmd *current);
+void	process_parent(t_data *data, t_cmd *current);
 
 // init
 void	init_new_node(t_data *data, t_cmd *new_node, char *cmd);
@@ -53,9 +62,16 @@ void	add_cmd_path(t_data *d, t_cmd *new_node);
 void	print_tab(char **tab);
 void	print_pipe(int fd);
 
+// handle signal
+void	sighandler(int signum);
+
 // free
 void	free_all(t_data *data);
 void	free_tab(char **tab);
+void	free_list(t_cmd *list_cmd);
+
+// error
+void	error_exit(char *msg);
 
 // testing
 void	read_from_fd(int fd);

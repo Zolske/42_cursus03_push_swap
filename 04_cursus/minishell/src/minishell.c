@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 13:33:10 by zkepes            #+#    #+#             */
-/*   Updated: 2024/05/03 13:55:10 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/05/08 18:11:59 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	main(int argc, char *argv[], char *env[])
 {
 	t_data	data;
 
+	signal(SIGINT, sighandler);
 	init_env_paths(&data, env);
 	while (prompt_user(&data))
 		;
@@ -40,13 +41,16 @@ bool	prompt_user(t_data *d)
 {
 	init_data(d);
 	process_user_input(d);
+	free_list(d->list_cmd);
 	return (true);
 }
 
 void	init_data(t_data *d)
 {
-	d->lst_cmd = NULL;
+	d->list_cmd = NULL;
 	d->n_pipes = 0;
+	d->last_cmd = false;
+	errno = 0;
 }
 
 void	process_user_input(t_data *d)
@@ -65,112 +69,23 @@ void	process_user_input(t_data *d)
 
 void	pipe_cmds(t_data *d)
 {
-	int		pipes[d->n_cmd - 1][2]; // Array to hold pipes for communication between commands
-	pid_t	child_pids[d->n_cmd]; // Array to hold child process IDs
+	pid_t	pid;
 	t_cmd	*current;
 
-	// Create pipes
-	for (int i = 0; i < d->n_cmd - 1; i++) {
-		if (pipe(pipes[i]) == -1) {
-			perror("pipe");
-			exit(EXIT_FAILURE);
-		}
-	}
-
-	current = d->lst_cmd;
-	// Fork child processes
-	for (int i = 0; i < d->n_cmd; i++) {
-		if (i)
-			current = current->next;
-		pid_t pid = fork();
-		if (pid == -1) {
-			perror("fork");
-			exit(EXIT_FAILURE);
-		} else if (pid == 0) { // Child process
-			// Redirect input for all but the first child
-			//zk redirect previous pipe to stdin, except first
-			if (i > 0) {
-				dup2(pipes[i - 1][0], STDIN_FILENO);
-				close(pipes[i - 1][0]); // Close read end of previous pipe
-			}
-			// Redirect output for all but the last child
-			if (i < d->n_cmd - 1) {
-				dup2(pipes[i][1], STDOUT_FILENO);
-				close(pipes[i][1]); // Close write end of current pipe
-			}
-			// Close all other pipes
-			//zk close all future and past pipes, just not current and last pipe
-			for (int j = 0; j < d->n_cmd - 1; j++) {
-				if (j != i - 1 && j != i) {
-					close(pipes[j][0]);
-					close(pipes[j][1]);
-				}
-			}
-			// Execute command using execve (replace with your desired command)
-			execve(current->cmd_path, current->cmd_arg, NULL);
-			// If execve fails
-			perror("execve");
-			exit(EXIT_FAILURE);
-		}
-		else
-		{ // Parent process
-			child_pids[i] = pid;
-		}
-	}
-
-	// Close all pipes in parent
-	for (int i = 0; i < d->n_cmd - 1; i++) {
-		close(pipes[i][0]);
-		close(pipes[i][1]);
-	}
-
-	// Wait for all child processes to terminate
-	for (int i = 0; i < d->n_cmd; i++) {
-		waitpid(child_pids[i], NULL, 0);
-	}
-
-}
-
-/*close all fds except the current and the "one before" fds*/
-void	close_all_other_fd(t_cmd *node)
-{
-	t_cmd	*current;
-
-	// assign current node
-	current = node;
-	// as long there is a next node, keep closing all fds
-	while (current->next)
+	current = d->list_cmd;
+	if (d->n_cmd == 1)
+		d->last_cmd = true;
+	while (current)
 	{
-		close(current->next->pip[0]);
-		close(current->next->pip[1]);
+		prepare_pipe(d, current);
+		if ((pid = fork()) == -1)
+			error_exit("fork");
+		if (pid == CHILD_PROCESS)
+			process_child(d, current);
+		else
+			process_parent(d, current);
 		current = current->next;
 	}
-	// dose the current node has a previous node
-	if (node->prev)
-	{
-		current = node->prev;
-		// as long there is a previous-previous node, keep closing all fds
-		while (current->prev)
-		{
-			close(current->prev->pip[0]);
-			close(current->prev->pip[1]);
-			current = current->prev;
-		}
-	}
-}
-
-void	read_from_fd(int fd)
-{
-	char	buff[100];
-	int 	count = 1;
-	int		len;
-	write(1, "/// start /// read from fd ////\n", 32);
-	while (count--)
-	{
-		len = read(fd, buff, 100);
-		write(1, buff, len);
-	}
-	write(1, "/// end /// read from fd ////\n", 30);
 }
 
 void	split_into_cmds(t_data *d)
@@ -183,20 +98,10 @@ void	split_into_cmds(t_data *d)
 	idx = 0;
 	while (idx < d->n_cmd)
 	{
-		add_cmd_node(d, &d->lst_cmd, tab_cmds[idx]);
+		add_cmd_node(d, &d->list_cmd, tab_cmds[idx]);
 		idx++;
 	}
-
-
-	// print_tab(tab_cmds);
-	// process_cmd(d, tab_cmds);
-	// printf("num of cmd: %d\n", d->n_cmd);
 }
-
-// void	process_cmd(t_data *d, char **tab_cmds)
-// {
-
-// }
 
 int		count_cmd(char **tab)
 {
@@ -208,7 +113,7 @@ int		count_cmd(char **tab)
 	return (n_cmd);
 }
 
-void	add_cmd_node(t_data *d, t_cmd **lst_cmd, char *cmd)
+void	add_cmd_node(t_data *d, t_cmd **list_cmd, char *cmd)
 {
 	t_cmd	*new_node;
 	t_cmd	*current;
@@ -216,12 +121,12 @@ void	add_cmd_node(t_data *d, t_cmd **lst_cmd, char *cmd)
 	new_node = (t_cmd *) malloc(sizeof(t_cmd));
 	init_new_node(d, new_node, cmd);
 
-	if (*lst_cmd == NULL)
-		*lst_cmd = new_node;
+	if (*list_cmd == NULL)
+		*list_cmd = new_node;
 	else
 	{
-		current = *lst_cmd;
-		new_node->prev = *lst_cmd;
+		current = *list_cmd;
+		new_node->prev = *list_cmd;
 		
 		while (current->next != NULL)
 		{
@@ -237,17 +142,8 @@ void	init_new_node(t_data *d, t_cmd *new_node, char *cmd)
 	new_node->prev = NULL;
 	new_node->next = NULL;
 	new_node->cmd_arg = ft_split(cmd, ' ');
-	new_node->cmd_path = NULL;					// default, overwrite if find valid path later
+	new_node->cmd_path = NULL;
 	add_cmd_path(d, new_node);
-	// printf("init new node: ");
-	// print_tab(new_node->cmd_arg);
-	
-	if (pipe(new_node->pip) == -1)
-	{
-		perror("pipe");
-		//TODO: free all Mallocs!
-		exit(EXIT_FAILURE);
-	}
 }
 
 void	add_cmd_path(t_data *d, t_cmd *new_node)
@@ -288,3 +184,10 @@ char	*join_path_cmd(const char *str_path, const char *str_cmd)
 	return (join);
 }
 
+//TODO: handle CTR c for handling signal
+// https://stackoverflow.com/questions/6970224/providing-passing-argument-to-signal-handler
+// https://www.tutorialspoint.com/c_standard_library/c_function_signal.htm
+void	sighandler(int signum)
+{
+	exit(0);
+}
