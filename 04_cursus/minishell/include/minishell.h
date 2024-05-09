@@ -7,6 +7,7 @@
 # define CHILD_PROCESS 0
 # define READ 0
 # define WRITE 1
+# define _GNU_SOURCE				// is needed for "struct sigaction"
 
 #include "../libft/libft.h"
 #include <stdio.h>
@@ -32,7 +33,6 @@ typedef struct s_cmd
 typedef struct s_data
 {
 	char			*str_input;		// MALLOC!! user input string
-	int				n_pipes;		// number of pipes
 	int				n_cmd;			// number of commands
 	int				pip_out[2];		// fd for pipe to be used for child output
 	int				pip_in[2];		// fd for pipe to be used for child input
@@ -58,12 +58,16 @@ void	process_parent(t_data *data, t_cmd *current);
 void	init_new_node(t_data *data, t_cmd *new_node, char *cmd);
 void	add_cmd_path(t_data *d, t_cmd *new_node);
 
+// builtins
+void	check_builtins(t_data *data);
+
 // print tab
 void	print_tab(char **tab);
 void	print_pipe(int fd);
 
 // handle signal
-void	sighandler(int signum);
+void	sigint_handler(int signal);
+void	set_signal_action(void);
 
 // free
 void	free_all(t_data *data);

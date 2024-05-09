@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 13:33:10 by zkepes            #+#    #+#             */
-/*   Updated: 2024/05/08 18:11:59 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/05/09 15:57:44 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,15 @@
  
 #include "../include/minishell.h"
 
+int	catch_sig;
+
+
 int	main(int argc, char *argv[], char *env[])
 {
 	t_data	data;
 
-	signal(SIGINT, sighandler);
+	catch_sig = 0;
+	//set_signal_action();			// for signal handeling
 	init_env_paths(&data, env);
 	while (prompt_user(&data))
 		;
@@ -41,15 +45,14 @@ bool	prompt_user(t_data *d)
 {
 	init_data(d);
 	process_user_input(d);
-	free_list(d->list_cmd);
 	return (true);
 }
 
 void	init_data(t_data *d)
 {
 	d->list_cmd = NULL;
-	d->n_pipes = 0;
 	d->last_cmd = false;
+	d->str_input = NULL;
 	errno = 0;
 }
 
@@ -58,6 +61,7 @@ void	process_user_input(t_data *d)
 	// prompt user for input and save str in d->str_input
 	printf("%s%s%s",COLOR_PROMPT, STR_PROMPT, COLOR_STOP);
 	d->str_input = readline("");
+	check_builtins(d);
 	// add input to history
 	add_history(d->str_input);
 	split_into_cmds(d);
@@ -65,6 +69,16 @@ void	process_user_input(t_data *d)
 
 	// Free memory allocated by readline
 	free(d->str_input);
+	d->str_input = NULL;
+}
+
+void	check_builtins(t_data *d)
+{
+	if (0 == ft_strncmp(d->str_input, "exit", 4))
+	{
+		free_all(d);
+		exit(EXIT_SUCCESS);
+	}
 }
 
 void	pipe_cmds(t_data *d)
@@ -184,10 +198,31 @@ char	*join_path_cmd(const char *str_path, const char *str_cmd)
 	return (join);
 }
 
-//TODO: handle CTR c for handling signal
-// https://stackoverflow.com/questions/6970224/providing-passing-argument-to-signal-handler
-// https://www.tutorialspoint.com/c_standard_library/c_function_signal.htm
-void	sighandler(int signum)
-{
-	exit(0);
-}
+// // Signal handler for SIGINT
+// void	sigint_handler(int signal)
+// {
+// 	sigset_t	sigset;
+
+// //	Initialize set to 0
+// 	sigemptyset(&sigset);
+// //	Add the signal to the set of blocked signals
+// 	sigaddset(&sigset, signal);
+// 	catch_sig = signal;
+// 	printf("received signal\n");
+// }
+
+// void set_signal_action(void)
+// {
+// 	// Declare the sigaction structure
+// 	struct sigaction act;
+
+// 	// Set all of the structure's bits to 0 to avoid errors
+// 	// relating to uninitialized variables...
+// 	// bzero(&act, sizeof(act));
+// 	ft_bzero(&act, sizeof(act));
+// 	// Set the signal handler as the default action
+// 	act.sa_handler = &sigint_handler;
+// 	// Apply the action in the structure to the
+// 	// SIGINT signal (ctrl-c)
+// 	sigaction(SIGINT, &act, NULL);
+// }
