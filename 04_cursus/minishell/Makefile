@@ -10,15 +10,16 @@ OBJ_DIR			= obj/
 OBJ				= $(SRC:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
 # LIBRARY
 LIB				= -L./libft -lft
+LIB_READ		= -lreadline -lhistory
 ARC				= libft/libft.a
 # COMPILE
 CC				= cc
-FLAGS			= -Werror -Wextra -Wall -g -lreadline
+FLAGS			= -Werror -Wextra -Wall -g
 
 all: $(NAME)
 
 $(NAME): $(SRC) $(OBJ_DIR) $(OBJ) $(HEADER) $(ARC)
-	$(CC) $(FLAGS) $(OBJ_DIR)*.o -o $(NAME) $(LIB)
+	$(CC) $(FLAGS) $(OBJ_DIR)*.o -o $(NAME) $(LIB) $(LIB_READ)
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
@@ -44,5 +45,5 @@ norm:
 
 .PHONY: all clean fclean re norm
 
-# YOU NEED to compile with the "-lreadline" flag!!
+# YOU NEED to compile with the "-lreadline" flag which needs to be last!!
 # e.g. cc -lreadline readline.c -o main
