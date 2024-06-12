@@ -26,7 +26,7 @@ Are contained within the shell itself. The shell executes the command directly, 
 
 ---
 ### 3. Simple Commands
-Absolute path or relative path, with or without options and arguments.
+Should be called through "absolute path" or "relative path" or "without path" (*based on the env `PATH` variable*). They can accept options and /or arguments (*see "man" page*).
 #### 3.01. absolute path
 |absolute path|option|argument|outcome|
 |---|---|---|---|
@@ -100,7 +100,7 @@ They should evaluate through `$` + `VARIABLE_NAME` to there values, *e.g.* `echo
 
 ---
 ### 8. Pipes
-Commands can be piped into there following commands.
+Commands can be piped `|` into there following commands.
 
 ---
 ### 9. Signals
@@ -119,11 +119,19 @@ Previous commands from the running shell can be accessed through the arrow keys.
 - `DOWN` -> next command
 
 ---
+### 11. Invalid Input
+- Shut return an error message and not crash the program.  
+*e.g.* `dddddd` *output:* `dddddd: command not found`
+- Unclosed quotes or special characters like `\` or `;` are not interpreted.
+- Interpreted characters are `$`, `$?`, `<`, `>`, `<<`, `>>`, `|`, `' '`, `" "`.
+
+---
 ---
 ##### Footnotes
 ###### variable expansion
 When a variable is evaluated before the shell is processing the command.
 
+---
 ###### command substitution
 >Command substitution allows the output of a command to replace the command itself. Bash performs the expansion by executing command and replacing the command substitution with the standard output of the command, with any trailing newlines deleted. Embedded newlines are not deleted, but they may be removed during word splitting. [bash reference manual](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Command-Substitution)
 ```bash
@@ -133,8 +141,10 @@ echo $(seq 1 3) # echo is called 3 times, each time with an value from 1 to 3
 1 2 3
 ```
 
+---
 ###### interactive mode
 When the shell waits for user input and displays the "prompt".
 
+---
 ###### non interactive mode
 When the "prompt" is not displayed and the shell is busy piping or reading from a file or another source. E.g. a blocking command like `cat` or `grep` without options or arguments which is waiting for user input (*heredoc*).
