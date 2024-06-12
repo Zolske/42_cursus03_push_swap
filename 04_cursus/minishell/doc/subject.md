@@ -11,7 +11,7 @@ Defines the features which the minishell can handle and are tested by the evalua
 ### 1. Builtins
 Are contained within the shell itself. The shell executes the command directly, without invoking another program.
 #### 1.01 echo
-> Display a line of text.
+> Display it's argument as a line of text.
 - only `-n` option
 
 |command|option|argument|outcome|
@@ -20,11 +20,12 @@ Are contained within the shell itself. The shell executes the command directly, 
 |`echo`|||*empty new line*|
 |`echo`|`-n`||*no new line or output*|
 |`echo`|`-n`|`hello world`|*argument is printed without a new line*|
+
 ![cmd echo](img/cmd_echo.png)
 
 #### 1.02 cd
 > Change (working) directory.
-- change the "working directory", with absolute (*e.g.* `/bin`) or relative path (*e.g.* `../../`)
+- only change the "working directory", with absolute (*e.g.* `/bin`) or relative path (*e.g.* `../../`)
 - the output after trying to changing to a non existing directory (*"something"*)  
 `bash: cd: something: No such file or directory`
 
@@ -52,8 +53,9 @@ Are contained within the shell itself. The shell executes the command directly, 
 #### 1.07 exit
 > Terminates a script or process (minishell).
 - no options
-- ends the minishell, passing an intiger determens the staus code of the terminated process *e.g.*  
+- ends the minishell, passing an integer determents the status code of the terminated process *e.g.*  
 `exit 3` *after run* `echo $?` *expected outcome* `3`
+
 ---
 ### 2. Simple Commands
 Absolute path or relative path, with or without options and arguments.
@@ -69,38 +71,25 @@ Absolute path or relative path, with or without options and arguments.
 Use the same examples as above but change the path based on your current directory e.g. `../../bin/ls`.
 
 #### 2.03. single quotes
-Single quotes **preserve the literal value** of variables and disable "variable expansion" and "command substitution".
-##### variable expansion
-When a variable is evaluated before the shell is processing the command.
+Single quotes **preserve the literal value** of variables and **disable** "[variable expansion](#variable-expansion)" and "[command substitution](#command-substitution)".
+
 ```bash
 # no variable expansion
 name="John"
 echo 'My name is $name'
 # output:
 My name is $name
-```
-##### command substitution
->Command substitution allows the output of a command to replace the command itself. Bash performs the expansion by executing command and replacing the command substitution with the standard output of the command, with any trailing newlines deleted. Embedded newlines are not deleted, but they may be removed during word splitting. [bash reference manual](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Command-Substitution)
-```bash
-# command substitution
-echo $(seq 1 3) # echo is called 3 times, each time with an value from 1 to 3
-# output:
-1 2 3
+
 # no command substitution
 echo '$(seq 1 3)'
 # output:
 $(seq 1 4)
 ```
-
-- Arguments with ...
-	- **space** `mkdir ' deleteme'` *outcome* `' deleteme'` (*note:* `'` *is not part of dir*).  
-	- **semicolon** `mkdir ';deleteme'` *outcome* `;dir name`.  
-	- **env var** `mkdir '$HOME deleteme'` *outcome* `$HOME deleteme`.  
 - Options with **quotes and space** don't work only without space. The outcome is the same for **single** and **double** quotes.
 ![double quotes](img/double_quote.png)
 
 #### 2.04. double quotes
-Double quotes **enable** "variable expansion" and "command substitution".
+Double quotes **enable** "[variable expansion](#variable-expansion)" and "[command substitution](#command-substitution)".
 ```bash
 # variable expansion
 name="John"
@@ -120,8 +109,16 @@ echo "$(seq 1 3)"
 2
 3
 ```
-- Arguments with ...
-	- **space** `mkdir " deleteme"` *outcome* `' deleteme'` (*note:* `'` *is not part of dir*).  
-	- **semicolon** `mkdir ";deleteme"` *outcome* `;dir name`.  
-	- **env var** `mkdir "$HOME deleteme"` *outcome* `/home/zk deleteme`.  
-	- **\\** `mkdir "\"` *outcome* opens "heredoc" and waits for input and `"` on a single line to mark the end.
+
+---
+###### variable expansion
+When a variable is evaluated before the shell is processing the command.
+
+###### command substitution
+>Command substitution allows the output of a command to replace the command itself. Bash performs the expansion by executing command and replacing the command substitution with the standard output of the command, with any trailing newlines deleted. Embedded newlines are not deleted, but they may be removed during word splitting. [bash reference manual](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Command-Substitution)
+```bash
+# command substitution
+echo $(seq 1 3) # echo is called 3 times, each time with an value from 1 to 3
+# output:
+1 2 3
+```
