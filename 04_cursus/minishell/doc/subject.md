@@ -27,7 +27,11 @@ Are contained within the shell itself. The shell executes the command directly, 
 ---
 ### 3. Simple Commands
 Should be called through "absolute path" or "relative path" or "without path" (*based on the env `PATH` variable*). They can accept options and /or arguments (*see "man" page*).
-#### 3.01. absolute path
+
+#### 3.01 env path
+Launch command base on the path of the environment variable, *e.g.* `ls`.
+
+#### 3.02. absolute path
 |absolute path|option|argument|outcome|
 |---|---|---|---|
 |`/bin/ls`|||*list directories in current location*|
@@ -35,7 +39,7 @@ Should be called through "absolute path" or "relative path" or "without path" (*
 |`/usr/bin/mkdir`|`-v`|`dir_name`|*create directory with "dir_name" name and **v**erbose message*|
 |`/usr/bin/rm`|`-r`|`dir_name`|removes the directory *"dir_name"*|  
 
-#### 3.02. relative path
+#### 3.03. relative path
 Use the same examples as above but change the path based on your current directory e.g. `../../bin/ls`.
 
 ---
@@ -55,7 +59,7 @@ echo '$(seq 1 3)'
 # output:
 $(seq 1 4)
 ```
-- Options with **quotes and space** don't work only without space. The outcome is the same for **single** and **double** quotes.
+- Options with **quotes and space** don't work only without space. The outcome is the same for **single** and **double** quotes.  
 ![double quotes](img/double_quote.png)
 
 #### 4.02. double quotes
