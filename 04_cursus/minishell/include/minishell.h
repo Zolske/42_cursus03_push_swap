@@ -4,6 +4,23 @@
 # define STR_PROMPT "<MINISHELL>"
 # define COLOR_PROMPT "\033[36;1m"
 # define COLOR_STOP "\033[0m"
+
+# define UNPROCESSED 0
+
+# define NO_QUOTES 1
+# define QUOTE_SINGLE 2
+# define QUOTE_DOUBLE 3
+
+# define COMMAND 4
+# define ARGUMENT 5
+# define FILE_IN 6
+# define HEREDOC 7					//use ; to mark heredoc file
+# define FILE_OUT 8
+# define FILE_APPEND 9
+# define PIPE 10
+
+# define DELIMITER " <>|\0"
+
 # define CHILD_PROCESS 0
 # define READ 0
 # define WRITE 1
@@ -21,27 +38,45 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+typedef struct s_token
+{
+	int				token;			// use Macros to identify type
+	char			*word;			// token data
+	struct s_token	*next;
+}	t_token;
+
+typedef void (*ptr_builtin)(char *arg);	// definition for function pointer, builtin
+
 typedef struct s_cmd
 {
-	struct s_cmd	*prev;			// previous node in the list
+	ptr_builtin		builtin_fun;	// function pointer for builtin
 	// cmd[0] => path + cmd, cmd[1] => arg, cmd[2] => NULL
-	char			*cmd_path;		// MALLOC!! for cmd-path and cmd-arg
-	char			**cmd_arg;		// MALLOC!! arguments for the command
+	char			*cmd_path;		// MALLOC!! path + /cmd (one string)
+	char			**cmd_arg;		// MALLOC!! tab[0]=cmd; tab[1]=args; tab[2]=NULL
+	char			*out_file;		// name of "last" output file (create prev) (handle append)
+	// if out_file is NULL, pass stream to next cmd, otherwise no
+	char			*in_file;		// name of "last" input file (heredoc)
+	// if in_file is NULL, take stream from previous cmd, otherwise from file
 	struct s_cmd	*next;			// next node in the list
 }	t_cmd;
 
 typedef struct s_data
 {
-	char			*str_input;		// MALLOC!! user input string
+	char			**env;			// MALLOC!! list of env variables
+	char			*user_input;	// MALLOC!! user input string
+	int				err_no;			// replace with the last, do not reset
+	struct s_cmd	*list_cmd;		// MALLOC!! list of commands
+	struct s_token	*list_token;	// MALLOC!! list of tokens
+
 	int				n_cmd;			// number of commands
 	int				pip_out[2];		// fd for pipe to be used for child output
 	int				pip_in[2];		// fd for pipe to be used for child input
-	char			**tab_env_cmd_path; // MALLOC!! table with all env path variables
-	struct s_cmd	*list_cmd;		// MALLOC!! list of commands
+	// char			**tab_env_cmd_path; // MALLOC!! table with all env path variables
+	struct s_env	*list_env;		// MALLOC!! list of env variables
 	bool			last_cmd;	
 } t_data;
 
-void	add_cmd_node(t_data *data, t_cmd **lst_cmd, char *cmd);
+void	add_cmd_node(t_data *d, char *cmd, char *arg);
 bool	prompt_user(t_data *data);
 void	init_data(t_data *data);
 void	process_user_input(t_data *d);
@@ -57,6 +92,11 @@ void	process_parent(t_data *data, t_cmd *current);
 // init
 void	init_new_node(t_data *data, t_cmd *new_node, char *cmd);
 void	add_cmd_path(t_data *d, t_cmd *new_node);
+// void	init_env(t_env **list_env, char *env[]);
+void	copy_env(t_data *data, char *arge[]);
+
+// env
+char	*env_value(t_data *d, char *var_name);
 
 // builtins
 void	check_builtins(t_data *data);
@@ -64,6 +104,8 @@ void	check_builtins(t_data *data);
 // print tab
 void	print_tab(char **tab);
 void	print_pipe(int fd);
+void	print_token_list(t_token *start);
+// void	print_env(t_env *list_env);
 
 // handle signal
 void	sigint_handler(int signal);
@@ -73,10 +115,34 @@ void	set_signal_action(void);
 void	free_all(t_data *data);
 void	free_tab(char **tab);
 void	free_list(t_cmd *list_cmd);
+void	free_list_token(t_token *head);
 
 // error
 void	error_exit(char *msg);
 
 // testing
 void	read_from_fd(int fd);
+void	if_builtin_set_fun(char *cmd);
+
+// refactor
+char	**trim_tab_input(char **tab_input);
+char	*get_cmd(char *tab_input);
+char	*get_arg(char *tab_input);
+
+// tokenizing
+void	tokenize_unquoted_user_input(t_data *d);
+int		tokenize_direct_in(t_data *d, int idx);
+bool	char_not_equal_delimiter(char c, char *delimiter);
+void	tokenize_quotes(t_data *d);
+void	tokenize_no_quotes(t_data *d);
+char	*trim_word(char *untrimmed);
+bool	tokenize_word(t_token *current, bool found_cmd);
+bool	process_no_quote(t_token *current, int idx, int token, bool found_cmd);
+bool	update_found_cmd(int token, bool found_cmd);
+
+// structure
+void	add_node_token_struct(t_data *d, int token, char *word);
+void	insert_node_token_struct(t_token *current, int token, char *word);
+void	split_list_token_if_quote(t_token *current);
+void	split_token_node(char *start, char *end, t_token *current, int token);
 #endif
