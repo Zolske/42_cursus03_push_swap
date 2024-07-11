@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 13:33:10 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/07 17:40:43 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/11 17:09:54 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,9 @@ bool	prompt_user(t_data *d)
 	// cut into notes cmd, args, redirection, pipe
 	tokenize_no_quotes(d);
 	// evaluate all file_name variables
-	expand_variable_for_file_names();
+	// expand_variables(d);
+	// expand_variable_for_file_names();
+	
 	// create out-files if they do not exist for all pipes then create them
 	// execute HEREDOC
 	// check if in-direction files exist otherwise throw error and return prompt
@@ -53,7 +55,7 @@ bool	prompt_user(t_data *d)
 
 	
 	print_token_list(d->list_token);
-	free_list_token(d->list_token);
+	// free_list_token(d->list_token);
 
 	// printf("user input: %s\tstatus: %d\n", d->list_token->word, d->list_token->token);
 	// tokenize_unquoted_user_input(d);
@@ -147,6 +149,7 @@ void	init_data(t_data *d)
 {
 	d->user_input = NULL;
 	d->list_token = NULL;
+	d->exit_no = 0;
 	d->env = NULL;
 	d->list_cmd = NULL;
 	d->last_cmd = false;

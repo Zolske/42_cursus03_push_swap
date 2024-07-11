@@ -64,7 +64,7 @@ typedef struct s_data
 {
 	char			**env;			// MALLOC!! list of env variables
 	char			*user_input;	// MALLOC!! user input string
-	int				err_no;			// replace with the last, do not reset
+	int				exit_no;		// replace with the last, do not reset
 	struct s_cmd	*list_cmd;		// MALLOC!! list of commands
 	struct s_token	*list_token;	// MALLOC!! list of tokens
 
@@ -139,6 +139,15 @@ char	*trim_word(char *untrimmed);
 bool	tokenize_word(t_token *current, bool found_cmd);
 bool	process_no_quote(t_token *current, int idx, int token, bool found_cmd);
 bool	update_found_cmd(int token, bool found_cmd);
+
+bool	cut_pipe(t_token *current);
+void	cut_redirect(t_token *current, int idx, int token);
+bool	cut_cmd_arg(t_token *current, int idx, int token);
+
+
+// env
+char	*return_env_value(t_data *d, char *var_name);
+void	expand_variables(t_data *d);
 
 // structure
 void	add_node_token_struct(t_data *d, int token, char *word);

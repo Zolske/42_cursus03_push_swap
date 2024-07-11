@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:13:55 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/05 14:47:41 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/11 15:53:52 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	add_node_token_struct(t_data *d, int token, char *word)
 	}
 }
 
+/*create from arg a new node and insert into current->next*/
 void	insert_node_token_struct(t_token *current, int token, char *word)
 {
 	t_token	*new_node;

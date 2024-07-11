@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:06:18 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/07 08:01:21 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/08 10:31:36 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ void	split_list_token_if_quote(t_token *current)
 	char	*end_single;
 	char	*end_double;
 
-	if (start_single = ft_strchr(current->word, '\''))
+	if ((start_single = ft_strchr(current->word, '\'')))
 		end_single = ft_strchr(&(start_single[1]), '\'');
 	else
 		end_single = NULL;
-	if (start_double = ft_strchr(current->word, '"'))
+	if ((start_double = ft_strchr(current->word, '"')))
 		end_double = ft_strchr(&(start_double)[1], '"');
 	else
 		end_double = NULL;

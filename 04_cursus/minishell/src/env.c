@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 14:12:43 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/02 18:16:09 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/11 13:02:39 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	copy_env(t_data *d, char *arge[])
 
 /*returns a pointer to the value of the "env variable name", if not exist
 return NULL which can cause problems with printf*/
-char	*env_value(t_data *d, char *var_name)
+char	*return_env_value(t_data *d, char *var_name)
 {
 	int		idx;
 	int		len_var;

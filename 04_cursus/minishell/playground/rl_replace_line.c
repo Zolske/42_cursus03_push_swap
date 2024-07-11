@@ -14,6 +14,8 @@ void replace_user_input(const char *current_text) {
 	/*Change what’s displayed on the screen to reflect the current contents of
 	rl_line_buffer??? Appears to have no effect, even when changing the 
 	order of the code.*/
+	if (!current_text)
+		printf("no user input\n");
 	rl_redisplay();
 }
 
