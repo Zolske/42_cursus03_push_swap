@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 13:33:10 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/12 13:05:37 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/12 16:42:24 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int argc, char *argv[], char *arge[])
 {
 	t_data	data;
 
-	// copy_env(&data, arge);
+	copy_env(&data, arge);
 	while (prompt_user(&data))
 		;
 	free_tab(data.env);
@@ -32,40 +32,14 @@ bool	prompt_user(t_data *d)
 	char	*user_input;
 
 	init_data(d);
-	// printf("%s%s%s",COLOR_PROMPT, STR_PROMPT, COLOR_STOP);
-	// d->user_input = readline("MINISHELL=> ");
 	user_input = readline("MINISHELL=> ");
 	add_node_token_struct(d, UNPROCESSED, user_input);
-	// lexer
-	// find and cut into nodes quotes
-	cut_quotes(d);
-	// cut into notes cmd, args, redirection, pipe
-	tokenize_no_quotes(d);
-	// evaluate all file_name variables
-	// expand_variable_for_file_names();
-	// create out-files if they do not exist for all pipes then create them
-	// execute HEREDOC
-	// check if in-direction files exist otherwise throw error and return prompt
-	// set order for correct in and out files
-
-	// parser
-
-
+	// lexer, turns a sequence of characters into a sequence of tokens
+	lexer(d);
 	
 	print_token_list(d->list_token);
 	free_list_token(d->list_token);
 
-	// printf("user input: %s\tstatus: %d\n", d->list_token->word, d->list_token->token);
-	// tokenize_unquoted_user_input(d);
-	// process_user_input(d);
-
-	// add_history(d->user_input);
-	// split_into_cmds(d);
-	// pipe_cmds(d);
-
-
-	// free(d->user_input);
-	// d->user_input = NULL;
 	return (true);
 }
 

@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 12:09:36 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/05 15:45:10 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/12 16:23:41 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,29 +61,31 @@ void	print_token_list(t_token *start)
 	current = start;
 	while (current)
 	{
-		printf("word:\t|%s|\n", current->word);
+		printf("word:\t|\033[36;1m%s\033[0m|\n", current->word);
 		if (current->token == UNPROCESSED)
-			printf("token:\tUNPROCESSED\n");
+			printf("token:\t\033[0;32mUNPROCESSED\033[0m\n");
 		else if (current->token == NO_QUOTES)
-			printf("token:\tNO_QUOTES\n");
+			printf("token:\t\033[0;32mNO_QUOTES\033[0m\n");
 		else if (current->token == QUOTE_SINGLE)
-			printf("token:\tQUOTE_SINGLE\n");
+			printf("token:\t\033[0;32mQUOTE_SINGLE\033[0m\n");
 		else if (current->token == QUOTE_DOUBLE)
-			printf("token:\tQUOTE_DOUBLE\n");
+			printf("token:\t\033[0;32mQUOTE_DOUBLE\033[0m\n");
 		else if (current->token == COMMAND)
-			printf("token:\tCOMMAND\n");
+			printf("token:\t\033[0;32mCOMMAND\033[0m\n");
 		else if (current->token == ARGUMENT)
-			printf("token:\tARGUMENT\n");
+			printf("token:\t\033[0;32mARGUMENT\033[0m\n");
 		if (current->token == FILE_IN)
-			printf("token:\tFILE_IN\n");
+			printf("token:\t\033[0;32mFILE_IN\033[0m\n");
 		else if (current->token == HEREDOC)
-			printf("token:\tHEREDOC\n");
+			printf("token:\t\033[0;32mHEREDOC\033[0m\n");
 		else if (current->token == FILE_OUT)
-			printf("token:\tFILE_OUT\n");
+			printf("token:\t\033[0;32mFILE_OUT\033[0m\n");
 		else if (current->token == FILE_APPEND)
-			printf("token:\tFILE_APPEND\n");
+			printf("token:\t\033[0;32mFILE_APPEND\033[0m\n");
 		else if (current->token == PIPE)
-			printf("token:\tPIPE\n");
+			printf("token:\t\033[0;32mPIPE\033[0m\n");
+		else if (current->token == WORD)
+			printf("token:\t\033[0;32mWORD\033[0m\n");
 		current = current->next;
 	}
 }

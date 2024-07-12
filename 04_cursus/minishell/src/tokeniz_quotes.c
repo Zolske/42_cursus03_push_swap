@@ -6,165 +6,103 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:06:18 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/12 13:05:37 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/12 16:40:16 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	cut_quotes(t_data *d)
+void	lexer(t_data *d)
 {
 	t_token	*current;
 
-	// while (true)
-	// {
-		current = d->list_token;
-		// while (true)
-		while (current)
+	current = d->list_token;
+	while (current)
+	{
+		if (current->token == UNPROCESSED)
 		{
-			if (current->token == UNPROCESSED)
-			{
-				split_list_token_if_quote(current);
-				continue;
-			}
-			// if (current->next == NULL)
-			// 	return;
-			current = current->next;
+			current->word = free_old_return_trim_str(current->word);
+			if (ft_strchr("<>|", current->word[0]))
+				cut_meta_char(current);
+			else
+				cut_word(current);
 		}
-	// }
+		current = current->next;
+	}
 }
 
-// TODO: over the 25 line limit
-void	split_list_token_if_quote(t_token *current)
+void	cut_word(t_token *current)
 {
-	char	*start_single;
-	char	*start_double;
-	char	*end_single;
-	char	*end_double;
+	int		idx;
+	char	*tmp;
 
-	if ((start_single = ft_strchr(current->word, '\'')))
-		end_single = ft_strchr(&(start_single[1]), '\'');
-	else
-		end_single = NULL;
-	if ((start_double = ft_strchr(current->word, '"')))
-		end_double = ft_strchr(&(start_double)[1], '"');
-	else
-		end_double = NULL;
-	if (end_single && end_double)
+	idx = 0;
+	tmp = current->word;
+	while (tmp[idx])
 	{
-		if (start_single < start_double)
-			split_token_node(start_single, end_single, current, QUOTE_SINGLE);
-		else if (start_single > start_double)
-			split_token_node(start_double, end_double, current, QUOTE_DOUBLE);
+		if (ft_strchr(DELIMITER, tmp[idx]))
+			break;
+		else if (tmp[idx] == '\'' || tmp[idx] == '"')
+			idx += return_matching_quote_idx(&(tmp[idx]));
+		else
+			idx++;
 	}
-	else if (end_single)
-		split_token_node(start_single, end_single, current, QUOTE_SINGLE);
-	else if (end_double)
-		split_token_node(start_double, end_double, current, QUOTE_DOUBLE);
-	else
-		current->token = NO_QUOTES;
+	current->token = WORD;
+	current->word = ft_substr(tmp, 0, idx);
+	if (tmp[idx] != '\0')
+		insert_node_token_struct(current, UNPROCESSED, ft_substr(tmp, idx,\
+			ft_strlen(tmp) - idx));
+	free(tmp);
 }
 
-void	split_token_node(char *start, char *end, t_token *current, int token)
+int	return_matching_quote_idx(const char *str)
 {
-	char	*original;
-	t_token	*tmp_node;
+	int		idx;
+	char	quote;
 
-	original = current->word;
-	// if quote starts after the beginning of the original string
-	if (original < start)
+	idx= 1;
+	quote = str[0];
+	while (str[idx])
 	{
-		current->word = ft_substr(original, 0, start - original);
-		current->token = NO_QUOTES;
-		insert_node_token_struct(current, token, ft_substr(original, \
-		start + 1 - original, end - 1 - start));
-		tmp_node = current->next;
-	}
-	// if quote start at the beginning of the original string
-	else if (original == start)
-	{
-		current->word = ft_substr(original, 1, end - 1 - start);
-		current->token = token;
-		tmp_node = current;
-	}
-	// if original str continues after original str
-	if (&(original[ft_strlen(original) - 1]) > end)
-	{
-		insert_node_token_struct(tmp_node, UNPROCESSED, ft_substr(\
-		original, &(end[ + 1]) - original, ft_strlen(original) - 1));
-	}
-	free(original);
-}
-
-// char	first_quote_which_closes(t_data *d)
-// {
-// 	int		idx;
-
-
-// 	while (d->user_input[idx])
-// 	{
-// 		if (d->user_input[idx] == '\'' && no_double_quote)
-// 	}
-// }
-
-// void	tokenize_quotes_user_input(t_data *d)
-// {
-// }
-
-
-// TODO: handle case of an empty string, invalid composition
-// void	tokenize_unquoted_user_input(t_data *d)
-// {
-// 	int	idx;
-
-// 	idx = 0;
-// 	while (d->user_input[idx])
-// 	{
-// 		if (d->user_input[idx] == ' ')
-// 			idx++;
-// 		else if (d->user_input[idx] == '<' && d->user_input[idx + 1] == '<')
-// 			idx = tokenize_direct_heredoc(d, idx + 2);
-// 		else if (d->user_input[idx] == '<')
-// 			idx = tokenize_direct_in(d, idx + 1);
-// 		else if (d->user_input[idx] == '>' && d->user_input[idx + 1] == '>')
-// 			idx = tokenize_direct_append(d, idx + 2);
-// 		else if (d->user_input[idx] == '>')
-// 			idx = tokenize_direct_out(d, idx + 1);
-// 		else if (d->user_input[idx] == '|')
-// 			idx = tokenize_direct_pipe(d, idx + 1);
-// 		// else if (d->user_input[idx] == '\'')
-// 		// 	idx = tokenize_quote_single(d, idx + 1);
-// 		// else if (d->user_input[idx] == '"')
-// 		// 	idx = tokenize_quote_double(d, idx + 1);
-// 		else
-// 			idx = tokenize_cmd_or_arg(d, idx);
-// 	}
-// }
-
-bool	char_not_equal_delimiter(char c, char *delimiter)
-{
-	int		len;
-
-	len = ft_strlen(delimiter);
-	while (len--)
-		if (c == delimiter[len])
-			return false;
-	return true;
-}
-
-int	tokenize_direct_in(t_data *d, int idx)
-{
-	int			idx_start;
-	int			idx_end;
-	char		*file_name;
-
-	while (d->user_input[idx] == ' ')
+		if (str[idx] == quote)
+			return idx + 1;
 		idx++;
-	idx_start = idx;
-	while (char_not_equal_delimiter(d->user_input[idx], " <|>\0"))
-		idx++;
-	idx_end = idx;
-	file_name = ft_substr(d->user_input, idx_start, idx_end + 1);
-	add_node_token_struct(d, FILE_IN, file_name);
-	return idx_end + 1;
+	}
+	return 1;
+}
+
+void	cut_meta_char(t_token *current)
+{
+	char	*tmp;
+	int		start;
+
+	tmp = current->word;
+	if ((tmp)[0] == '<' && (tmp)[1] == '<')
+		current->token = HEREDOC;
+	else if ((tmp)[0] == '<')
+		current->token = FILE_IN;
+	else if ((tmp)[0] == '>' && (tmp)[1] == '>')
+		current->token = FILE_APPEND;
+	else if ((tmp)[0] == '>')
+		current->token = FILE_OUT;
+	else if ((tmp)[0] == '|')
+		current->token = PIPE;
+	current->word = NULL;
+	if ((current->token == HEREDOC) || (current->token == FILE_APPEND))
+		start = 2;
+	else
+		start = 1;
+	insert_node_token_struct(current, UNPROCESSED,\
+			ft_substr(tmp, start, ft_strlen(tmp)));
+	free(tmp);
+}
+
+/*return string (space removed start-end) as a new Malloc, free "untrimmed"*/
+char	*free_old_return_trim_str(char *untrimmed)
+{
+	char	*trimmed;
+
+	trimmed = ft_strtrim(untrimmed, " ");
+	free(untrimmed);
+	return trimmed;
 }

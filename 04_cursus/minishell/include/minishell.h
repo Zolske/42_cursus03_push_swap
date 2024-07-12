@@ -18,8 +18,10 @@
 # define FILE_OUT 8
 # define FILE_APPEND 9
 # define PIPE 10
+# define WORD 11
 
 # define DELIMITER " <>|\0"
+# define META_CHAR "<>|"
 
 # define CHILD_PROCESS 0
 # define READ 0
@@ -133,7 +135,7 @@ char	*get_arg(char *tab_input);
 void	tokenize_unquoted_user_input(t_data *d);
 int		tokenize_direct_in(t_data *d, int idx);
 bool	char_not_equal_delimiter(char c, char *delimiter);
-void	cut_quotes(t_data *d);
+void	lexer(t_data *d);
 void	tokenize_no_quotes(t_data *d);
 char	*trim_word(char *untrimmed);
 bool	tokenize_word(t_token *current, bool found_cmd);
@@ -145,4 +147,11 @@ void	add_node_token_struct(t_data *d, int token, char *word);
 void	insert_node_token_struct(t_token *current, int token, char *word);
 void	split_list_token_if_quote(t_token *current);
 void	split_token_node(char *start, char *end, t_token *current, int token);
+
+// refactor tokenize V2
+void	cut_word(t_token *current);
+int		return_matching_quote_idx(const char *str);
+void	cut_meta_char(t_token *current);
+char	*free_old_return_trim_str(char *untrimmed);
+
 #endif
