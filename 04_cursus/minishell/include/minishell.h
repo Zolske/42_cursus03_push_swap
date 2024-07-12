@@ -133,12 +133,12 @@ char	*get_arg(char *tab_input);
 void	tokenize_unquoted_user_input(t_data *d);
 int		tokenize_direct_in(t_data *d, int idx);
 bool	char_not_equal_delimiter(char c, char *delimiter);
-void	tokenize_quotes(t_data *d);
+void	cut_quotes(t_data *d);
 void	tokenize_no_quotes(t_data *d);
 char	*trim_word(char *untrimmed);
 bool	tokenize_word(t_token *current, bool found_cmd);
-bool	process_no_quote(t_token *current, int idx, int token, bool found_cmd);
-bool	update_found_cmd(int token, bool found_cmd);
+bool	process_no_quote(t_token *current, int idx, int token);
+bool	cut_pipe(t_token *current);
 
 // structure
 void	add_node_token_struct(t_data *d, int token, char *word);

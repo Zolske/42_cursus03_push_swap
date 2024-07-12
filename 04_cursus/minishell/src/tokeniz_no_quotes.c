@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:06:53 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/07 10:39:30 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/12 13:03:53 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,7 @@ void	tokenize_no_quotes(t_data *d)
 	while (current)
 	{
 		if (current->token == NO_QUOTES)
-		{
 			found_cmd = tokenize_word(current, found_cmd);
-			continue;
-		}
 		current = current->next;
 	}
 }
@@ -44,26 +41,26 @@ bool	tokenize_word(t_token *current, bool found_cmd)
 {
 	current->word = trim_word(current->word);
 	if ((current->word)[0] == '<' && (current->word)[1] == '<')
-		found_cmd = process_no_quote(current, 2, HEREDOC, found_cmd);
+		process_no_quote(current, 2, HEREDOC);
 	else if ((current->word)[0] == '<')
-		found_cmd = process_no_quote(current, 1, FILE_IN, found_cmd);
+		process_no_quote(current, 1, FILE_IN);
 	else if ((current->word)[0] == '>' && (current->word)[1] == '>')
-		found_cmd = process_no_quote(current, 2, FILE_APPEND, found_cmd);
+		process_no_quote(current, 2, FILE_APPEND);
 	else if ((current->word)[0] == '>')
-		found_cmd = process_no_quote(current, 1, FILE_OUT, found_cmd);
+		process_no_quote(current, 1, FILE_OUT);
 	else if ((current->word)[0] == '|')
-		found_cmd = process_no_quote(current, 0, PIPE, found_cmd);
+		found_cmd = cut_pipe(current);
 	else
 	{
 		if (found_cmd)
-			found_cmd = process_no_quote(current, 0, ARGUMENT, found_cmd);
+			process_no_quote(current, 0, ARGUMENT);
 		else
-			found_cmd = process_no_quote(current, 0, COMMAND, found_cmd);
+			found_cmd = process_no_quote(current, 0, COMMAND);
 	}
 	return found_cmd;
 }
 
-bool	process_no_quote(t_token *current, int idx, int token, bool found_cmd)
+bool	process_no_quote(t_token *current, int idx, int token)
 {
 	char		*end;
 	char		*start;
@@ -77,24 +74,30 @@ bool	process_no_quote(t_token *current, int idx, int token, bool found_cmd)
 	start = &(original[idx]);
 	while (!(ft_strchr(DELIMITER, original[idx])))
 		idx++;
-	end =  &(original[idx]);;
+	end =  &(original[idx]);
 	current->word = ft_substr(original, start - original, end - start);
 	current->token = token;
 	start_original = end + 1;
 	end_original = &(original[ft_strlen(original) - 1]);
 	if (end < end_original)
 		insert_node_token_struct(current, NO_QUOTES,\
-		ft_substr(original, end + 1 - original, end_original + 1 - start_original));
+		ft_substr(original, end - original, end_original + 2 - start_original));
 	free(original);
-	return update_found_cmd(token, found_cmd);
-}
-
-bool	update_found_cmd(int token, bool found_cmd)
-{
-	if (token == PIPE)
-		return false;
-	else if (token == COMMAND)
+	if (token == COMMAND)
 		return true;
 	else
-		return found_cmd;
+		return false;
+}
+
+bool	cut_pipe(t_token *current)
+{
+	char		*original;
+
+	original = current->word;
+	current->word = NULL;
+	current->token = PIPE;
+	insert_node_token_struct(current, NO_QUOTES,\
+		ft_substr(original, 1, ft_strlen(original) - 1));
+	free(original);
+	return false;
 }

@@ -6,13 +6,13 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:06:18 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/11 17:24:46 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/12 13:05:37 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	tokenize_quotes(t_data *d)
+void	cut_quotes(t_data *d)
 {
 	t_token	*current;
 

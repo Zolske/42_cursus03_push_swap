@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 13:33:10 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/11 17:23:00 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/12 13:05:37 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int argc, char *argv[], char *arge[])
 {
 	t_data	data;
 
-	copy_env(&data, arge);
+	// copy_env(&data, arge);
 	while (prompt_user(&data))
 		;
 	free_tab(data.env);
@@ -38,7 +38,7 @@ bool	prompt_user(t_data *d)
 	add_node_token_struct(d, UNPROCESSED, user_input);
 	// lexer
 	// find and cut into nodes quotes
-	tokenize_quotes(d);
+	cut_quotes(d);
 	// cut into notes cmd, args, redirection, pipe
 	tokenize_no_quotes(d);
 	// evaluate all file_name variables
