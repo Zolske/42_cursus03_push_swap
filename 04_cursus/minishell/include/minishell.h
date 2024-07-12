@@ -153,5 +153,7 @@ void	cut_word(t_token *current);
 int		return_matching_quote_idx(const char *str);
 void	cut_meta_char(t_token *current);
 char	*free_old_return_trim_str(char *untrimmed);
+void	evaluate_variables(char *word, t_data *d);
+void	evaluate_n_remove_quotes(t_data *d);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 14:12:43 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/02 18:16:09 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/12 18:12:31 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,10 @@ char	*env_value(t_data *d, char *var_name)
 	{
 		if (!ft_strncmp(d->env[idx], var_name, len_var)
 			&& d->env[idx][len_var] == '=')
+		{
+			printf("inside env_vale: %s\n", &(d->env[idx][len_var + 1]));
 			return &(d->env[idx][len_var + 1]);
-
+		}
 		idx++;
 	}
 	return NULL;

@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 13:33:10 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/12 16:42:24 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/12 17:23:21 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ bool	prompt_user(t_data *d)
 	add_node_token_struct(d, UNPROCESSED, user_input);
 	// lexer, turns a sequence of characters into a sequence of tokens
 	lexer(d);
+	// evaluate variables and remove matching quotes from words
+	evaluate_n_remove_quotes(d);
 	
 	print_token_list(d->list_token);
 	free_list_token(d->list_token);
