@@ -42,10 +42,18 @@
 
 typedef struct s_token
 {
-	int				token;			// use Macros to identify type
-	char			*word;			// token data
-	struct s_token	*next;
+	int					token;			// use Macros to identify type
+	char				*word;			// token data
+	struct s_sub_word	*list_sub_word;
+	struct s_token		*next;
 }	t_token;
+
+typedef struct s_sub_word
+{
+	int					token;
+	char				*sub_word;
+	struct s_sub_word	*next;
+}	t_sub_word;
 
 typedef void (*ptr_builtin)(char *arg);	// definition for function pointer, builtin
 
@@ -66,7 +74,7 @@ typedef struct s_data
 {
 	char			**env;			// MALLOC!! list of env variables
 	char			*user_input;	// MALLOC!! user input string
-	int				err_no;			// replace with the last, do not reset
+	int				exit_status;	// replace with the last, do not reset
 	struct s_cmd	*list_cmd;		// MALLOC!! list of commands
 	struct s_token	*list_token;	// MALLOC!! list of tokens
 
@@ -150,10 +158,11 @@ void	split_token_node(char *start, char *end, t_token *current, int token);
 
 // refactor tokenize V2
 void	cut_word(t_token *current);
-int		return_matching_quote_idx(const char *str);
+int		match_quote_idx(const char *str);
 void	cut_meta_char(t_token *current);
 char	*free_old_return_trim_str(char *untrimmed);
 void	evaluate_variables(char *word, t_data *d);
 void	evaluate_n_remove_quotes(t_data *d);
+void	add_node_sub_word(t_sub_word *node, int token, char *sub_word);
 
 #endif

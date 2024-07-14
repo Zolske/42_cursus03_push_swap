@@ -5,8 +5,7 @@ HEADER			= include/minishell.h
 SRC_DIR			= src/
 SRC				= $(addprefix $(SRC_DIR), \
 				minishell.c print.c free.c error.c pipping.c signal.c env.c \
-				tokeniz_quotes.c tokeniz_no_quotes.c struct.c\
-				evaluate_n_remove_quotes.c)
+				tokeniz_quotes.c tokeniz_no_quotes.c struct.c sub_word.c)
 # OBJECTS
 OBJ_DIR			= obj/
 OBJ				= $(SRC:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
@@ -48,4 +47,4 @@ norm:
 .PHONY: all clean fclean re norm
 
 # YOU NEED to compile with the "-lreadline" flag which needs to be last!!
-# e.g. cc -lreadline readline.c -o main
+# e.g. cc readline.c -o main -lreadline

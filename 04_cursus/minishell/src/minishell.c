@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 13:33:10 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/12 17:23:21 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/14 06:54:44 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,160 +37,161 @@ bool	prompt_user(t_data *d)
 	// lexer, turns a sequence of characters into a sequence of tokens
 	lexer(d);
 	// evaluate variables and remove matching quotes from words
-	evaluate_n_remove_quotes(d);
+	// evaluate_n_remove_quotes(d);
 	
+	// print_tab(d->env);
 	print_token_list(d->list_token);
 	free_list_token(d->list_token);
 
 	return (true);
 }
 
-void	process_user_input(t_data *d)
-{
-	char	**tab_input;
-	char	*cmd;
-	char	*arg;
-	int		idx;
+// void	process_user_input(t_data *d)
+// {
+// 	char	**tab_input;
+// 	char	*cmd;
+// 	char	*arg;
+// 	int		idx;
 
-	tab_input = ft_split(d->user_input, '|');
-	tab_input = trim_tab_input(tab_input);
-	idx = 0;
-	while (tab_input[idx])
-	{
-		cmd = get_cmd(tab_input[idx]);
-		// printf("cmd: |%s|\n", cmd);
-		// free(cmd);
-		arg = get_arg(tab_input[idx]);
-		printf("arg: |%s|\n", arg);
-		// add_cmd_node(d, cmd, arg);
-		// free(arg);
-		free(tab_input[idx]);
-		idx++;
-	}
-	free(tab_input);
-	// free_tab(d->env);
-	// free(d->user_input);
-	// TODO: free tab_input
-}
+// 	tab_input = ft_split(d->user_input, '|');
+// 	tab_input = trim_tab_input(tab_input);
+// 	idx = 0;
+// 	while (tab_input[idx])
+// 	{
+// 		cmd = get_cmd(tab_input[idx]);
+// 		// printf("cmd: |%s|\n", cmd);
+// 		// free(cmd);
+// 		arg = get_arg(tab_input[idx]);
+// 		printf("arg: |%s|\n", arg);
+// 		// add_cmd_node(d, cmd, arg);
+// 		// free(arg);
+// 		free(tab_input[idx]);
+// 		idx++;
+// 	}
+// 	free(tab_input);
+// 	// free_tab(d->env);
+// 	// free(d->user_input);
+// 	// TODO: free tab_input
+// }
 
-char	**trim_tab_input(char **tab_input)
-{
-	int		len;
-	int		idx;
-	char	**trimmed_tab;
+// char	**trim_tab_input(char **tab_input)
+// {
+// 	int		len;
+// 	int		idx;
+// 	char	**trimmed_tab;
 
-	len = 0;
-	idx = 0;
-	while (tab_input[len])
-		len++;
-	trimmed_tab = (char **) malloc(sizeof(char *) * (len + 1));
-	while (tab_input[idx])
-	{
-		trimmed_tab[idx] = ft_strtrim(tab_input[idx], " ");
-		idx++;
-	}
-	trimmed_tab[idx] = NULL;
-	free_tab(tab_input);
-	return trimmed_tab;
-}
+// 	len = 0;
+// 	idx = 0;
+// 	while (tab_input[len])
+// 		len++;
+// 	trimmed_tab = (char **) malloc(sizeof(char *) * (len + 1));
+// 	while (tab_input[idx])
+// 	{
+// 		trimmed_tab[idx] = ft_strtrim(tab_input[idx], " ");
+// 		idx++;
+// 	}
+// 	trimmed_tab[idx] = NULL;
+// 	free_tab(tab_input);
+// 	return trimmed_tab;
+// }
 
-char	*get_cmd(char *tab_input)
-{
-	char	*cmd_end;
+// char	*get_cmd(char *tab_input)
+// {
+// 	char	*cmd_end;
 	
-	cmd_end = ft_strchr(tab_input, ' ');
-	if (cmd_end == NULL)
-		return tab_input;
-	return ft_substr(tab_input, 0, cmd_end - tab_input);
-}
+// 	cmd_end = ft_strchr(tab_input, ' ');
+// 	if (cmd_end == NULL)
+// 		return tab_input;
+// 	return ft_substr(tab_input, 0, cmd_end - tab_input);
+// }
 
-char	*get_arg(char *tab_input)
-{
-	char	*arg_start;
-	char	*arg;
-	char	*arg_trimmed;
+// char	*get_arg(char *tab_input)
+// {
+// 	char	*arg_start;
+// 	char	*arg;
+// 	char	*arg_trimmed;
 	
-	arg_start = ft_strchr(tab_input, ' ');
-	if (arg_start == NULL)
-		return NULL;
-	arg = ft_substr(tab_input, arg_start - tab_input, ft_strlen(tab_input));
-	arg_trimmed = ft_strtrim(arg, " ");
-	free(arg);
-	return arg_trimmed;
-}
+// 	arg_start = ft_strchr(tab_input, ' ');
+// 	if (arg_start == NULL)
+// 		return NULL;
+// 	arg = ft_substr(tab_input, arg_start - tab_input, ft_strlen(tab_input));
+// 	arg_trimmed = ft_strtrim(arg, " ");
+// 	free(arg);
+// 	return arg_trimmed;
+// }
 
 void	init_data(t_data *d)
 {
 	d->user_input = NULL;
 	d->list_token = NULL;
-	d->env = NULL;
+	// d->env = NULL;
 	d->list_cmd = NULL;
 	d->last_cmd = false;
 	errno = 0;
 }
 
-void	pipe_cmds(t_data *d)
-{
-	pid_t	pid;
-	t_cmd	*current;
+// void	pipe_cmds(t_data *d)
+// {
+// 	pid_t	pid;
+// 	t_cmd	*current;
 
-	current = d->list_cmd;
-	if (d->n_cmd == 1)
-		d->last_cmd = true;
-	while (current)
-	{
-		prepare_pipe(d, current);
-		if ((pid = fork()) == -1)
-			error_exit("fork");
-		if (pid == CHILD_PROCESS)
-			process_child(d, current);
-		else
-			process_parent(d, current);
-		current = current->next;
-	}
-}
+// 	current = d->list_cmd;
+// 	if (d->n_cmd == 1)
+// 		d->last_cmd = true;
+// 	while (current)
+// 	{
+// 		prepare_pipe(d, current);
+// 		if ((pid = fork()) == -1)
+// 			error_exit("fork");
+// 		if (pid == CHILD_PROCESS)
+// 			process_child(d, current);
+// 		else
+// 			process_parent(d, current);
+// 		current = current->next;
+// 	}
+// }
 
-void	add_cmd_node(t_data *d, char *cmd, char *arg)
-{
-	t_cmd	*new_node;
-	t_cmd	*current;
+// void	add_cmd_node(t_data *d, char *cmd, char *arg)
+// {
+// 	t_cmd	*new_node;
+// 	t_cmd	*current;
 	
-	new_node = (t_cmd *) malloc(sizeof(t_cmd));
-	new_node->next = NULL;
-	// new_node->builtin_fun = set_builtin_fun(cmd);
-	// new_node->cmd_path = set_cmd_path(d, cmd);
-	// new_node->cmd_arg = set_cmd_arg(d, arg);
+// 	new_node = (t_cmd *) malloc(sizeof(t_cmd));
+// 	new_node->next = NULL;
+// 	// new_node->builtin_fun = set_builtin_fun(cmd);
+// 	// new_node->cmd_path = set_cmd_path(d, cmd);
+// 	// new_node->cmd_arg = set_cmd_arg(d, arg);
 
-	if (d->list_cmd == NULL)
-		d->list_cmd = new_node;
-	else
-	{
-		current = d->list_cmd;
-		while (current->next != NULL)
-			current = current->next;
-		current->next = new_node;
-	}
-}
+// 	if (d->list_cmd == NULL)
+// 		d->list_cmd = new_node;
+// 	else
+// 	{
+// 		current = d->list_cmd;
+// 		while (current->next != NULL)
+// 			current = current->next;
+// 		current->next = new_node;
+// 	}
+// }
 
 // ptr_builtin	if_builtin_set_fun(char *cmd)
-void	if_builtin_set_fun(char *cmd)
-{
-	printf("printf: |%s|\n", cmd);
-	if (!ft_strncmp(cmd, "echo", ft_strlen(cmd)))
-		printf("Builtin: ECHO\n");
-	else if (!ft_strncmp(cmd, "cd", ft_strlen(cmd)))
-		printf("Builtin: CD\n");
-	else if (!ft_strncmp(cmd, "pwd", ft_strlen(cmd)))
-		printf("Builtin: PWD\n");
-	else if (!ft_strncmp(cmd, "export", ft_strlen(cmd)))
-		printf("Builtin: EXPORT\n");
-	else if (!ft_strncmp(cmd, "unset", ft_strlen(cmd)))
-		printf("Builtin: UNSET\n");
-	else if (!ft_strncmp(cmd, "env", ft_strlen(cmd)))
-		printf("Builtin: ENV\n");
-	else if (!ft_strncmp(cmd, "exit", ft_strlen(cmd)))
-		printf("Builtin: EXIT\n");
-}
+// void	if_builtin_set_fun(char *cmd)
+// {
+// 	printf("printf: |%s|\n", cmd);
+// 	if (!ft_strncmp(cmd, "echo", ft_strlen(cmd)))
+// 		printf("Builtin: ECHO\n");
+// 	else if (!ft_strncmp(cmd, "cd", ft_strlen(cmd)))
+// 		printf("Builtin: CD\n");
+// 	else if (!ft_strncmp(cmd, "pwd", ft_strlen(cmd)))
+// 		printf("Builtin: PWD\n");
+// 	else if (!ft_strncmp(cmd, "export", ft_strlen(cmd)))
+// 		printf("Builtin: EXPORT\n");
+// 	else if (!ft_strncmp(cmd, "unset", ft_strlen(cmd)))
+// 		printf("Builtin: UNSET\n");
+// 	else if (!ft_strncmp(cmd, "env", ft_strlen(cmd)))
+// 		printf("Builtin: ENV\n");
+// 	else if (!ft_strncmp(cmd, "exit", ft_strlen(cmd)))
+// 		printf("Builtin: EXIT\n");
+// }
 
 // void	split_into_cmds(t_data *d)
 // {

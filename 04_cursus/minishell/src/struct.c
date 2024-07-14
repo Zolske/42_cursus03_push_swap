@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:13:55 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/05 14:47:41 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/13 14:46:03 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	add_node_token_struct(t_data *d, int token, char *word)
 	new_node = (t_token *) malloc(sizeof(t_token));
 	new_node->token = token;
 	new_node->word = word;
+	new_node->list_sub_word = NULL;
 	new_node->next = NULL;
 
 	if (d->list_token == NULL)
@@ -40,6 +41,28 @@ void	insert_node_token_struct(t_token *current, int token, char *word)
 	new_node = (t_token *) malloc(sizeof(t_token));
 	new_node->token = token;
 	new_node->word = word;
+	new_node->list_sub_word = NULL;
 	new_node->next = current->next;
 	current->next = new_node;
+}
+
+void	add_node_sub_word(t_sub_word *node, int token, char *sub_word)
+{
+	t_sub_word	*new_node;
+	t_sub_word	*current;
+
+	new_node = (t_sub_word *) malloc(sizeof(t_sub_word));
+	new_node->token = token;
+	new_node->sub_word = sub_word;
+	new_node->next = NULL;
+
+	if (node == NULL)
+		node = new_node;
+	else
+	{
+		current = node;
+		while (current->next != NULL)
+			current = current->next;
+		current->next = new_node;
+	}
 }

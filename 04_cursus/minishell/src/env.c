@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 14:12:43 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/12 18:12:31 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/13 09:09:13 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,19 @@ void	copy_env(t_data *d, char *arge[])
 	while (arge[len])
 		len++;
 	d->env = (char **) malloc(sizeof(char *) * (len + free_space + 1));
+	// d->env = (char **) malloc(sizeof(char *) * (len + 1));
 	d->env[len + free_space] = NULL;
+	// d->env[len] = NULL;
 	while (arge[idx])
 	{
 		d->env[idx] = ft_strdup(arge[idx]);
+		// printf("create env: |%s|\n", d->env[idx]);
 		idx++;
 	}
 	while (free_space--)
 	{
 		d->env[idx] = ft_strdup("!FREE!");
+		// printf("create env: |%s|\n", d->env[idx]);
 		idx++;
 	}
 }
@@ -51,7 +55,7 @@ char	*env_value(t_data *d, char *var_name)
 		if (!ft_strncmp(d->env[idx], var_name, len_var)
 			&& d->env[idx][len_var] == '=')
 		{
-			printf("inside env_vale: %s\n", &(d->env[idx][len_var + 1]));
+			// printf("inside env_vale: %s\n", &(d->env[idx][len_var + 1]));
 			return &(d->env[idx][len_var + 1]);
 		}
 		idx++;

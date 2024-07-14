@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:06:18 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/12 16:40:16 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/14 06:58:05 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ void	lexer(t_data *d)
 			else
 				cut_word(current);
 		}
+		if (current->token == WORD)
+		{
+			cut_sub_word(current);
+			resolve_env_variables(current);
+			join_sub_words(current);
+		}
 		current = current->next;
 	}
 }
@@ -43,9 +49,8 @@ void	cut_word(t_token *current)
 		if (ft_strchr(DELIMITER, tmp[idx]))
 			break;
 		else if (tmp[idx] == '\'' || tmp[idx] == '"')
-			idx += return_matching_quote_idx(&(tmp[idx]));
-		else
-			idx++;
+			idx += match_quote_idx(&(tmp[idx]));
+		idx++;
 	}
 	current->token = WORD;
 	current->word = ft_substr(tmp, 0, idx);
@@ -55,7 +60,7 @@ void	cut_word(t_token *current)
 	free(tmp);
 }
 
-int	return_matching_quote_idx(const char *str)
+int	match_quote_idx(const char *str)
 {
 	int		idx;
 	char	quote;
@@ -65,10 +70,10 @@ int	return_matching_quote_idx(const char *str)
 	while (str[idx])
 	{
 		if (str[idx] == quote)
-			return idx + 1;
+			return idx;
 		idx++;
 	}
-	return 1;
+	return 0;
 }
 
 void	cut_meta_char(t_token *current)
