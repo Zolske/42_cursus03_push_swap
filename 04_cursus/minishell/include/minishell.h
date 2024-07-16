@@ -19,6 +19,9 @@
 # define FILE_APPEND 9
 # define PIPE 10
 # define WORD 11
+# define STRING 12
+# define VAR 13
+# define VAR_EXIT 14
 
 # define DELIMITER " <>|\0"
 # define META_CHAR "<>|"

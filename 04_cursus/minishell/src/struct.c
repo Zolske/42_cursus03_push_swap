@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:13:55 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/13 14:46:03 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/15 20:27:04 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,3 +66,15 @@ void	add_node_sub_word(t_sub_word *node, int token, char *sub_word)
 		current->next = new_node;
 	}
 }
+
+// void	insert_node_sub_word(t_sub_word *node, int token, char *sub_word)
+// {
+// 	t_sub_word	*new_node;
+
+// 	new_node = (t_sub_word *) malloc(sizeof(t_sub_word));
+// 	new_node->token = token;
+// 	new_node->sub_word = sub_word;
+// 	new_node->next = NULL;
+// 	new_node->next = current->next;
+// 	current->next = new_node;
+// }

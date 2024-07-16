@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:06:18 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/14 06:58:05 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/15 19:46:28 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	cut_word(t_token *current)
 	free(tmp);
 }
 
+/*returns the length of an matching quoted string, if no match then 0*/
 int	match_quote_idx(const char *str)
 {
 	int		idx;
