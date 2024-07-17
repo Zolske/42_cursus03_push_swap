@@ -6,108 +6,112 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 07:06:44 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/17 18:08:16 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/17 22:48:14 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	cut_sub_word(t_token *current)
+void	cut_sub_word(t_token *cur)
 {
-	char	*tmp_str;
-	int		idx_quote;
+	char	*str;
+	int		len;
+	int		idx_q;
 
-	tmp_str = ft_strdup(current->word);
-	// printf("tmp_str: %s\n", tmp_str);
-	while (tmp_str)
+	str = ft_strdup(cur->word);
+	// printf("str: %s\n", str);
+	while (str)
 	{
-		if ((idx_quote = match_quote_idx(&(tmp_str[0]))))
-			tmp_str = cut_quote_sub_word(&(current->list_sub_word), tmp_str, idx_quote);
-		else if (tmp_str[0] == '$')
-			tmp_str = cut_var_sub_word(&(current->list_sub_word), tmp_str);
+		len = ft_strlen(str);
+		idx_q = match_quote_idx(&(str[0]));
+		if ((str[0] == '\'' || str[0] == '"') && idx_q)
+			str = cut_quote_sub_word(&(cur->list_sub_word), str, idx_q, len);
+		else if (str[0] == '$')
+			str = cut_var_sub_word(&(cur->list_sub_word), str, len);
 		else
-			tmp_str = cut_string_sub_word(&(current->list_sub_word), tmp_str);
+			str = cut_string_sub_word(&(cur->list_sub_word), str, len);
 		// printf("node->sub_word: %s\n", node->sub_word);
 		// printf("node->token: %d\n", node->token);
-		// printf("node->sub_word: %s\n", current->list_sub_word->sub_word);
-		// printf("node->token: %d\n", current->list_sub_word->token);
+		// printf("node->sub_word: %s\n", cur->list_sub_word->sub_word);
+		// printf("node->token: %d\n", cur->list_sub_word->token);
 	}
 }
 
-char	*cut_quote_sub_word(t_sub_word **node, char *tmp_str, int idx_quote)
+char	*cut_quote_sub_word(t_sub_word **node, char *str, int idx_q, int len)
 {
-	// int		cut_len;
-	int		len;
-	char	*rest_tmp_str;
+	char	*rest_str;
 
-	// cut_len = 1;
-	len = ft_strlen(tmp_str);
-	rest_tmp_str = NULL;
-	printf("idx quote: %d\n", idx_quote);
-	// while (!(ft_strchr("'\"$\0", tmp_str[cut_len])))
-	// 	cut_len++;
-	if (tmp_str[0] == '\'')
-		add_node_sub_word(node, QUOTE_SINGLE, ft_substr(tmp_str, 1, idx_quote - 1));
-	else if (tmp_str[0] == '"')
-		add_node_sub_word(node, QUOTE_DOUBLE, ft_substr(tmp_str, 1, idx_quote - 1));
-	if (len > idx_quote + 1)
-		rest_tmp_str = ft_substr(tmp_str, idx_quote + 1, len - idx_quote + 1);
-	free(tmp_str);
-	// printf("quote node->sub_word: %s\n", (*node)->sub_word);
-	// printf("quote node->token: %d\n", (*node)->token);
-	// printf("quote rest_tmp_str: %s\n", rest_tmp_str);
-	return rest_tmp_str;
+	rest_str = NULL;
+	if (str[0] == '\'')
+		add_node_sub_word(node, QUOTE_SINGLE, ft_substr(str, 1, idx_q - 1));
+	else if (str[0] == '"')
+	{
+		//TODO: cut variables in double quoted string
+		// if (has_variable(ft_strlcpy))
+		// 	cut_var_double_quote();
+		// else
+			add_node_sub_word(node, QUOTE_DOUBLE, ft_substr(str, 1, idx_q - 1));
+	}
+	if (len > idx_q + 1)
+		rest_str = ft_substr(str, idx_q + 1, len - idx_q + 1);
+	free(str);
+	return rest_str;
 }
 
-char	*cut_var_sub_word(t_sub_word **node, char *tmp_str)
+bool	has_variable(const char *str)
+{
+	while (*str)
+	{
+		if (str[0] == '$' && (isalnum(str[1]) || ft_strchr("?_", str[1])))
+			return true;
+		str++;
+	}
+	return false;
+}
+
+char	*cut_var_sub_word(t_sub_word **node, char *str, int len)
 {
 	int		cut_len;
-	int		len;
-	char	*rest_tmp_str;
+	char	*rest_str;
 
 	cut_len = 1;
-	len = ft_strlen(tmp_str);
-	rest_tmp_str = NULL;
-	if (tmp_str[1] == '?')
+	rest_str = NULL;
+	if (str[1] == '?')
 	{
 		add_node_sub_word(node, VAR_EXIT, NULL);
 		cut_len = 2;
 	}
 	else
 	{
-		// while (!(ft_strchr("'\"$\0", tmp_str[cut_len])))
-		// first char of var_name no num, make sure it is not created
-		while ((ft_isalnum(tmp_str[cut_len])) || (tmp_str[cut_len] == '_'))
+		while ((ft_isalnum(str[cut_len])) || (str[cut_len] == '_'))
 			cut_len++;
-		add_node_sub_word(node, VAR, ft_substr(tmp_str, 1, cut_len - 1));
+		add_node_sub_word(node, VAR, ft_substr(str, 1, cut_len - 1));
 	}
 	if (len > cut_len)
-		rest_tmp_str = ft_substr(tmp_str, cut_len, len - cut_len);
-	free(tmp_str);
+		rest_str = ft_substr(str, cut_len, len - cut_len);
+	free(str);
 	// printf("var node->sub_word: %s\n", (*node)->sub_word);
 	// printf("var node->token: %d\n", (*node)->token);
-	// printf("var rest_tmp_str: %s\n", rest_tmp_str);
-	return rest_tmp_str;
+	// printf("var rest_str: %s\n", rest_str);
+	return rest_str;
 }
 
-char	*cut_string_sub_word(t_sub_word **node, char *tmp_str)
+char	*cut_string_sub_word(t_sub_word **node, char *str, int len)
 {
 	int		cut_len;
-	int		len;
-	char	*rest_tmp_str;
+	char	*rest_str;
 
-	// printf("tmp_str: %s\n", tmp_str);
+	// printf("str: %s\n", str);
 	cut_len = 1;
-	len = ft_strlen(tmp_str);
-	rest_tmp_str = NULL;
-	while (!(ft_strchr("'\"$\0", tmp_str[cut_len])))
+	rest_str = NULL;
+	while (!(ft_strchr("'\"$\0", str[cut_len])))
 		cut_len++;
-	add_node_sub_word(node, STRING, ft_substr(tmp_str, 0, cut_len));
+	add_node_sub_word(node, STRING, ft_substr(str, 0, cut_len));
 	if (len > cut_len)
-		rest_tmp_str = ft_substr(tmp_str, cut_len, len - cut_len);
-	free(tmp_str);
+		rest_str = ft_substr(str, cut_len, len - cut_len);
+	free(str);
 	// printf("string node->sub_word: %s\n", (*node)->sub_word);
 	// printf("string node->token: %d\n", (*node)->token);
-	// printf("string rest_tmp_str: %s\n", rest_tmp_str);
-	return rest_tmp_str;
+	// printf("string rest_str: %s\n", rest_str);
+	return rest_str;
 }

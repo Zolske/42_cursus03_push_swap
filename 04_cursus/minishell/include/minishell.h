@@ -170,7 +170,7 @@ void	evaluate_n_remove_quotes(t_data *d);
 void	add_node_sub_word(t_sub_word **node, int token, char *sub_word);
 
 void	cut_sub_word(t_token *current);
-char	*cut_quote_sub_word(t_sub_word **node, char *tmp_str, int idx_quote);
-char	*cut_var_sub_word(t_sub_word **node, char *tmp_str);
-char	*cut_string_sub_word(t_sub_word **node, char *tmp_str);
+char	*cut_quote_sub_word(t_sub_word **node, char *str, int idx_q, int len);
+char	*cut_var_sub_word(t_sub_word **node, char *str, int len);
+char	*cut_string_sub_word(t_sub_word **node, char *str, int len);
 #endif
