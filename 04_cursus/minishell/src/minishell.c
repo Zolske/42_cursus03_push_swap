@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 13:33:10 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/14 06:54:44 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/17 13:12:06 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ bool	prompt_user(t_data *d)
 	// evaluate_n_remove_quotes(d);
 	
 	// print_tab(d->env);
-	print_token_list(d->list_token);
+	print_all_subwords(d);
+	// print_token_list(d->list_token);
 	free_list_token(d->list_token);
 
 	return (true);

@@ -118,6 +118,7 @@ void	check_builtins(t_data *data);
 void	print_tab(char **tab);
 void	print_pipe(int fd);
 void	print_token_list(t_token *start);
+void	print_all_subwords(t_data *d);
 // void	print_env(t_env *list_env);
 
 // handle signal
@@ -166,6 +167,10 @@ void	cut_meta_char(t_token *current);
 char	*free_old_return_trim_str(char *untrimmed);
 void	evaluate_variables(char *word, t_data *d);
 void	evaluate_n_remove_quotes(t_data *d);
-void	add_node_sub_word(t_sub_word *node, int token, char *sub_word);
+void	add_node_sub_word(t_sub_word **node, int token, char *sub_word);
 
+void	cut_sub_word(t_token *current);
+char	*cut_quote_sub_word(t_sub_word **node, char *tmp_str, int idx_quote);
+char	*cut_var_sub_word(t_sub_word **node, char *tmp_str);
+char	*cut_string_sub_word(t_sub_word **node, char *tmp_str);
 #endif
