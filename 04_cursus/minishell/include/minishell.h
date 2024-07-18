@@ -183,4 +183,6 @@ int	len_variable(char *str);
 bool	is_exit_variable(char *str);
 bool	is_false_variable_name(char *str);
 int	create_quote_double_node(t_sub_word **node, char *str);
+
+void	resolve_env_variables(t_token *current);
 #endif

@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:06:18 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/18 15:29:04 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/18 16:41:10 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	lexer(t_data *d)
 		{
 			// printf("=>\ttoken:\tWORD\t%s\t<=\n", current->word);
 			cut_sub_word(current);
-			// resolve_env_variables(current);
+			resolve_env_variables(current);
 			// join_sub_words(current);
 		}
 		current = current->next;
