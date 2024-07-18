@@ -130,6 +130,7 @@ void	free_all(t_data *data);
 void	free_tab(char **tab);
 void	free_list(t_cmd *list_cmd);
 void	free_list_token(t_token *head);
+void	free_list_sub_word(t_sub_word *head);
 
 // error
 void	error_exit(char *msg);

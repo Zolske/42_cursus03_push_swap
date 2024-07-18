@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 12:55:25 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/12 12:48:36 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/18 16:05:20 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,26 @@ void	free_list_token(t_token *head)
 		tmp = current;
 		current = current->next;
 		free(tmp->word);
+		if (tmp->list_sub_word)
+			free_list_sub_word(tmp->list_sub_word);
 		tmp->word = NULL;
+		free(tmp);
+		tmp = NULL;
+	}
+}
+
+void	free_list_sub_word(t_sub_word *head)
+{
+	t_sub_word	*current;
+	t_sub_word	*tmp;
+
+	current = head;
+	while (current)
+	{
+		tmp = current;
+		current = current->next;
+		free(tmp->sub_word);
+		tmp->sub_word = NULL;
 		free(tmp);
 		tmp = NULL;
 	}

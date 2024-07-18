@@ -5,7 +5,7 @@ HEADER			= include/minishell.h
 SRC_DIR			= src/
 SRC				= $(addprefix $(SRC_DIR), \
 				minishell.c print.c free.c error.c pipping.c signal.c env.c \
-				tokeniz_quotes.c tokeniz_no_quotes.c struct.c sub_word.c)
+				lexer.c struct.c sub_word.c)
 # OBJECTS
 OBJ_DIR			= obj/
 OBJ				= $(SRC:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)

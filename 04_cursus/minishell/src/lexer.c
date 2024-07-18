@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokeniz_quotes.c                                   :+:      :+:    :+:   */
+/*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:06:18 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/17 14:36:17 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/18 15:29:04 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,8 @@ void	cut_meta_char(t_token *current)
 		start = 2;
 	else
 		start = 1;
-	insert_node_token_struct(current, UNPROCESSED,\
+	if (tmp[start + 1])
+		insert_node_token_struct(current, UNPROCESSED,\
 			ft_substr(tmp, start, ft_strlen(tmp)));
 	free(tmp);
 }
