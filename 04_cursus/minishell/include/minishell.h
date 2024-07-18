@@ -173,4 +173,13 @@ void	cut_sub_word(t_token *current);
 char	*cut_quote_sub_word(t_sub_word **node, char *str, int idx_q, int len);
 char	*cut_var_sub_word(t_sub_word **node, char *str, int len);
 char	*cut_string_sub_word(t_sub_word **node, char *str, int len);
+void	cut_var_double_quote(t_sub_word **node, char *str);
+
+void	cut_var_double_quote(t_sub_word **node, char *str);
+int	create_var_node(t_sub_word **node, char *str, int len_var);
+int	create_var_exit_node(t_sub_word **node);
+int	len_variable(char *str);
+bool	is_exit_variable(char *str);
+bool	is_false_variable_name(char *str);
+int	create_quote_double_node(t_sub_word **node, char *str);
 #endif
