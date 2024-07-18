@@ -6,11 +6,13 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 07:06:44 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/18 14:23:34 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/18 14:38:15 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+//TODO: "$?abc$1234$!!!$VAR hello" '$?abc$1234$!!!$VAR hello' > >> |
 
 void	cut_sub_word(t_token *cur)
 {
