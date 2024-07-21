@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 12:55:25 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/18 16:05:20 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/21 12:30:31 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ void	free_list_token(t_token *head)
 	}
 }
 
-void	free_list_sub_word(t_sub_word *head)
+void	free_list_sub_word(t_sub_list *head)
 {
-	t_sub_word	*current;
-	t_sub_word	*tmp;
+	t_sub_list	*current;
+	t_sub_list	*tmp;
 
 	current = head;
 	while (current)

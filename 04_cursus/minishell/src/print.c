@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 12:09:36 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/17 13:58:12 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/21 12:30:31 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,23 +93,23 @@ void	print_token_list(t_token *start)
 void	print_all_subwords(t_data *d)
 {
 	t_token		*c_token;
-	t_sub_word	*c_subword;
+	t_sub_list	*c_subword;
 
 	c_token = d->list_token;
 	while (c_token)
 	{
 		if (c_token->token == PIPE)
-			printf("token:\t\033[0;32mPIPE\033[0m\n");
+			printf("token:\t\t\033[0;32mPIPE\033[0m\n");
 		else if (c_token->token == FILE_IN)
-			printf("token:\t\033[0;32mFILE_IN\033[0m\n");
+			printf("token:\t\t\033[0;32mFILE_IN\033[0m\n");
 		else if (c_token->token == HEREDOC)
-			printf("token:\t\033[0;32mHEREDOC\033[0m\n");
+			printf("token:\t\t\033[0;32mHEREDOC\033[0m\n");
 		else if (c_token->token == FILE_IN)
-			printf("token:\t\033[0;32mFILE_IN\033[0m\n");
+			printf("token:\t\t\033[0;32mFILE_IN\033[0m\n");
 		else if (c_token->token == FILE_OUT)
-			printf("token:\t\033[0;32mFILE_OUT\033[0m\n");
+			printf("token:\t\t\033[0;32mFILE_OUT\033[0m\n");
 		else if (c_token->token == FILE_APPEND)
-			printf("token:\t\033[0;32mFILE_APPEND\033[0m\n");
+			printf("token:\t\t\033[0;32mFILE_APPEND\033[0m\n");
 		else if (c_token->token == WORD)
 		{
 			c_subword = c_token->list_sub_word;

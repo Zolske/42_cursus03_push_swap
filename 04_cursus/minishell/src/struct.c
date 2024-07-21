@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:13:55 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/17 16:48:00 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/21 12:30:31 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ void	insert_node_token_struct(t_token *current, int token, char *word)
 	current->next = new_node;
 }
 
-void	add_node_sub_word(t_sub_word **node, int token, char *sub_word)
+void	add_node_sub_word(t_sub_list **node, int token, char *sub_word)
 {
-	t_sub_word	*new_node;
-	t_sub_word	*current;
+	t_sub_list	*new_node;
+	t_sub_list	*current;
 
-	new_node = (t_sub_word *) malloc(sizeof(t_sub_word));
+	new_node = (t_sub_list *) malloc(sizeof(t_sub_list));
 	new_node->token = token;
 	new_node->sub_word = sub_word;
 	new_node->next = NULL;

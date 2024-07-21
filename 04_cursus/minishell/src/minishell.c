@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 13:33:10 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/18 16:44:23 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/21 18:28:27 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ void	init_data(t_data *d)
 	// d->env = NULL;
 	d->list_cmd = NULL;
 	d->last_cmd = false;
+	d->exit_status = 0;
 	errno = 0;
 }
 

@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 07:06:44 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/18 15:57:20 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/21 12:30:31 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	cut_sub_word(t_token *cur)
 	while (str)
 	{
 		len = ft_strlen(str);
-		if ((idx_q = match_quote_idx(str)))
+		if (ft_strchr("'\"", str[0]) && (idx_q = match_quote_idx(str)))
 			str = cut_quote_sub_word(&(cur->list_sub_word), str, idx_q, len);
 		else if (str[0] == '$')
 			str = cut_var_sub_word(&(cur->list_sub_word), str, len);
@@ -31,7 +31,7 @@ void	cut_sub_word(t_token *cur)
 	}
 }
 
-char	*cut_quote_sub_word(t_sub_word **node, char *str, int idx_q, int len)
+char	*cut_quote_sub_word(t_sub_list **node, char *str, int idx_q, int len)
 {
 	char	*rest_str;
 
@@ -46,7 +46,7 @@ char	*cut_quote_sub_word(t_sub_word **node, char *str, int idx_q, int len)
 	return rest_str;
 }
 
-void	cut_var_double_quote(t_sub_word **node, char *str)
+void	cut_var_double_quote(t_sub_list **node, char *str)
 {
 	int	idx;
 	int	len_var;
@@ -65,7 +65,7 @@ void	cut_var_double_quote(t_sub_word **node, char *str)
 	}
 }
 
-int	create_quote_double_node(t_sub_word **node, char *str)
+int	create_quote_double_node(t_sub_list **node, char *str)
 {
 	int	idx;
 
@@ -84,13 +84,13 @@ int	create_quote_double_node(t_sub_word **node, char *str)
 	return idx;
 }
 
-int	create_var_node(t_sub_word **node, char *str, int len_var)
+int	create_var_node(t_sub_list **node, char *str, int len_var)
 {
 	add_node_sub_word(node, VAR, ft_substr(str, 1, len_var));
 	return len_var + 1;
 }
 
-int	create_var_exit_node(t_sub_word **node)
+int	create_var_exit_node(t_sub_list **node)
 {
 	add_node_sub_word(node, VAR_EXIT, NULL);
 	return 2;
@@ -132,7 +132,7 @@ bool	is_false_variable_name(char *str)
 	return false;
 }
 
-char	*cut_var_sub_word(t_sub_word **node, char *str, int len)
+char	*cut_var_sub_word(t_sub_list **node, char *str, int len)
 {
 	int		cut_len;
 	char	*rest_str;
@@ -158,7 +158,7 @@ char	*cut_var_sub_word(t_sub_word **node, char *str, int len)
 	return rest_str;
 }
 
-char	*cut_string_sub_word(t_sub_word **node, char *str, int len)
+char	*cut_string_sub_word(t_sub_list **node, char *str, int len)
 {
 	int		cut_len;
 	char	*rest_str;

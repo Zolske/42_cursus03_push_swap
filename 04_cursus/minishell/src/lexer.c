@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:06:18 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/18 16:41:10 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/21 18:18:31 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,11 @@ void	lexer(t_data *d)
 		}
 		if (current->token == WORD)
 		{
+			current->word = free_old_return_trim_str(current->word);
 			// printf("=>\ttoken:\tWORD\t%s\t<=\n", current->word);
 			cut_sub_word(current);
-			resolve_env_variables(current);
-			// join_sub_words(current);
+			resolve_env_variables(d, current);
+			join_sub_words(current);
 		}
 		current = current->next;
 	}
@@ -47,7 +48,7 @@ void	cut_word(t_token *current)
 	tmp = current->word;
 	while (tmp[idx])
 	{
-		if (ft_strchr(DELIMITER, tmp[idx]))
+		if (ft_strchr(" <>|\0", tmp[idx]))
 			break;
 		else if (tmp[idx] == '\'' || tmp[idx] == '"')
 			idx += match_quote_idx(&(tmp[idx]));

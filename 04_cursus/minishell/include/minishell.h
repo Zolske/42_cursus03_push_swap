@@ -47,16 +47,16 @@ typedef struct s_token
 {
 	int					token;			// use Macros to identify type
 	char				*word;			// token data
-	struct s_sub_word	*list_sub_word;
+	struct s_sub_list	*list_sub_word;
 	struct s_token		*next;
 }	t_token;
 
-typedef struct s_sub_word
+typedef struct s_sub_list
 {
 	int					token;
 	char				*sub_word;
-	struct s_sub_word	*next;
-}	t_sub_word;
+	struct s_sub_list	*next;
+}	t_sub_list;
 
 typedef void (*ptr_builtin)(char *arg);	// definition for function pointer, builtin
 
@@ -130,7 +130,7 @@ void	free_all(t_data *data);
 void	free_tab(char **tab);
 void	free_list(t_cmd *list_cmd);
 void	free_list_token(t_token *head);
-void	free_list_sub_word(t_sub_word *head);
+void	free_list_sub_word(t_sub_list *head);
 
 // error
 void	error_exit(char *msg);
@@ -168,21 +168,23 @@ void	cut_meta_char(t_token *current);
 char	*free_old_return_trim_str(char *untrimmed);
 void	evaluate_variables(char *word, t_data *d);
 void	evaluate_n_remove_quotes(t_data *d);
-void	add_node_sub_word(t_sub_word **node, int token, char *sub_word);
+void	add_node_sub_word(t_sub_list **node, int token, char *sub_word);
 
 void	cut_sub_word(t_token *current);
-char	*cut_quote_sub_word(t_sub_word **node, char *str, int idx_q, int len);
-char	*cut_var_sub_word(t_sub_word **node, char *str, int len);
-char	*cut_string_sub_word(t_sub_word **node, char *str, int len);
-void	cut_var_double_quote(t_sub_word **node, char *str);
+char	*cut_quote_sub_word(t_sub_list **node, char *str, int idx_q, int len);
+char	*cut_var_sub_word(t_sub_list **node, char *str, int len);
+char	*cut_string_sub_word(t_sub_list **node, char *str, int len);
+void	cut_var_double_quote(t_sub_list **node, char *str);
 
-void	cut_var_double_quote(t_sub_word **node, char *str);
-int	create_var_node(t_sub_word **node, char *str, int len_var);
-int	create_var_exit_node(t_sub_word **node);
+void	cut_var_double_quote(t_sub_list **node, char *str);
+int	create_var_node(t_sub_list **node, char *str, int len_var);
+int	create_var_exit_node(t_sub_list **node);
 int	len_variable(char *str);
 bool	is_exit_variable(char *str);
 bool	is_false_variable_name(char *str);
-int	create_quote_double_node(t_sub_word **node, char *str);
+int	create_quote_double_node(t_sub_list **node, char *str);
 
-void	resolve_env_variables(t_token *current);
+void	resolve_env_variables(t_data *d, t_token *current);
+void	join_sub_words(t_token *current);
+
 #endif
