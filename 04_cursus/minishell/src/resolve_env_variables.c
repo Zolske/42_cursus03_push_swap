@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 16:29:54 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/21 18:23:12 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/29 19:56:40 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	join_sub_words(t_token *current)
 				{
 					tmp_join = cur->sub_word;
 					// free(cur->sub_word);
+					// cur->sub_word = NULL;
 				}
 			}
 			else
@@ -61,17 +62,20 @@ void	join_sub_words(t_token *current)
 					tmp = tmp_join;
 					tmp_join = ft_strjoin(tmp_join, cur->sub_word);
 					// free(tmp);
+					// tmp = NULL;
 					// free(cur->sub_word);
+					// cur->sub_word = NULL;
 				}
 			}
 			tmp_cur = cur;
 			cur = cur->next;
 			// free(tmp_cur);
+			// tmp_cur = NULL;
 		}
 	}
 	if (tmp_join)
 	{
-		// free(current->word);
+		free(current->word);
 		current->word = tmp_join;
 	}
 }

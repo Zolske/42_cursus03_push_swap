@@ -8,7 +8,7 @@ Data is stored in the structure `t_data data` which is often passed as just `d` 
 
 1. The "original shell environment variable" are copied into the `d->env` table, from where it will be updated as long the program runs.
 2. The user is prompted for input (`readline()`), which is then saved as a string and stored as first node in `list_token->word`.  
-3. The string is then systematically cut in it's smallest building blocks (*token*), each block is saved as a new node in the list and marked (`list_token->token`).  
+3. The string is then systematically cut in it's smallest building blocks (*token*), each block is saved as a new node in the list and marked (`list_token->token`). [*see detailed explanation*]()  
 4. The parsed user input is restructured to commands and accordantly executed.  
 5. The cycle starts again with the user being prompted for input, structure freed (except err_no).  
 

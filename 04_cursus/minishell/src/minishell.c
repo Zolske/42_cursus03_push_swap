@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 13:33:10 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/21 18:28:27 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/29 19:52:29 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ bool	prompt_user(t_data *d)
 	print_token_list(d->list_token);
 	free_list_token(d->list_token);
 
-	return (true);
+	return (false);
 }
 
 // void	process_user_input(t_data *d)

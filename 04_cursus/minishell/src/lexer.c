@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:06:18 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/21 18:18:31 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/29 19:51:22 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	lexer(t_data *d)
 			// printf("=>\ttoken:\tWORD\t%s\t<=\n", current->word);
 			cut_sub_word(current);
 			resolve_env_variables(d, current);
-			join_sub_words(current);
+			// join_sub_words(current);
 		}
 		current = current->next;
 	}
@@ -100,7 +100,7 @@ void	cut_meta_char(t_token *current)
 		start = 2;
 	else
 		start = 1;
-	if (tmp[start + 1])
+	if (tmp[start] != '\0')
 		insert_node_token_struct(current, UNPROCESSED,\
 			ft_substr(tmp, start, ft_strlen(tmp)));
 	free(tmp);

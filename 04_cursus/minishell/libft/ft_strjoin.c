@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 18:44:14 by zkepes            #+#    #+#             */
-/*   Updated: 2024/03/19 18:26:57 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/07/29 19:20:31 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	s1_len = ft_strlen(s1);
 	s2_len = ft_strlen(s2);
-	str = (char *) malloc(s1_len + s2_len + 1 * sizeof(char));
+	str = (char *) malloc((s1_len + s2_len + 1) * sizeof(char));
 	if (!str)
 		return (NULL);
 	ft_strlcpy(&str[0], s1, s1_len + 1);
