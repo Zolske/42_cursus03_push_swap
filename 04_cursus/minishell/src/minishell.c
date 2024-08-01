@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 13:33:10 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/29 19:52:29 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/08/01 16:49:44 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ bool	prompt_user(t_data *d)
 	char	*user_input;
 
 	init_data(d);
-	user_input = readline("MINISHELL=> ");
+	// user_input = readline("MINISHELL=> ");
+	user_input = ft_strdup("string$HOME|pip> someting world");
 	add_node_token_struct(d, UNPROCESSED, user_input);
 	// lexer, turns a sequence of characters into a sequence of tokens
 	lexer(d);
