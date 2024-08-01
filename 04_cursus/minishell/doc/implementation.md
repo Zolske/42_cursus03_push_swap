@@ -6,9 +6,13 @@
 ## Overview
 Data is stored in the structure `t_data data` which is often passed as just `d` to keep the lines shorter.  
 
-1. The "original shell environment variable" are copied into the `d->env` table, from where it will be updated as long the program runs.
+1. The "original shell environment variables" are copied into the `d->env` table, from where it will be updated as long the program runs.
 2. The user is prompted for input (`readline()`), which is then saved as a string and stored as first node in `list_token->word`.  
+**NOTE:** even after freeing the returned malloc string from `readline()`, there is still reachable memory (`still reachable: 204,149 bytes in 221 blocks`) which can not be freed!  
 3. The string is then systematically cut in it's smallest building blocks (*token*), each block is saved as a new node in the list and marked (`list_token->token`). [*see detailed explanation*]()  
+4. Non existing files which follow `>` or `>>` are created in the current directory or **if the referenced directory exist** in there, even if the command fails, the files are still created!!  
+
+---
 4. The parsed user input is restructured to commands and accordantly executed.  
 5. The cycle starts again with the user being prompted for input, structure freed (except err_no).  
 

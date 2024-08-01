@@ -19,32 +19,23 @@ typedef struct s_token
 ```  
 The string is systematically cut into token, each token becomes one node in the list and is cut off from the "*unprocessed*" string. The remaining "*unprocessed*" sting is added to the end as a new node, the process repeats until the entire string is tokenized.  
 
-1. step: cut input into "*meta characters*" and "*words*"  
-	- white space is trimmed from the beginning and the end of the unprocessed string
-	- if the first character is `<`, `>` or `|` then it is a "meta character" otherwise it is a "word" until whitespace or a "meta character" follows.
-	- **Meta characters** are `<` `<<` `>>` `>` `|`.  
+### 1. step: cut input into "*meta characters*" and "*words*"  
+- white space is trimmed from the beginning and the end of the unprocessed string
+- if the first character is `<`, `>` or `|` then it is a "meta character" otherwise it is a "word" until whitespace or a "meta character" follows.
+- **Meta characters** are `<` `<<` `>>` `>` `|`.  
+- **Words** consist of all the characters which are not "meta characters" or white space.  
 
-	|character in string| `d.list_token.token`|`d.list_token.word`|
-	|---|---|---|
-	|`<`|`FILE_IN`|`NULL`|
-	|`<<`|`HEREDOC`|`NULL`|
-	|`>>`|`FILE_APPEND`|`NULL`|
-	|`>`|`FILE_OUT`|`NULL`|
-	|`\|`|`PIPE`|`NULL`|
+|character in string|`int` `d.list_token.token`  (*macro*)|`char*` `d.list_token.word`|
+|---|---|---|
+|`<`|`FILE_IN`|`NULL`|
+|`<<`|`HEREDOC`|`NULL`|
+|`>>`|`FILE_APPEND`|`NULL`|
+|`>`|`FILE_OUT`|`NULL`|
+|`\|`|`PIPE`|`NULL`|
+|*anything else apart form whitespace*|`WORD`|*original string*|  
 
-	- **Words** consist of all the characters which are not "meta characters" or white space.  
+### 2. step: cut "**words**" into "**sub words**"  (*words, quotes and variables*)
 
-	|characters in string| `d.list_token.token`|`d.list_token.word`|
-	|---|---|---|
-	|Starting and ending with `'`.| `QUOTE_SINGLE`|Containing the string from withing the quotes.|
-	|Starting and ending with `"`.| `QUOTE_DOUBLE`|Containing the string from withing the quotes.|
-	|Any sequence of characters (not space or meta characters) which is not quoted.| `WORD`|Unmodified string.|  
-
-	**NOTE:** "Matching outer quotes" are removed but "opposite quotes" (*e.g.* `"`->`'` *or* `'`->`"`) and  "meta characters" within remain, they are treated as regular characters!  
-
-2. step: cut "**words**" into "**sub words**"  (*find variables*)
-	- Each node has a list of "**sub word**"s, which is used to cut the string further down into variables `$` and "sub words".  
-	- Only strings marked with the token `WORD` or `QUOTE_DOUBLE` are cut down.  
 ```c
 typedef struct s_sub_list
 {
@@ -54,15 +45,28 @@ typedef struct s_sub_list
 }	t_sub_list;
 ```  
 
-|`d.list_token.list_sub_word.token`|description|
+- Each node has a list of "**sub word**"s, which is used to cut the string further down into quotes and variables `$`.  
+- First we cut into quotes, variables and/or strings.
+- If "double quotes" are found then it may need to be cut further if it contain's variables.  
+
+|characters in string|`int` `d.list_token.token`  (*macro*)|`char*` `d.list_token.word`|
+|---|---|---|
+|Starting and ending with `'`.| `QUOTE_SINGLE`|Containing the string from withing the quotes.|
+|Starting and ending with `"`.| `QUOTE_DOUBLE`|Containing the string from withing the quotes.|
+|Any sequence of characters (not space or meta characters) which is not quoted.| `WORD`|Unmodified string.|  
+
+**NOTE:** "Matching outer quotes" are removed but "opposite quotes" (*e.g.* `"`->`'` *or* `'`->`"`) and  "meta characters" within remain, they are treated as regular characters!  
+
+
+|`int` `d.list_token.list_sub_word.token` (*macro*)|description|
 |---|---|
 |`VAR_EXIT`|`$?` Second character after `$` is a `?` then it is always the "exit status variable", the rest before or after is treated as string or other variable.|
 |`VAR`|**valid variable names:**<br/>-> 1st character after `$` **MUST BE** alphabetic or underscore,<br/>-> 2nd character after `$` alphanumeric or underscore, otherwise the variable name ends.<br/>**invalid variable names:**<br/>-> are removed from the string, *e.g.* `text$42after_txt` *becomes->* `text2after_txt`<br/><br/>**NOTE:** The subject stats clearly that only the following characters `<`, `<<`,`>>`, `>`, `\|`, `""`, `''`, `$` `$?` have special meaning! The "bash" has "special variables" which are not part of the project's scope!|
 
-3. step: replace valid variable names  
+### 3. step: replace valid variable names  
 - The "**exit variable**" is replaced with value of the variable `d.exit_status`.
-- If the name of the variable is found in the table of `d.env` then it is replaced with its value (*e.g.* `VAR_NAME=VAR_VALUE`), otherwise the `sub_word` gets the value `NULL`.
+- If the name of the variable is found in the table of `d.env` then it is replaced with its value (*e.g.* `VAR_NAME=VAR_VALUE`), otherwise the `sub_word` gets the value `NULL` (*removed from string*).
 
-4. step: put sub words back together  
+### 4. step: put sub words back together  
 - Join all "sub words" (`d.list_token.list_sub_word.token`) and replace "word" `d.list_token.word`.
 

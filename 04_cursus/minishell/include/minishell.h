@@ -42,6 +42,7 @@
 #include <stdbool.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <fcntl.h>			// for open()
 
 typedef struct s_token
 {
@@ -186,5 +187,6 @@ int	create_quote_double_node(t_sub_list **node, char *str);
 
 void	resolve_env_variables(t_data *d, t_token *current);
 void	join_sub_words(t_token *current);
+char	*create_files(t_token *head);
 
 #endif

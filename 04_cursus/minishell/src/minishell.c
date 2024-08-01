@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 13:33:10 by zkepes            #+#    #+#             */
-/*   Updated: 2024/08/01 16:49:44 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/08/01 19:31:11 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,26 @@ int	main(int argc, char *argv[], char *arge[])
 bool	prompt_user(t_data *d)
 {
 	char	*user_input;
+	char	*dir_not_exist;
 
 	init_data(d);
 	// user_input = readline("MINISHELL=> ");
-	user_input = ft_strdup("string$HOME|pip> someting world");
+	user_input = ft_strdup("string$HOME'hello'|pip> someting >TEST/world>after");
 	add_node_token_struct(d, UNPROCESSED, user_input);
 	// lexer, turns a sequence of characters into a sequence of tokens
 	lexer(d);
+	// create files if not exist, if ">" or ">>" precedes
+	if (!(dir_not_exist = create_files(d->list_token)))
+	{
+		print_all_subwords(d);
+		print_token_list(d->list_token);
+	}
+	else
+		printf("bash: %s: No such file or directory\n", dir_not_exist);
 	// evaluate variables and remove matching quotes from words
 	// evaluate_n_remove_quotes(d);
 	
 	// print_tab(d->env);
-	print_all_subwords(d);
-	print_token_list(d->list_token);
 	free_list_token(d->list_token);
 
 	return (false);

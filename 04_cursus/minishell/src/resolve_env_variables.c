@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 16:29:54 by zkepes            #+#    #+#             */
-/*   Updated: 2024/08/01 16:50:51 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/08/01 17:09:56 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,14 @@ void	join_sub_words(t_token *current)
 	cur = current->list_sub_word;
 	tmp_join = cur->sub_word;
 	cur->sub_word = NULL;
-	tmp_cur = cur;
-	cur = cur->next;
-	while (cur && cur->sub_word)
+	while ((cur = cur->next))
 	{
-		tmp = tmp_join;
-		tmp_join = ft_strjoin(tmp_join, cur->sub_word);
-		free(tmp);
-		tmp_cur = cur;
-		cur = cur->next;
+		if (cur->sub_word)
+		{
+			tmp = tmp_join;
+			tmp_join = ft_strjoin(tmp_join, cur->sub_word);
+			free(tmp);
+		}
 	}
 	if (tmp_join)
 	{

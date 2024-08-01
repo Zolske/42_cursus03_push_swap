@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:06:18 by zkepes            #+#    #+#             */
-/*   Updated: 2024/08/01 16:32:50 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/08/01 16:53:41 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	lexer(t_data *d)
 		if (current->token == WORD)
 		{
 			current->word = free_old_return_trim_str(current->word);
-			// printf("=>\ttoken:\tWORD\t%s\t<=\n", current->word);
 			cut_sub_word(current);
 			resolve_env_variables(d, current);
 			join_sub_words(current);
