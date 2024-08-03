@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 13:33:10 by zkepes            #+#    #+#             */
-/*   Updated: 2024/08/01 19:31:11 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/08/03 18:42:48 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ bool	prompt_user(t_data *d)
 
 	init_data(d);
 	// user_input = readline("MINISHELL=> ");
-	user_input = ft_strdup("string$HOME'hello'|pip> someting >TEST/world>after");
+	user_input = ft_strdup("string$HOME'hello'|pip <<'someting' >world>after");
 	add_node_token_struct(d, UNPROCESSED, user_input);
 	// lexer, turns a sequence of characters into a sequence of tokens
 	lexer(d);
@@ -43,6 +43,7 @@ bool	prompt_user(t_data *d)
 	{
 		print_all_subwords(d);
 		print_token_list(d->list_token);
+	// 	parser(d);
 	}
 	else
 		printf("bash: %s: No such file or directory\n", dir_not_exist);

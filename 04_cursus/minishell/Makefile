@@ -6,7 +6,7 @@ SRC_DIR			= src/
 SRC				= $(addprefix $(SRC_DIR), \
 				minishell.c print.c free.c error.c pipping.c signal.c env.c \
 				lexer.c struct.c sub_word.c resolve_env_variables.c \
-				create_file.c)
+				create_file.c parser.c)
 # OBJECTS
 OBJ_DIR			= obj/
 OBJ				= $(SRC:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
