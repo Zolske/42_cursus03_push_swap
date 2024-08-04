@@ -22,6 +22,7 @@
 # define STRING 12
 # define VAR 13
 # define VAR_EXIT 14
+# define FD_NONE INT_MIN
 
 # define DELIMITER " <>|\0"
 # define META_CHAR "<>|"
@@ -42,6 +43,7 @@
 #include <stdbool.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <limits.h>
 #include <fcntl.h>			// for open()
 
 typedef struct s_token
@@ -67,9 +69,12 @@ typedef struct s_cmd
 	// cmd[0] => path + cmd, cmd[1] => arg, cmd[2] => NULL
 	char			*cmd_path;		// MALLOC!! path + /cmd (one string)
 	char			**cmd_arg;		// MALLOC!! tab[0]=cmd; tab[1]=args; tab[2]=NULL
-	char			*out_file;		// name of "last" output file (create prev) (handle append)
+	int				fd_file_in;
+	int				fd_file_out;
+	//char			*out_file;		// name of "last" output file (create prev) (handle append)
+
 	// if out_file is NULL, pass stream to next cmd, otherwise no
-	char			*in_file;		// name of "last" input file (heredoc)
+	//char			*in_file;		// name of "last" input file (heredoc)
 	// if in_file is NULL, take stream from previous cmd, otherwise from file
 	struct s_cmd	*next;			// next node in the list
 }	t_cmd;
@@ -189,7 +194,10 @@ void	resolve_env_variables(t_data *d, t_token *current);
 void	join_sub_words(t_token *current);
 char	*create_files(t_token *head);
 void	parser(t_data *d);
-void	add_node_cmd(t_data *d);
+t_cmd	*add_node_cmd(t_data *d);
 t_cmd	*last_cmd(t_cmd *head);
+void	parse_cmd_arg(t_data *d);
+void	mark_and_add_cmd_arg(t_token *current, t_data *d);
+void	add_cmd_arg_tab(char **cmd_arg, char *word);
 
 #endif

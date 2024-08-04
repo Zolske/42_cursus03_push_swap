@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 13:33:10 by zkepes            #+#    #+#             */
-/*   Updated: 2024/08/03 18:42:48 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/08/04 16:56:22 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,20 @@ bool	prompt_user(t_data *d)
 
 	init_data(d);
 	// user_input = readline("MINISHELL=> ");
-	user_input = ft_strdup("string$HOME'hello'|pip <<'someting' >world>after");
+	user_input = ft_strdup("> file1 cmd1 arg1 arg 2| cmd2 < something something");
 	add_node_token_struct(d, UNPROCESSED, user_input);
 	// lexer, turns a sequence of characters into a sequence of tokens
 	lexer(d);
+	parser(d);
+	
 	// create files if not exist, if ">" or ">>" precedes
-	if (!(dir_not_exist = create_files(d->list_token)))
-	{
-		print_all_subwords(d);
-		print_token_list(d->list_token);
-	// 	parser(d);
-	}
-	else
-		printf("bash: %s: No such file or directory\n", dir_not_exist);
+	// if (!(dir_not_exist = create_files(d->list_token)))
+	// {
+	// 	print_all_subwords(d);
+	// 	print_token_list(d->list_token);
+	// }
+	// else
+	// 	printf("bash: %s: No such file or directory\n", dir_not_exist);
 	// evaluate variables and remove matching quotes from words
 	// evaluate_n_remove_quotes(d);
 	
