@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 12:09:36 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/21 12:30:31 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/08/05 16:30:28 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,4 +132,43 @@ void	print_all_subwords(t_data *d)
 		c_token = c_token->next;
 	}
 
+}
+
+void	print_cmd_list(t_data *d)
+{
+	t_cmd	*cur_cmd;
+	char	*cmd_path;
+	char	**cmd_arg;
+	int		idx;
+
+
+
+	cur_cmd = d->list_cmd;
+	int len_line = 100;
+	while (len_line--)
+		printf("-");
+	printf("\n");
+	while (cur_cmd)
+	{
+		idx = 0;
+		printf("|PATH => |\033[0;36m%s\033[0m|\n", cur_cmd->cmd_path);
+		if (cur_cmd->cmd_arg == NULL)
+			printf("|CMD  => |\033[0;35mNULL\033[0m| ARG  => |\033[0;35mNULL\033[0m|\n");
+		else
+		{
+			printf("|CMD  => |\033[0;35m%s\033[0m| ", cur_cmd->cmd_arg[idx]);
+			idx++;
+			while (cur_cmd->cmd_arg[idx])
+			{
+				printf("ARG => |\033[0;35m%s\033[0m| ", cur_cmd->cmd_arg[idx]);
+				idx++;
+			}
+			printf("\n");
+		}
+		int len_line = 100;
+		while (len_line--)
+			printf("-");
+		printf("\n");
+		cur_cmd = cur_cmd->next;
+	}
 }

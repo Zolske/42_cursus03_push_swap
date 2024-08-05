@@ -126,6 +126,7 @@ void	print_pipe(int fd);
 void	print_token_list(t_token *start);
 void	print_all_subwords(t_data *d);
 // void	print_env(t_env *list_env);
+void	print_cmd_list(t_data *d);
 
 // handle signal
 void	sigint_handler(int signal);
@@ -197,7 +198,8 @@ void	parser(t_data *d);
 t_cmd	*add_node_cmd(t_data *d);
 t_cmd	*last_cmd(t_cmd *head);
 void	parse_cmd_arg(t_data *d);
-void	mark_and_add_cmd_arg(t_token *current, t_data *d);
-void	add_cmd_arg_tab(char **cmd_arg, char *word);
+void	mark_and_add_cmd_arg_tab(t_token *current, t_data *d);
+void	add_cmd_arg_tab(t_data *d, char *word);
+void	set_start_values(bool *start, bool *found_cmd, int *count_word);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 13:33:10 by zkepes            #+#    #+#             */
-/*   Updated: 2024/08/04 16:56:22 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/08/05 17:19:20 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,12 @@ bool	prompt_user(t_data *d)
 
 	init_data(d);
 	// user_input = readline("MINISHELL=> ");
-	user_input = ft_strdup("> file1 cmd1 arg1 arg 2| cmd2 < something something");
+	user_input = ft_strdup("cmd1 arg1 arg2$HOME| cmd2 $HOME!arg< something something");
 	add_node_token_struct(d, UNPROCESSED, user_input);
 	// lexer, turns a sequence of characters into a sequence of tokens
 	lexer(d);
 	parser(d);
+	print_cmd_list(d);
 	
 	// create files if not exist, if ">" or ">>" precedes
 	// if (!(dir_not_exist = create_files(d->list_token)))

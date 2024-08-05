@@ -4,7 +4,8 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 
-void replace_user_input(const char *current_text) {
+// void replace_user_input(const char *current_text) {
+void replace_user_input(void) {
 	const char *new_string = "NEW STRING!";
 	// Replace the "current line buffer" with "new_string"
 	rl_replace_line(new_string, 0);
@@ -25,7 +26,7 @@ int main() {
 			printf("You entered: %s\n", input);
 			// true if user entered "help"
 			if (strcmp(input, "help") == 0) {
-				replace_user_input(input);
+				replace_user_input();
 			}
 		}
 		free(input);
