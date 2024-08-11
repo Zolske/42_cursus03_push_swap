@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 12:09:36 by zkepes            #+#    #+#             */
-/*   Updated: 2024/08/05 16:30:28 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/08/07 19:25:44 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,91 +54,81 @@ void	read_from_fd(int fd)
 	write(1, "/// end /// read from fd ////\n", 30);
 }
 
-void	print_token_list(t_token *start)
+void	print_token_list(t_token *start, bool subword)
 {
-	t_token	*current;
+	int 		width = 180;
+	t_token		*current;
+	t_sub_list 	*cur_sub;
 
 	current = start;
+	while (width--)
+		printf("-");
+	printf("\n");
 	while (current)
 	{
-		printf("word:\t|\033[36;1m%s\033[0m|\n", current->word);
-		if (current->token == UNPROCESSED)
-			printf("token:\t\033[0;32mUNPROCESSED\033[0m\n");
-		else if (current->token == NO_QUOTES)
-			printf("token:\t\033[0;32mNO_QUOTES\033[0m\n");
-		else if (current->token == QUOTE_SINGLE)
-			printf("token:\t\033[0;32mQUOTE_SINGLE\033[0m\n");
-		else if (current->token == QUOTE_DOUBLE)
-			printf("token:\t\033[0;32mQUOTE_DOUBLE\033[0m\n");
-		else if (current->token == COMMAND)
-			printf("token:\t\033[0;32mCOMMAND\033[0m\n");
-		else if (current->token == ARGUMENT)
-			printf("token:\t\033[0;32mARGUMENT\033[0m\n");
-		if (current->token == FILE_IN)
-			printf("token:\t\033[0;32mFILE_IN\033[0m\n");
-		else if (current->token == HEREDOC)
-			printf("token:\t\033[0;32mHEREDOC\033[0m\n");
-		else if (current->token == FILE_OUT)
-			printf("token:\t\033[0;32mFILE_OUT\033[0m\n");
-		else if (current->token == FILE_APPEND)
-			printf("token:\t\033[0;32mFILE_APPEND\033[0m\n");
-		else if (current->token == PIPE)
-			printf("token:\t\033[0;32mPIPE\033[0m\n");
-		else if (current->token == WORD)
-			printf("token:\t\033[0;32mWORD\033[0m\n");
+		// print out word
+		if (current->id == UNPROCESSED)
+			printf("\033[0;32mUNPROCESSED\033[0m");
+		else if (current->id == NO_QUOTES)
+			printf("\033[0;32mNO_QUOTES\033[0m");
+		else if (current->id == QUOTE_SINGLE)
+			printf("\033[0;32mQUOTE_SINGLE\033[0m");
+		else if (current->id == QUOTE_DOUBLE)
+			printf("\033[0;32mQUOTE_DOUBLE\033[0m");
+		else if (current->id == COMMAND)
+			printf("\033[0;32mCOMMAND\033[0m");
+		else if (current->id == ARGUMENT)
+			printf("\033[0;32mARGUMENT\033[0m");
+		if (current->id == FILE_IN)
+			printf("\033[0;32mFILE_IN\033[0m");
+		else if (current->id == HEREDOC)
+			printf("\033[0;32mHEREDOC\033[0m");
+		else if (current->id == FILE_OUT)
+			printf("\033[0;32mFILE_OUT\033[0m");
+		else if (current->id == FILE_APPEND)
+			printf("\033[0;32mFILE_APPEND\033[0m");
+		else if (current->id == PIPE)
+			printf("\033[0;32mPIPE\033[0m");
+		else if (current->id == WORD)
+			printf("\033[0;32mWORD\033[0m");
+		printf("|\033[1;33m%s\033[0m|", current->word);
+		// print out subwords
+
+		cur_sub = current->list_sub_word;
+		while (cur_sub && subword)
+		{
+			if (cur_sub->sub_id == WORD)
+				printf("\033[0;32m%s\033[0m|", "WORD");
+			else if (cur_sub->sub_id == STRING)
+				printf("\033[0;32m%s\033[0m|", "STRING");
+			else if (cur_sub->sub_id == QUOTE_SINGLE)
+				printf("\033[0;32m%s\033[0m|", "QUOTE_SINGLE");
+			else if (cur_sub->sub_id == QUOTE_DOUBLE)
+				printf("\033[0;32m%s\033[0m|", "QUOTE_DOUBLE");
+			else if (cur_sub->sub_id == VAR)
+				printf("\033[0;32m%s\033[0m|", "VAR");
+			else if (cur_sub->sub_id == VAR_EXIT)
+				printf("\033[0;32m%s\033[0m|", "VAR_EXIT");
+			else if (cur_sub->sub_id == DELETEME)
+				printf("\033[0;32m%s\033[0m|", "DELETEME");
+			printf("\033[1;35m%s\033[0m|", cur_sub->sub_word);
+			cur_sub = cur_sub->next;
+		}
+		printf("   ");
 		current = current->next;
 	}
-}
-
-void	print_all_subwords(t_data *d)
-{
-	t_token		*c_token;
-	t_sub_list	*c_subword;
-
-	c_token = d->list_token;
-	while (c_token)
-	{
-		if (c_token->token == PIPE)
-			printf("token:\t\t\033[0;32mPIPE\033[0m\n");
-		else if (c_token->token == FILE_IN)
-			printf("token:\t\t\033[0;32mFILE_IN\033[0m\n");
-		else if (c_token->token == HEREDOC)
-			printf("token:\t\t\033[0;32mHEREDOC\033[0m\n");
-		else if (c_token->token == FILE_IN)
-			printf("token:\t\t\033[0;32mFILE_IN\033[0m\n");
-		else if (c_token->token == FILE_OUT)
-			printf("token:\t\t\033[0;32mFILE_OUT\033[0m\n");
-		else if (c_token->token == FILE_APPEND)
-			printf("token:\t\t\033[0;32mFILE_APPEND\033[0m\n");
-		else if (c_token->token == WORD)
-		{
-			c_subword = c_token->list_sub_word;
-			while (c_subword)
-			{
-				printf("subword:\t%s\n", c_subword->sub_word);
-				if (c_subword->token == QUOTE_SINGLE)
-					printf("token:\t\t\033[0;32mQUOTE_SINGLE\033[0m\n");
-				else if (c_subword->token == QUOTE_DOUBLE)
-					printf("token:\t\t\033[0;32mQUOTE_DOUBLE\033[0m\n");
-				else if (c_subword->token == VAR)
-					printf("token:\t\t\033[0;32mVAR\033[0m\n");
-				else if (c_subword->token == VAR_EXIT)
-					printf("token:\t\t\033[0;32mVAR_EXIT\033[0m\n");
-				else if (c_subword->token == STRING)
-					printf("token:\t\t\033[0;32mSTRING\033[0m\n");
-				c_subword = c_subword->next;
-			}
-		}
-		c_token = c_token->next;
-	}
-
+	printf("\n");
+	width = 180;
+	while (width--)
+	printf("-");
+	printf("\n");
 }
 
 void	print_cmd_list(t_data *d)
 {
 	t_cmd	*cur_cmd;
-	char	*cmd_path;
-	char	**cmd_arg;
+	// char	*cmd_path;
+	// char	**cmd_arg;
 	int		idx;
 
 

@@ -6,19 +6,20 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:13:55 by zkepes            #+#    #+#             */
-/*   Updated: 2024/07/21 12:30:31 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/08/08 17:58:18 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	add_node_token_struct(t_data *d, int token, char *word)
+/*add and return a new node at the end of the "token list" */
+void	add_node_token(t_data *d, int id, char *word)
 {
 	t_token	*new_node;
 	t_token	*current;
 
 	new_node = (t_token *) malloc(sizeof(t_token));
-	new_node->token = token;
+	new_node->id = id;
 	new_node->word = word;
 	new_node->list_sub_word = NULL;
 	new_node->next = NULL;
@@ -34,28 +35,28 @@ void	add_node_token_struct(t_data *d, int token, char *word)
 	}
 }
 
-void	insert_node_token_struct(t_token *current, int token, char *word)
+void	insert_node_token_struct(t_token *current, int id, char *word)
 {
 	t_token	*new_node;
 
 	new_node = (t_token *) malloc(sizeof(t_token));
-	new_node->token = token;
+	new_node->id = id;
 	new_node->word = word;
 	new_node->list_sub_word = NULL;
 	new_node->next = current->next;
 	current->next = new_node;
 }
 
-void	add_node_sub_word(t_sub_list **node, int token, char *sub_word)
+void	add_node_sub_word(t_sub_list **node, int sub_id, char *sub_word)
 {
 	t_sub_list	*new_node;
 	t_sub_list	*current;
 
 	new_node = (t_sub_list *) malloc(sizeof(t_sub_list));
-	new_node->token = token;
+	new_node->sub_id = sub_id;
 	new_node->sub_word = sub_word;
+	new_node->prev = NULL;
 	new_node->next = NULL;
-
 	if (*node == NULL)
 		*node = new_node;
 	else
@@ -63,18 +64,35 @@ void	add_node_sub_word(t_sub_list **node, int token, char *sub_word)
 		current = *node;
 		while (current->next != NULL)
 			current = current->next;
+		new_node->prev = current;
 		current->next = new_node;
 	}
 }
 
-// void	insert_node_sub_word(t_sub_word *node, int token, char *sub_word)
-// {
-// 	t_sub_word	*new_node;
+void	insert_node_sub_word(t_sub_list *node, int sub_id, char *sub_word)
+{
+	t_sub_list	*new_node;
 
-// 	new_node = (t_sub_word *) malloc(sizeof(t_sub_word));
-// 	new_node->token = token;
-// 	new_node->sub_word = sub_word;
-// 	new_node->next = NULL;
-// 	new_node->next = current->next;
-// 	current->next = new_node;
-// }
+	new_node = (t_sub_list *) malloc(sizeof(t_sub_list));
+	new_node->sub_word = sub_word;
+	new_node->sub_id = sub_id;
+	new_node->prev = node;
+	if (node->next)
+		node->next->prev = new_node;
+	new_node->next = node->next;
+	node->next = new_node;
+}
+
+void	insert_before_node_sub_word(t_sub_list *node, int sub_id, char *sub_word)
+{
+	t_sub_list	*new_node;
+
+	new_node = (t_sub_list *) malloc(sizeof(t_sub_list));
+	new_node->sub_word = sub_word;
+	new_node->sub_id = sub_id;
+	new_node->prev = node->prev;
+	new_node->next = node;
+	if (node->prev)
+		node->prev->next = new_node;
+	node->prev = new_node;
+}

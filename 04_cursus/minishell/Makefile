@@ -4,9 +4,9 @@ HEADER			= include/minishell.h
 # SOURCE
 SRC_DIR			= src/
 SRC				= $(addprefix $(SRC_DIR), \
-				minishell.c print.c free.c error.c pipping.c signal.c env.c \
-				lexer.c struct.c sub_word.c resolve_env_variables.c \
-				create_file.c parser.c)
+				minishell.c print.c free.c error.c env.c \
+				lexer.c struct.c \
+				parser.c)
 # OBJECTS
 OBJ_DIR			= obj/
 OBJ				= $(SRC:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
@@ -27,7 +27,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)/%.c $(HEADER)
-	@$(CC) -c $(FLAG) $< -o $@
+	@$(CC) -c $(FLAGS) $< -o $@
 
 $(ARC):
 	@make -s -C libft
