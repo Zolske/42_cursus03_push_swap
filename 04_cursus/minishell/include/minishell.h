@@ -22,7 +22,6 @@
 # define STRING 12
 # define VAR 13
 # define VAR_EXIT 14
-# define DELETEME 15
 # define FD_NONE INT_MIN
 
 # define DELIMITER " <>|\0"
@@ -124,12 +123,9 @@ void	insert_node_token_struct(t_token *current, int token, char *word);
 void	cut_word(t_token *current);
 int		match_quote_idx(const char *str);
 void	add_node_sub_word(t_sub_list **node, int sub_id, char *sub_word);
-void	cut_input_add_list(t_data *d, int token, int cut_start);
 bool	invalid_user_input(char *user_input);
 void	cut_user_input(t_data *d);
 void	trim_str(char **str, char *cut_str);
-char	*word_from_input(t_data *d, int token, int start);
-char	*rest_from_input(t_data *d, int rest_start);
 void	cut_quotes_subwords(t_sub_list **node, char *word);
 void	add_str_node_s_word(char *word, t_sub_list **node_s, int start, int len);
 void	add_quo_node_s_word(char *word, t_sub_list **node_s, int start, int len);
@@ -143,4 +139,9 @@ void	add_remaining_string(t_sub_list **cur, char **tmp);
 void	evaluate_variable_subwords(t_data *d, t_sub_list **head);
 void	join_subwords(t_sub_list **head, char **word);
 void	insert_before_node_sub_word(t_sub_list *node, int sub_id, char *sub_word);
+bool	mark_word_cmd_arg(t_token *current, bool found_cmd);
+// char	*rest_from_input(t_data *d, int rest_start);
+void	cut_input_add_list(t_data *d, int token, int skip);
+char	*rest_from_input(t_data *d, int id, const char *word);
+char	*word_from_input(t_data *d, int token);
 #endif

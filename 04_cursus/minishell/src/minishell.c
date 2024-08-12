@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 13:33:10 by zkepes            #+#    #+#             */
-/*   Updated: 2024/08/09 20:36:04 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/08/12 18:10:38 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ bool	prompt_user(t_data *d)
 {
 	init_data(d);
 	// d->user_input = readline("MINISHELL=> ");
-	d->user_input = ft_strdup("> txt'hello'\"$HOME text\"");
-	// d->user_input = ft_strdup(">$HOME$HOME$?'hello'\"$HOME text\"");
+	// d->user_input = ft_strdup("> txt'hello'\"$HOME text\"");
+	d->user_input = ft_strdup("$<file_in>file_\"out\" arg$HOME>>append arg$|cmd$? arg$_not_valid");
 	// d->user_input = ft_strdup("< heredod\"$HOME\"$ cmd arg arg | new_cmd '$?'");
 	printf("user_input: |%s|\n", d->user_input);
 	trim_str(&(d->user_input), " ");
@@ -39,7 +39,7 @@ bool	prompt_user(t_data *d)
 		return true;  // TODO: add free all to return
 	lexer(d);
 
-	print_token_list(d->list_token, true);
+	print_token_list(d->list_token, false);
 	// print_tab(d->env);
 	free_list_token(d->list_token);
 	return (false);

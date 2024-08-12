@@ -5,7 +5,11 @@ HEADER			= include/minishell.h
 SRC_DIR			= src/
 SRC				= $(addprefix $(SRC_DIR), \
 				minishell.c print.c free.c error.c env.c \
-				lexer.c struct.c \
+				lexer_.c \
+				lexer_cut_quotes_subwords.c \
+				lexer_cut_user_input.c \
+				lexer_cut_variable_subwords.c \
+				struct.c \
 				parser.c)
 # OBJECTS
 OBJ_DIR			= obj/

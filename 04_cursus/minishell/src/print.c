@@ -109,8 +109,6 @@ void	print_token_list(t_token *start, bool subword)
 				printf("\033[0;32m%s\033[0m|", "VAR");
 			else if (cur_sub->sub_id == VAR_EXIT)
 				printf("\033[0;32m%s\033[0m|", "VAR_EXIT");
-			else if (cur_sub->sub_id == DELETEME)
-				printf("\033[0;32m%s\033[0m|", "DELETEME");
 			printf("\033[1;35m%s\033[0m|", cur_sub->sub_word);
 			cur_sub = cur_sub->next;
 		}
