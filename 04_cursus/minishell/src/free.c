@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 12:55:25 by zkepes            #+#    #+#             */
-/*   Updated: 2024/08/01 15:21:23 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/08/12 19:31:31 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	free_tab(char **tab)
 	}
 }
 
-void	free_list_token(t_token *head)
+void	free_list_token_and_subword(t_token *head)
 {
 	t_token	*current;
 	t_token	*tmp;
@@ -73,6 +73,12 @@ void	free_list_sub_word(t_sub_list *head)
 		free(tmp);
 		tmp = NULL;
 	}
+}
+
+void	free_all_except_env(t_data *d)
+{
+	free(d->user_input);
+	free_list_token_and_subword(d->list_token);
 }
 
 /*free a list where the end is marked with an NULL pointer*/

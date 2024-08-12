@@ -3,7 +3,28 @@
 
 # define STR_PROMPT "<MINISHELL>"
 # define COLOR_PROMPT "\033[36;1m"
-# define COLOR_STOP "\033[0m"
+# define C_ERROR "\033[36;1m"
+# define C_STOP "\033[0m"
+//colors for p_color
+# define BLACK 0
+# define RED 1
+# define GREEN 2
+# define YELLOW 3
+# define BLUE 4
+# define MAGENTA 5
+# define CYAN 6
+# define WHITE 7
+//style for p_color
+# define NORMALE 0
+# define BOLD 1
+# define ITALIC 3
+# define UNDERLINE 4
+//message
+//error message
+# define E_COL 1
+# define E_STY 0
+# define E_BAC 0
+
 
 # define UNPROCESSED 0
 
@@ -107,7 +128,7 @@ void	print_pipe(int fd);
 void	print_token_list(t_token *start, bool subword);
 void	print_cmd_list(t_data *d);
 void	free_tab(char **tab);
-void	free_list_token(t_token *head);
+void	free_list_token_and_subword(t_token *head);
 void	free_list_sub_word(t_sub_list *head);
 // error
 void	error_exit(char *msg);
@@ -144,4 +165,10 @@ bool	mark_word_cmd_arg(t_token *current, bool found_cmd);
 void	cut_input_add_list(t_data *d, int token, int skip);
 char	*rest_from_input(t_data *d, int id, const char *word);
 char	*word_from_input(t_data *d, int token);
+void	create_direct_out_files_if_not_exist(t_data *d);
+bool	invalid_token(t_data *d);
+char	*next_meta_character_or_new_line(t_token *current);
+void	free_all_except_env(t_data *d);
+void	p_color(int weight, bool background, int color, char *str);
+// void	p_color();
 #endif
