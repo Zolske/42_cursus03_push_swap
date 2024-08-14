@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 18:15:34 by zkepes            #+#    #+#             */
-/*   Updated: 2024/08/07 13:16:39 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/08/14 13:41:16 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@
 // 	new_node->cmd_path = NULL;
 // 	new_node->cmd_arg = NULL;
 // 	new_node->fd_file_in = FD_NONE;
-// 	new_node->fd_file_out = FD_NONE;
+// 	new_node->fd_f_out = FD_NONE;
 // 	new_node->next = NULL;
 // 	if (d->list_cmd == NULL)
 // 		d->list_cmd = new_node;

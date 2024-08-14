@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 11:40:39 by zkepes            #+#    #+#             */
-/*   Updated: 2024/08/12 18:02:42 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/08/14 13:41:36 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char	*word_from_input(t_data *d, int id)
 	return (word);
 }
 
-// | > file_out"hello" arg >>append arg | cmd arg|
+// | > f_out"hello" arg >>append arg | cmd arg|
 // char	*rest_from_input(t_data *d, int rest_start)
 // {
 // 	int 	rest_len;

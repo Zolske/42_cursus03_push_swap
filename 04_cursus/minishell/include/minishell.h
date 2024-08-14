@@ -14,6 +14,7 @@
 # define MAGENTA 5
 # define CYAN 6
 # define WHITE 7
+# define STOP "\033[0m"
 //style for p_color
 # define NORMALE 0
 # define BOLD 1
@@ -21,9 +22,9 @@
 # define UNDERLINE 4
 //message
 //error message
-# define E_COL 1
 # define E_STY 0
 # define E_BAC 0
+# define E_COL 1
 
 
 # define UNPROCESSED 0
@@ -72,6 +73,7 @@ typedef struct s_token
 	int					id;			// use Macros to identify type
 	char				*word;			// token data
 	struct s_sub_list	*list_sub_word;
+	struct s_token		*prev;
 	struct s_token		*next;
 }	t_token;
 
@@ -89,10 +91,13 @@ typedef struct s_cmd
 {
 	ptr_builtin		builtin_fun;	// function pointer for builtin
 	// cmd[0] => path + cmd, cmd[1] => arg, cmd[2] => NULL
-	char			*cmd_path;		// MALLOC!! path + /cmd (one string)
+	//char			*cmd_path;		// MALLOC!! path + /cmd (one string)
 	char			**cmd_arg;		// MALLOC!! tab[0]=cmd; tab[1]=args; tab[2]=NULL
-	int				fd_file_in;
-	int				fd_file_out;
+	int				fd_f_in;
+	int				fd_f_out;
+	bool			is_tmp_file_in;	// true, remove file after use
+	char			*f_in;		// for debugging only
+	char			*f_out;		// for debugging only
 	//char			*out_file;		// name of "last" output file (create prev) (handle append)
 
 	// if out_file is NULL, pass stream to next cmd, otherwise no
@@ -126,7 +131,6 @@ char	*env_value(t_data *d, char *var_name);
 void	print_tab(char **tab);
 void	print_pipe(int fd);
 void	print_token_list(t_token *start, bool subword);
-void	print_cmd_list(t_data *d);
 void	free_tab(char **tab);
 void	free_list_token_and_subword(t_token *head);
 void	free_list_sub_word(t_sub_list *head);
@@ -169,6 +173,23 @@ void	create_direct_out_files_if_not_exist(t_data *d);
 bool	invalid_token(t_data *d);
 char	*next_meta_character_or_new_line(t_token *current);
 void	free_all_except_env(t_data *d);
-void	p_color(int weight, bool background, int color, char *str);
+void	p_color(int weight, bool background, int color, const char *str);
+char	*ret_col(int weight, bool background, int color, char *str);
+bool	create_file_if_not_exist(t_token *head);
+t_cmd	*add_node_cmd(t_data *d);
+bool	cmd_list_from_token(t_data *d, bool success);
+void	assign_arg(char ***cmd_arg, char *new_arg);
+void	print_line(int width, char line_char);
+void	print_cmd_list(t_cmd *head);
+bool	get_file_in(t_cmd *cur_cmd, t_token *cur_tok);
+bool	get_heredoc_input(t_cmd *n_cmd, t_token *n_token);
+void	print_fd(int fd);
+void	free_old_direction(t_cmd *node, int id);
+char	*create_heredoc_fname(bool *is_tmp_file_in);
+bool	e_msg(const char *e_message);
+bool	bash_msg(const char *word, const char *e_msg);
+bool	bash_msg1(const char *word, const char *e_msg);
+bool	get_append(t_cmd *c_node, t_token *t_node);
+bool	get_file_out(t_cmd *c_node, t_token *t_node);
 // void	p_color();
 #endif

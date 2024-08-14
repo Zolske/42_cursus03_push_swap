@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 12:09:36 by zkepes            #+#    #+#             */
-/*   Updated: 2024/08/07 19:25:44 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/08/14 13:41:36 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,41 +122,94 @@ void	print_token_list(t_token *start, bool subword)
 	printf("\n");
 }
 
-void	print_cmd_list(t_data *d)
+void	print_cmd_list(t_cmd *head)
 {
-	t_cmd	*cur_cmd;
-	// char	*cmd_path;
-	// char	**cmd_arg;
+	t_cmd	*node;
 	int		idx;
 
-
-
-	cur_cmd = d->list_cmd;
-	int len_line = 100;
-	while (len_line--)
-		printf("-");
-	printf("\n");
-	while (cur_cmd)
+	node = head;
+	print_line(180, '#');
+	while (node)
 	{
+		p_color(3,0,6, "CMD|");
+		p_color(1,1,6, node->cmd_arg[0]);
+		p_color(3,0,4, " ARG|");
 		idx = 0;
-		printf("|PATH => |\033[0;36m%s\033[0m|\n", cur_cmd->cmd_path);
-		if (cur_cmd->cmd_arg == NULL)
-			printf("|CMD  => |\033[0;35mNULL\033[0m| ARG  => |\033[0;35mNULL\033[0m|\n");
-		else
+		while (NULL != node->cmd_arg[++idx])
 		{
-			printf("|CMD  => |\033[0;35m%s\033[0m| ", cur_cmd->cmd_arg[idx]);
-			idx++;
-			while (cur_cmd->cmd_arg[idx])
-			{
-				printf("ARG => |\033[0;35m%s\033[0m| ", cur_cmd->cmd_arg[idx]);
-				idx++;
-			}
-			printf("\n");
+			p_color(1,1,4, node->cmd_arg[idx]);
+			printf(" ");
 		}
-		int len_line = 100;
-		while (len_line--)
-			printf("-");
+		p_color(3,0,3, " FILE_IN|");
+		// if (node->file_in)
+			p_color(1,1,3, node->f_in);
+		// // p_color(3,0,3, " FD FILE_IN|");
+		// // p_color(1,1,3, node->fd_file_in);
+		p_color(3,0,2, " FILE_OUT|");
+		// if (node->file_in)
+			p_color(1,1,2, node->f_out);
+		// // p_color(3,0,2, " FD FILE_OUT|");
+		// // p_color(1,1,2, node->fd_f_out);
 		printf("\n");
-		cur_cmd = cur_cmd->next;
+		print_line(180, '-');
+		node = node->next;
 	}
+	print_line(180, '#');
+}
+
+void	print_line(int width, char line_char)
+{
+	while (width--)
+		printf("%c", line_char);
+	printf("\n");
+}
+
+/*weight: 0=normal 1=bold 3=italic 4=underline
+color: 0=black 1=red 2=green 3=yellow 4=blue 5=magenta 6=cyan 7=white*/
+void	p_color(int weight, bool background, int color, const char *str)
+{
+	char	style[] = "\033[0;30m";
+	const char	*STOP_STYLE = "\033[0m";
+	int		len;
+	char	*tmp;
+
+	style[2] = (char) (weight + 48);
+	if (background)
+		style[4] = '4';
+	else
+		style[4] = '3';
+	style[5] = (char) (color + 48);
+	if (str)
+	{
+		len = ft_strlen(str);
+		if ('\n' == str[len - 1])
+		{
+			tmp = ft_substr(str, 0, len -1);
+			printf("%s%s%s%s", style, tmp, STOP_STYLE, "\n");
+			free(tmp);
+		}
+		else
+			printf("%s%s%s", style, str, STOP_STYLE);
+	}
+	else
+		printf("%s%s%s", style, "NULL", STOP_STYLE);
+}
+
+/*returns/updates  the color code for printf as string (str), len str >= 7 and not malloc weight: 0=normal 1=bold 3=italic 4=underline
+color: 0=black 1=red 2=green 3=yellow 4=blue 5=magenta 6=cyan 7=white*/
+char	*ret_col(int weight, bool background, int color, char *str)
+{
+	char	style[] = "\033[0;30m";
+	// const char	*STOP = "\033[0m";
+	int			len;
+
+	style[2] = (char) (weight + 48);
+	if (background)
+		style[4] = '4';
+	else
+		style[4] = '3';
+	style[5] = (char) (color + 48);
+	len = ft_strlen(style);
+	printf("len: %d\n", len);
+	return (ft_memcpy(str, style, len));
 }
