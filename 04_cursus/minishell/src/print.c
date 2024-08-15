@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 12:09:36 by zkepes            #+#    #+#             */
-/*   Updated: 2024/08/14 13:41:36 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/08/15 11:38:15 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,10 @@ void	print_token_list(t_token *start, bool subword)
 				printf("\033[0;32m%s\033[0m|", "VAR");
 			else if (cur_sub->sub_id == VAR_EXIT)
 				printf("\033[0;32m%s\033[0m|", "VAR_EXIT");
+			else if (cur_sub->sub_id == INV_VAR)
+				printf("\033[0;32m%s\033[0m|", "INV_VAR");
+			else if (cur_sub->sub_id == UNPROCESSED)
+				printf("\033[0;32m%s\033[0m|", "UNPROCESSED");
 			printf("\033[1;35m%s\033[0m|", cur_sub->sub_word);
 			cur_sub = cur_sub->next;
 		}

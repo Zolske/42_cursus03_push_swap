@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 13:33:10 by zkepes            #+#    #+#             */
-/*   Updated: 2024/08/14 21:05:18 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/08/15 13:05:01 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,29 +29,30 @@ int	main(const int argc, char *argv[], char *arge[])
 bool	prompt_user(t_data *d)
 {
 	init_data(d);
-	d->user_input = readline("MINISHELL=> ");
+	// prompt input
+	// d->user_input = readline("MINISHELL=> ");
+	// TEST VAR
+	d->user_input = ft_strdup("$ $? $HOME $HOME\"str\"txt $not_exist $6 $! '$?' str\"$HOME\"");
 	// d->user_input = ft_strdup("> txt'hello'\"$HOME text\"");
 	// d->user_input = ft_strdup("$< <file_in>file_\"out\" arg$HOME>>append arg$|cmd$? arg$_not_valid");
 	// d->user_input = ft_strdup("> out1 >> app1 cmd arg < file_new arg << E");
 	// d->user_input = ft_strdup(" >> append");
 	// d->user_input = ft_strdup("< heredod\"$HOME\"$ cmd arg arg | new_cmd '$?'");
-	// printf("user_input: |%s|\n", d->user_input);
+	
+	// print user input
+	printf("user_input: |%s|\n", d->user_input);
 	trim_str(&(d->user_input), " ");
 	if (invalid_user_input(d->user_input))
 		return true;  // TODO: add free all to return
 	lexer(d);
-	if (invalid_token(d))
-		return false; //TODO change later to return true, restart loop
-	cmd_list_from_token(d, true);
-	// printf("fd: %d word: %s\n", d->list_cmd->fd_file_in, d->list_cmd->file_in);
+	// if (invalid_token(d))
+	// 	return false; //TODO change later to return true, restart loop
+	// cmd_list_from_token(d, true);
 
-	// create_file_if_not_exist(d->list_token);
-	
-	// create_direct_out_files_if_not_exist(d);
+
 	// print_tab(d->env);
-
-	print_token_list(d->list_token, false);
-	print_cmd_list(d->list_cmd);
+	print_token_list(d->list_token, true);
+	// print_cmd_list(d->list_cmd);
 	free_list_token_and_subword(d->list_token);
 	return (false);
 }

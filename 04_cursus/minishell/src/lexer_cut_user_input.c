@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 11:40:39 by zkepes            #+#    #+#             */
-/*   Updated: 2024/08/14 13:41:36 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/08/15 10:05:51 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ char	*word_from_input(t_data *d, int id)
 		word = NULL;
 	else
 		word = ft_substr(d->user_input, 0, len);
-	// printf("len: %d |%s|\n", len, word);
 	return (word);
 }
 
@@ -116,7 +115,7 @@ int	match_quote_idx(const char *str)
 		while (str[idx])
 		{
 			if (str[idx] == quote)
-				return idx;
+				return ++idx;
 			idx++;
 		}
 	}

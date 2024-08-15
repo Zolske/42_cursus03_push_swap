@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:13:55 by zkepes            #+#    #+#             */
-/*   Updated: 2024/08/14 20:54:36 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/08/15 12:10:07 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	add_node_sub_word(t_sub_list **node, int sub_id, char *sub_word)
 	}
 }
 
+/*add node after*/
 void	insert_node_sub_word(t_sub_list *node, int sub_id, char *sub_word)
 {
 	t_sub_list	*new_node;

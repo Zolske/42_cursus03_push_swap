@@ -44,6 +44,7 @@
 # define STRING 12
 # define VAR 13
 # define VAR_EXIT 14
+# define INV_VAR 15
 # define FD_NONE INT_MIN
 
 # define DELIMITER " <>|\0"
@@ -157,7 +158,6 @@ void	add_quo_node_s_word(char *word, t_sub_list **node_s, int start, int len);
 void	cut_variable_subwords(t_sub_list **head);
 void	insert_node_sub_word(t_sub_list *node, int sub_id, char *sub_word);
 t_sub_list	*cut_var_exit(t_sub_list *cur, char **tmp, char *idx_var);
-t_sub_list	*cut_string_before_var(t_sub_list *cur, char **tmp, char *idx_var);
 t_sub_list	*cut_var(t_sub_list *cur, char **tmp,  char *idx_var);
 void	cut_invalid_var(char **tmp,  char *idx_var);
 void	add_remaining_string(t_sub_list **cur, char **tmp);
@@ -191,5 +191,6 @@ bool	bash_msg(const char *word, const char *e_msg);
 bool	bash_msg1(const char *word, const char *e_msg);
 bool	get_append(t_cmd *c_node, t_token *t_node);
 bool	get_file_out(t_cmd *c_node, t_token *t_node);
+t_sub_list	*cut_string_before_var(t_sub_list *cur, char **tmp, char *idx_var);
 // void	p_color();
 #endif

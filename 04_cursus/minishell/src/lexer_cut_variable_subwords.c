@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 11:46:56 by zkepes            #+#    #+#             */
-/*   Updated: 2024/08/12 11:47:00 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/08/15 13:04:58 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,91 +25,99 @@ advance the list.*/
 #include "../include/minishell.h"
 
 /*cut "non var string" before variable from '**tmp', write to node, id=STRING*/
-t_sub_list	*cut_string_before_var(t_sub_list *cur, char **tmp, char *idx_var)
+t_sub_list	*cut_string_before_var(t_sub_list **cur, char **tmp, char *idx_var)
 {
-    if ('\0' == idx_var[1] || ' ' == idx_var[1])
-        idx_var = ft_strchr(&(idx_var[1]), '$');
-    if (idx_var)
-    {
-        cur->sub_word = ft_substr(*tmp, 0, idx_var - *tmp);
-        idx_var = ft_strdup(idx_var);
-        free(*tmp);
-        *tmp = idx_var;
-    }
-    else
-    {
-        cur->sub_word = *tmp;
-        *tmp = ft_strdup("");
-    }
-    cur->sub_id = STRING;
-    insert_node_sub_word(cur, UNPROCESSED, NULL);
-    return (cur->next);
+	//split string and var
+	int		len_str;
+	char	*str_before;
+	char	*str_rest;
+
+	len_str = idx_var - *tmp;
+	str_before = ft_substr(*tmp, 0, len_str);
+	if (UNPROCESSED == (*cur)->sub_id)
+	{
+		(*cur)->sub_id = STRING;
+		(*cur)->sub_word = str_before;
+	}
+	else
+	{
+		insert_node_sub_word(cur, STRING, str_before);
+		cur = (*cur)->next;
+	}
+	str_rest = ft_strdup(&((*tmp)[len_str]));
+	free(*tmp);
+	*tmp = str_rest;
 }
 
 /*cut "$?" from '**tmp', write to node id=VAR_EXIT, sub_word=NULL*/
 t_sub_list	*cut_var_exit(t_sub_list *cur, char **tmp, char *idx_var)
 {
-    const int	LEN_EXIT_VAR = 2;
+	const int	LEN_EXIT_VAR = 2;
 
-    cur->sub_word = NULL;
-    cur->sub_id = VAR_EXIT;
-    idx_var = ft_strdup(idx_var);
-    free(*tmp);
-    *tmp = ft_strdup(&(idx_var[LEN_EXIT_VAR]));
-    free(idx_var);
-    insert_node_sub_word(cur, UNPROCESSED, NULL);
-    return (cur->next);
+	cur->sub_word = NULL;
+	cur->sub_id = VAR_EXIT;
+	idx_var = ft_strdup(idx_var);
+	free(*tmp);
+	*tmp = ft_strdup(&(idx_var[LEN_EXIT_VAR]));
+	free(idx_var);
+	insert_node_sub_word(cur, UNPROCESSED, NULL);
+	return (cur->next);
 }
 
 /*cut variable name from '**tmp', id=VAR*/
 t_sub_list	*cut_var(t_sub_list *cur, char **tmp,  char *idx_var)
 {
-    int	len;
+	int	len;
 
-    len = 2;
-    idx_var = ft_strdup(idx_var);
-    free(*tmp);
-    while ('_' == idx_var[len] || ft_isalnum(idx_var[len]))
-        len++;
-    cur->sub_word = ft_substr(idx_var, 1, len - 1);
-    cur->sub_id = VAR;
-    *tmp = ft_strdup(&(idx_var[len]));
-    free(idx_var);
-    insert_node_sub_word(cur, UNPROCESSED, NULL);
-    return (cur->next);
+	len = 2;
+	idx_var = ft_strdup(idx_var);
+	free(*tmp);
+	while ('_' == idx_var[len] || ft_isalnum(idx_var[len]))
+		len++;
+	cur->sub_word = ft_substr(idx_var, 1, len - 1);
+	cur->sub_id = VAR;
+	*tmp = ft_strdup(&(idx_var[len]));
+	free(idx_var);
+	insert_node_sub_word(cur, UNPROCESSED, NULL);
+	return (cur->next);
 }
 
 /*cut invalid var name from '**tmp', e.g. "$5hello" cut "$5" leave "hello"*/
 void	cut_invalid_var(char **tmp,  char *idx_var)
 {
-    const int	LEN_INVALID_VAR = 2;
+	const int	LEN_INVALID_VAR = 2;
+	int         len;
 
-    idx_var = ft_strdup(idx_var);
-    free(*tmp);
-    *tmp = ft_strdup(&(idx_var[LEN_INVALID_VAR]));
-    free(idx_var);
+	printf("idx_var: |%s|\n", idx_var);
+	idx_var = ft_strdup(idx_var);
+	free(*tmp);
+	tmp = NULL;
+	len = ft_strlen(idx_var);
+	if (len > LEN_INVALID_VAR)
+		*tmp = ft_strdup(&(idx_var[LEN_INVALID_VAR]));
+	free(idx_var);
 }
 
 /*remaining str after last var is passed to sub_word, else node is removed*/
 void	add_remaining_string(t_sub_list **cur, char **tmp)
 {
-    t_sub_list	*next;
+	// t_sub_list	*next;
 
-    if (*tmp && '\0' != (*tmp)[0])
-    {
-        (*cur)->sub_word = *tmp;
-        (*cur)->sub_id = STRING;
-    }
-    else
-    {
-        if ((*cur)->prev && (*cur)->next)
-        {
-            (*cur)->prev->next = (*cur)->next;
-            next = (*cur)->next;
-            free(*cur);
-            *cur = next;
-        }
-        free(*tmp);
-        *tmp = NULL;
-    }
+	if (*tmp && '\0' != (*tmp)[0])
+	{
+		(*cur)->sub_word = *tmp;
+		(*cur)->sub_id = STRING;
+	}
+	else
+	{
+		// if ((*cur)->prev && (*cur)->next)
+		// {
+		//     (*cur)->prev->next = (*cur)->next;
+		//     next = (*cur)->next;
+		//     free(*cur);
+		//     *cur = next;
+		// }
+		free(*tmp);
+		*tmp = NULL;
+	}
 }

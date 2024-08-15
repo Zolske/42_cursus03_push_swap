@@ -6,7 +6,7 @@
 /*   By: zkepes <zkepes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 11:47:44 by zkepes            #+#    #+#             */
-/*   Updated: 2024/08/12 11:49:43 by zkepes           ###   ########.fr       */
+/*   Updated: 2024/08/15 10:16:59 by zkepes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ void	cut_quotes_subwords(t_sub_list **node_s, char *word)
 			if (0 < idx && word_before_quote)
 				add_str_node_s_word(word, node_s, idx_start, idx);
 			word_before_quote = false;
-			add_quo_node_s_word(word, node_s, idx, len_quote);
-			idx_start = idx + len_quote + 1;
-			idx += len_quote + 1;
+			add_quo_node_s_word(word, node_s, idx, len_quote - 1);
+			idx_start = idx + len_quote;
+			idx += len_quote;
 		}
 		else
 			idx++;
@@ -55,6 +55,8 @@ void	add_quo_node_s_word(char *word, t_sub_list **node_s, int start, int len)
 	char	*sub_word;
 	int		id;
 
+	id = UNPROCESSED;
+	sub_word = NULL;
 	if ('\'' == word[start])
 	{
 		sub_word = ft_substr(word, start + 1, len - 1);
